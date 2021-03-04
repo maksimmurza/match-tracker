@@ -1,40 +1,64 @@
 import './App.css';
 import React from 'react'
-import token from './token.json'
+import tokenForShedule from './token-football-data.json'
+import tokenForLogo from './token-rapid-api.json'
+import Container from './Container/Container'
 
 class App extends React.Component{
 
-  constructor(props) {
-      super(props);
-      this.baseURL = 'https://api.football-data.org/v2/competitions/PL/matches?status=SCHEDULED';
-      this.init = {
-          headers: {
-              'X-Auth-Token' : token
-          }
-      };
-      console.log(this.init);
-      this.state = {shedule:'Loading...'};
-  }
+    constructor(props) {
+        super(props);
+        this.sheduleURL = 'https://api.football-data.org/v2/competitions/PL/matches?status=SCHEDULED';
+        this.logotypesURL = 'https://api-football-v1.p.rapidapi.com/v2/teams/league/2790';
 
-  componentDidMount() {
-      this.getShedule();
-  }
+        this.sheduleReqOptions = {
+            headers: {
+                'X-Auth-Token' : tokenForShedule
+            }
+        };
 
-  getShedule() {
-      fetch(this.baseURL, this.init)
-          .then(response => response.json())
-          .then(data => {
-              this.setState({
-                  shedule: JSON.stringify(data)
-              });
-          });
-  }
+        this.logotypesReqOptions = {
+            headers: {
+                "x-rapidapi-key": tokenForLogo,
+	            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+	            "useQueryString": true
+            }
+        };
+        
+        this.state = {shedule:'Loading...'};
+    }
 
-  render() {
-      return (
-          <p>{this.state.shedule}</p>
-      );
-  };
+    componentDidMount() {
+        this.getShedule();
+        this.getLogotypes();
+    }
+
+    getShedule() {
+        fetch(this.sheduleURL, this.sheduleReqOptions)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    shedule: data
+                });
+            });   
+    }
+
+    getLogotypes() {
+        fetch(this.logotypesURL, this.logotypesReqOptions)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    logotypes: data.api.teams
+                });
+            });
+    }
+
+    render() {
+        return (
+            <Container  shedule={this.state.shedule.matches} 
+                        logotypes={this.state.logotypes} />
+        );
+    };
 }
 
 export default App;
