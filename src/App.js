@@ -1,8 +1,7 @@
-import './App.css';
 import React from 'react'
 import tokenForShedule from './token-football-data.json'
 import tokenForLogo from './token-rapid-api.json'
-import Container from './Container/Container'
+import MatchList from './MatchList/MatchList'
 
 class App extends React.Component{
 
@@ -55,7 +54,7 @@ class App extends React.Component{
 
     render() {
         return (
-            <Container  shedule={this.state.shedule.matches} 
+            <MatchList  shedule={this.state.shedule.matches} 
                         logotypes={this.state.logotypes} />
         );
     };
