@@ -17,7 +17,7 @@ class Board extends React.Component {
     getLogo(team) {
         if(this.props.logotypes != undefined) {
             let obj = this.props.logotypes?.find(obj => {
-                if(team.includes(obj.name))
+                if(team.includes(obj.name) || obj.name.includes(team))
                     return true;
                 else
                     return false;
@@ -50,7 +50,7 @@ class Board extends React.Component {
             
 
         return (
-            <Segment raised>
+            <Segment>
                 {todayLabel}
                 {tomorrowLabel}
                 <Label>
@@ -67,7 +67,10 @@ class Board extends React.Component {
 					<img src={this.getLogo(this.props.awayTeam)} width='80' />
 					<span className='away-team'>{this.props.awayTeam}</span>
 				</div>
-            
+
+                <img src={this.props.leagueLogo} width='25' className='league-logo'></img>
+                
+                
 				
             </Segment>
         )
