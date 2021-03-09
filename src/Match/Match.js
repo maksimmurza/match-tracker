@@ -9,9 +9,9 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-		let date = new Date(props.time);
-		this.date = date.toLocaleDateString('default', {month:'long',day:'numeric'});
-		this.time = date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'});
+		this.date = new Date(props.time);
+		this.dateStr = this.date.toLocaleDateString('default', {month:'long',day:'numeric'});
+		this.timeStr = this.date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'});
     }
 
     getLogo(team) {
@@ -36,16 +36,30 @@ class Board extends React.Component {
     }
 
     render() {
+        let todayLabel, tomorrowLabel;
+        let date = this.props.todayDate.getDate();
+        let month = this.props.todayDate.getMonth();
+
+        if(date === this.date.getDate() && month === this.date.getMonth()) {
+            todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
+            console.log('today');
+        } else if(month === this.date.getMonth() && date+1 == this.date.getDate()) {
+            tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
+            console.log('tomorrow');
+        }
+            
 
         return (
-            <Segment>
-				<Label>
-    				<Icon name='calendar' /> {this.date}
+            <Segment raised>
+                {todayLabel}
+                {tomorrowLabel}
+                <Label>
+    				<Icon name='calendar' /> {this.dateStr}
   				</Label>
 				<Label>
-    				<Icon name='time' /> {this.time}
+    				<Icon name='time' /> {this.timeStr}
   				</Label>
-				{/* <Divider></Divider> */}
+            
 				<div className='container'>
 					<span className='home-team'>{this.props.homeTeam}</span>
 					<img src={this.getLogo(this.props.homeTeam)} width='80' />
@@ -53,6 +67,8 @@ class Board extends React.Component {
 					<img src={this.getLogo(this.props.awayTeam)} width='80' />
 					<span className='away-team'>{this.props.awayTeam}</span>
 				</div>
+            
+				
             </Segment>
         )
     }

@@ -1,0 +1,11 @@
+.match-list {
+    margin: 1em 0;
+	height: calc(100% - 2em);
+    border-radius: 5px;
+    box-shadow: 0 0 200px 0 rgba(0, 33, 36, 0.3);
+}
+
+.match-list::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}

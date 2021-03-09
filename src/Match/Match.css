@@ -39,3 +39,8 @@
     overflow: hidden;
     white-space: nowrap;
 }
+
+.day-label {
+    position: absolute !important;
+    left: calc(100% + 1.2em) !important;
+}
