@@ -24,13 +24,10 @@ class Schedule extends React.Component{
 
             let live = await this.getSchedule(key, req.footballData.liveFilter);
             let schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
-            console.log(schedule.matches);
-            console.log(live.matches);
             live.matches.forEach(liveMatch => {
                 schedule.matches.push(liveMatch);
             });
             
-            console.log(schedule.matches);
             let league = new League(schedule.competition.name, schedule.competition.area.name);
             league.matches = schedule.matches;
             
@@ -40,15 +37,8 @@ class Schedule extends React.Component{
                     
                     league.logo = l.logo;
                     
-                    let teams = [];
-                    let logotypes = await this.getTeamsInfo(l.league_id);
-                    logotypes.forEach((team) => {
-                        teams.push(team.name)
-                    });
-
+                    let teams = await this.getTeamsInfo(l.league_id);
                     league.teams = teams;
-                    // console.log(teams);
-                    league.logotypes = logotypes;
 
                     this.arr.push(league);
                     this.setState({leagues: this.arr});

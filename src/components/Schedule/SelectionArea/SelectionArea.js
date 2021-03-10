@@ -1,5 +1,7 @@
 import React from 'react'
 import { Tab, Checkbox } from 'semantic-ui-react'
+import League from './League/League'
+import Team from './League/Team/Team'
 import './SelectionArea.css'
 
 
@@ -18,10 +20,17 @@ class SelectionArea extends React.Component {
         let panes = [];
 
         this.state.leagues.forEach(league => {
-            panes.push({menuItem: league.name, 
-            render: () => <Tab.Pane>{league.teams}</Tab.Pane>
+
+            let teams = [];
+            league.teams.forEach(team => teams.push(<Team team={team}></Team>));
+
+            panes.push({
+                    menuItem: {content: <League league={league}></League>}, 
+                    render: () => <Tab.Pane>{teams}</Tab.Pane>
             });
         });
+
+        
 
         return (
             <div className='wrapper'>

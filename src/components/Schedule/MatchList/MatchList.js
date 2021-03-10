@@ -45,7 +45,7 @@ class MatchList extends React.Component {
                 boards.push(league.matches[i]);
             }
 
-            logotypes = logotypes.concat(league.logotypes);
+            logotypes = logotypes.concat(league.teams);
         });
 
         boards.sort(this.sortFunction);
