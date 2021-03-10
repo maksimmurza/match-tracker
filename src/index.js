@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Shedule from './components/Shedule/Shedule';
+import Schedule from './components/Schedule/Schedule';
 import 'semantic-ui-css/semantic.min.css'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Shedule />
+    <Schedule />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,17 +1,25 @@
 import React from 'react'
-import { Segment, Icon, Label, Divider } from 'semantic-ui-react';
+import { Segment, Icon, Label } from 'semantic-ui-react';
 import './Match.css';
 
-class Board extends React.Component {
-
-	today;
-	tomorrow;
+class Match extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {date:'', dateStr:'', timeStr:''};
+
 		this.date = new Date(props.time);
 		this.dateStr = this.date.toLocaleDateString('default', {month:'long',day:'numeric'});
 		this.timeStr = this.date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'});
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        let d = new Date(props.time);
+        return {
+            date: d, 
+            dateStr: d.toLocaleDateString('default', {month:'long',day:'numeric'}), 
+            timeStr: d.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'})
+        };
     }
 
     getLogo(team) {
@@ -40,24 +48,23 @@ class Board extends React.Component {
         let date = this.props.todayDate.getDate();
         let month = this.props.todayDate.getMonth();
 
-        if(date === this.date.getDate() && month === this.date.getMonth()) {
+        if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
             todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
-            console.log('today');
-        } else if(month === this.date.getMonth() && date+1 == this.date.getDate()) {
+            // console.log('today');
+        } else if(month === this.state.date.getMonth() && date+1 == this.state.date.getDate()) {
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
-            console.log('tomorrow');
+            // console.log('tomorrow');
         }
-            
 
         return (
             <Segment>
                 {todayLabel}
                 {tomorrowLabel}
                 <Label>
-    				<Icon name='calendar' /> {this.dateStr}
+    				<Icon name='calendar' /> {this.state.dateStr}
   				</Label>
 				<Label>
-    				<Icon name='time' /> {this.timeStr}
+    				<Icon name='time' /> {this.state.timeStr}
   				</Label>
             
 				<div className='container'>
@@ -77,4 +84,4 @@ class Board extends React.Component {
     }
 }
 
-export default Board;
+export default Match;

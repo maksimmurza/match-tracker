@@ -4,20 +4,41 @@ import { Container, SegmentGroup } from 'semantic-ui-react'
 import './MatchList.css'
 
 class MatchList extends React.Component {
+    
     constructor(props) {
         super(props);
-        this.todayDate = new Date();
-        this.quantity = this.props.quantity;
+        this.state = {leagues:[], todayDate: new Date(), quantity: this.props.quantity};
+
+        this.sortFunction = this.sortFunction.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        return {leagues: props.leagues, todayDate: state.todayDate, quantity: state.quantity};
+    }
+
+    sortFunction(a, b) {
+        let aDate = new Date(a.utcDate);
+        let bDate = new Date(b.utcDate);
+        if(aDate.getMonth() - bDate.getMonth() != 0) {
+            return aDate.getMonth() - bDate.getMonth();
+        } else if(aDate.getDate() - bDate.getDate() != 0) {
+            return aDate.getDate() - bDate.getDate();
+        } else {
+            return aDate.getTime() - bDate.getTime();
+        }
     }
 
     render() {
         let boards = [];
         let logotypes = [];
 
-        this.props.leagues?.forEach(league => {
+        this.state.leagues.forEach(league => {
 
             let quantity;
-            this.quantity <= league.matches.length ? quantity=this.quantity : quantity=league.matches.length;
+
+            this.state.quantity <= league.matches.length ? 
+                quantity=this.state.quantity : 
+                quantity=league.matches.length;
 
             for(let i = 0; i < quantity; i++) {
                 league.matches[i].leagueLogo = league.logo;
@@ -27,19 +48,7 @@ class MatchList extends React.Component {
             logotypes = logotypes.concat(league.logotypes);
         });
 
-        boards.sort((a, b) => {
-            let aDate = new Date(a.utcDate);
-            let bDate = new Date(b.utcDate);
-            if(aDate.getMonth() - bDate.getMonth() != 0) {
-                return aDate.getMonth() - bDate.getMonth();
-            } else if(aDate.getDate() - bDate.getDate() != 0) {
-                return aDate.getDate() - bDate.getDate();
-            } else {
-                return aDate.getTime() - bDate.getTime();
-            }
-        });
-
-        console.log(boards);
+        boards.sort(this.sortFunction);
 
         boards = boards.map((board) => {
             return (
@@ -47,12 +56,12 @@ class MatchList extends React.Component {
                         awayTeam={board.awayTeam.name} 
                         logotypes={logotypes}
                         time={board.utcDate}
-                        todayDate={this.todayDate}
+                        todayDate={this.state.todayDate}
                         leagueLogo={board.leagueLogo} 
                 />
             )
         });
-
+        
         return (
             <Container text className='match-list'>
             	<SegmentGroup>
