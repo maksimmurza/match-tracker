@@ -4,7 +4,7 @@ import { Container, SegmentGroup } from 'semantic-ui-react'
 import './MatchList.css'
 
 class MatchList extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {leagues:[], todayDate: new Date(), quantity: this.props.quantity};
@@ -56,6 +56,7 @@ class MatchList extends React.Component {
                         awayTeam={board.awayTeam.name} 
                         logotypes={logotypes}
                         time={board.utcDate}
+                        status={board.status}
                         todayDate={this.state.todayDate}
                         leagueLogo={board.leagueLogo} 
                 />

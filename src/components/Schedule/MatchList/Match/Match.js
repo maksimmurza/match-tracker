@@ -6,7 +6,7 @@ class Match extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {date:'', dateStr:'', timeStr:''};
+        this.state = {date:'', dateStr:'', timeStr:'', status:''};
 
 		this.date = new Date(props.time);
 		this.dateStr = this.date.toLocaleDateString('default', {month:'long',day:'numeric'});
@@ -18,7 +18,8 @@ class Match extends React.Component {
         return {
             date: d, 
             dateStr: d.toLocaleDateString('default', {month:'long',day:'numeric'}), 
-            timeStr: d.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'})
+            timeStr: d.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}),
+            status: props.status
         };
     }
 
@@ -44,12 +45,18 @@ class Match extends React.Component {
     }
 
     render() {
-        let todayLabel, tomorrowLabel;
+        let todayLabel, tomorrowLabel, liveLabel;
+        let time = this.props.todayDate.getDate();
         let date = this.props.todayDate.getDate();
         let month = this.props.todayDate.getMonth();
 
         if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
-            todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
+            if(this.state.status === 'IN_PLAY' || 'PAUSED') {
+                liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
+            } else {
+                todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
+            }
+            
             // console.log('today');
         } else if(month === this.state.date.getMonth() && date+1 == this.state.date.getDate()) {
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
@@ -60,6 +67,7 @@ class Match extends React.Component {
             <Segment>
                 {todayLabel}
                 {tomorrowLabel}
+                {liveLabel}
                 <Label>
     				<Icon name='calendar' /> {this.state.dateStr}
   				</Label>

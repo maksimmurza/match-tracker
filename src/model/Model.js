@@ -6,6 +6,7 @@ let req = {
 			leaguesBaseURL: 'https://api.football-data.org/v2/competitions/',
 			leaguesKeys: ['PL/', 'PD/', 'CL/'],
 			scheduledFilter: 'matches?status=SCHEDULED',
+			liveFilter: 'matches?status=LIVE',
 			requestOptions: {
 				headers: {
 					'X-Auth-Token' : tokenForShedule
@@ -50,6 +51,7 @@ class League {
 	matches;
 	teams;
 	logotypes;
+	selected = true;
 
 	constructor(name, country) {
 		this.name = name;

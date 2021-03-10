@@ -22,7 +22,15 @@ class Schedule extends React.Component{
             
         for(let key of req.footballData.leaguesKeys) {
 
-            let schedule = await this.getSchedule(key);
+            let live = await this.getSchedule(key, req.footballData.liveFilter);
+            let schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
+            console.log(schedule.matches);
+            console.log(live.matches);
+            live.matches.forEach(liveMatch => {
+                schedule.matches.push(liveMatch);
+            });
+            
+            console.log(schedule.matches);
             let league = new League(schedule.competition.name, schedule.competition.area.name);
             league.matches = schedule.matches;
             
@@ -39,7 +47,7 @@ class Schedule extends React.Component{
                     });
 
                     league.teams = teams;
-                    console.log(teams);
+                    // console.log(teams);
                     league.logotypes = logotypes;
 
                     this.arr.push(league);
@@ -57,9 +65,9 @@ class Schedule extends React.Component{
         return data.api.leagues;
     }
 
-    async getSchedule(leagueKey) {
+    async getSchedule(leagueKey, filter) {
         let source = req.footballData;
-        const response = await fetch(source.leaguesBaseURL + leagueKey + source.scheduledFilter, source.requestOptions);
+        const response = await fetch(source.leaguesBaseURL + leagueKey + filter, source.requestOptions);
         const data = await response.json();
         return data;
     }
