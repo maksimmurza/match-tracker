@@ -50,8 +50,7 @@ class League {
 	logoURL;
 	matches;
 	teams;
-	logotypes;
-	selected = true;
+	show = true;
 
 	constructor(name, country) {
 		this.name = name;

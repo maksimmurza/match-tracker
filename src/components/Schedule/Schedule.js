@@ -8,8 +8,14 @@ class Schedule extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {leagues: [], quantity: 10};
+        this.state = {
+            leagues: [], 
+            quantity: 10, 
+            onChangeLeague: this.onChangeLeague,
+            onChangeTeam: this.onChangeTeam};
         this.arr = [];
+        this.onChangeLeague = this.onChangeLeague.bind(this);
+        this.onChangeTeam = this.onChangeTeam.bind(this);
     }
 
     componentDidMount() {
@@ -33,16 +39,16 @@ class Schedule extends React.Component{
             
             for(let l of currentLeagues) {
                 
-                if(l.name == league.name && (l.country == league.country || l.country == ('World' || 'Europe'))) {
+                if(l.name === league.name && (l.country === league.country || l.country === ('World' || 'Europe'))) {
                     
                     league.logo = l.logo;
                     
                     let teams = await this.getTeamsInfo(l.league_id);
+                    teams.forEach(team => {team.show = true; team.leagueName = schedule.competition.name});
                     league.teams = teams;
 
                     this.arr.push(league);
                     this.setState({leagues: this.arr});
-                        
                 }
             }  
         }
@@ -69,12 +75,46 @@ class Schedule extends React.Component{
         return data.api.teams;
     }
 
+    onChangeLeague(league, status) {
+        let obj = this.state.leagues;
+        // league.show = status === 'unchecked' ? false :
+
+        if(status === 'unchecked') {
+            obj.forEach(value => {
+                if(value.name === league.name) {
+                    console.log('inside');
+                    value.show = false;
+                }
+            });
+        }
+
+        if(status === 'checked') {
+            obj.forEach(value => {
+                if(value.name === league.name) {
+                    value.show = true;
+                }
+            });
+        }
+
+        this.setState({leagues: obj});
+
+    }
+
+    onChangeTeam(team, status) {
+        if(status === 'unchecked') {
+            team.show = false;
+        }
+        console.log(this.state.leagues);
+    }
+
     render() {
         return (
             <div className='flex-container'>
                 <MatchList  leagues={this.state.leagues} 
                             quantity={this.state.quantity} />
-                <SelectionArea leagues={this.state.leagues} />
+                <SelectionArea leagues={this.state.leagues}
+                                onChangeLeague={this.onChangeLeague}
+                                onChangeTeam={this.onChangeTeam} />
             </div>
         );
     };

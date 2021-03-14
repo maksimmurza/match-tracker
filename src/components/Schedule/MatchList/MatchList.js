@@ -19,9 +19,9 @@ class MatchList extends React.Component {
     sortFunction(a, b) {
         let aDate = new Date(a.utcDate);
         let bDate = new Date(b.utcDate);
-        if(aDate.getMonth() - bDate.getMonth() != 0) {
+        if(aDate.getMonth() - bDate.getMonth() !== 0) {
             return aDate.getMonth() - bDate.getMonth();
-        } else if(aDate.getDate() - bDate.getDate() != 0) {
+        } else if(aDate.getDate() - bDate.getDate() !== 0) {
             return aDate.getDate() - bDate.getDate();
         } else {
             return aDate.getTime() - bDate.getTime();
@@ -33,6 +33,8 @@ class MatchList extends React.Component {
         let logotypes = [];
 
         this.state.leagues.forEach(league => {
+            if(league.show === false)
+                return;
 
             let quantity;
 
@@ -41,6 +43,10 @@ class MatchList extends React.Component {
                 quantity=league.matches.length;
 
             for(let i = 0; i < quantity; i++) {
+                // if(league.matches[i].homeTeam === false)
+                //     return;
+
+                
                 league.matches[i].leagueLogo = league.logo;
                 boards.push(league.matches[i]);
             }
@@ -52,13 +58,14 @@ class MatchList extends React.Component {
 
         boards = boards.map((board) => {
             return (
-                <Match  homeTeam={board.homeTeam.name} 
+                <Match  key={board.id}
+                        homeTeam={board.homeTeam.name} 
                         awayTeam={board.awayTeam.name} 
                         logotypes={logotypes}
                         time={board.utcDate}
                         status={board.status}
                         todayDate={this.state.todayDate}
-                        leagueLogo={board.leagueLogo} 
+                        leagueLogo={board.leagueLogo}
                 />
             )
         });
