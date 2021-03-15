@@ -47,6 +47,8 @@ class Schedule extends React.Component{
                     let teams = await this.getTeamsInfo(l.league_id);
                     teams.forEach(team => {team.show = true; team.leagueName = schedule.competition.name});
                     league.teams = teams;
+                    console.log(teams.length);
+                    league.teamsShowed = teams.length;
 
                     let s;
 
@@ -105,8 +107,16 @@ class Schedule extends React.Component{
 
         obj.forEach(value => {
             if(value.name === league.name) {
+                value.status = status;
                 value.teams.forEach(team => {
-                    status === 'unchecked' ? team.show = false : team.show = true;;
+                    if(status === 'checked') {
+                        team.show = true;
+                        value.teamsShowed = value.teams.length;
+                    } else {
+                        team.show = false;
+                        value.teamsShowed = 0;
+                    }
+                   
                 });
             }
         });
@@ -119,14 +129,26 @@ class Schedule extends React.Component{
         console.log(team, status);
         let obj = this.state.leagues;
         
-        obj.forEach(value => {
-            if(value.name === team.leagueName) {
-                value.teams.forEach(t => {
+        obj.forEach(league => {
+            if(league.name === team.leagueName) {
+                league.teams.forEach(t => {
                     if(t.name === team.name) {
                         if(status === 'unchecked') {
                             t.show = false;
+                            league.teamsShowed--;
+                            if(league.status !== 'indeterminate') {
+                                league.status = 'indeterminate';
+                            } else if(league.teamsShowed == 0) {
+                                league.status = 'unchecked'
+                            }
                         } else {
+                            if(league.teamsShowed == league.teams.length - 1) {
+                                league.status = 'checked';
+                            } else if(league.teamsShowed == 0) {
+                                league.status = 'indeterminate';
+                            }
                             t.show = true;
+                            league.teamsShowed++;
                         }
                     }  
                 });

@@ -50,7 +50,9 @@ class League {
 	logoURL;
 	matches;
 	teams;
-	show = true;
+	status = 'checked';
+	teamsShowed;
+	// indeterminate = false;
 
 	constructor(name, country) {
 		this.name = name;

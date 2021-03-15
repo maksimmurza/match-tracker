@@ -33,8 +33,11 @@ class MatchList extends React.Component {
         let logotypes = [];
 
         this.state.leagues.forEach(league => {
-            if(league.show === false)
+            console.log(this.state.leagues);
+            if(league.status !== 'checked' && league.status !== 'indeterminate') {
                 return;
+            }
+                
 
             let quantity;
 

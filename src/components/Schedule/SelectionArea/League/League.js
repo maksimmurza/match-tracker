@@ -26,7 +26,8 @@ class League extends React.Component {
        
         return (
             <div>
-                <Checkbox onChange={this.handleChange} defaultChecked/>
+                <Checkbox onChange={this.handleChange} defaultChecked 
+                        indeterminate={this.props.league.status === 'indeterminate'}/>
                 <span> {this.props.league.name}</span>
             </div>
         )
