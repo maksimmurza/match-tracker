@@ -29,7 +29,7 @@ class Match extends React.Component {
         let month = this.props.todayDate.getMonth();
 
         if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
-            if(this.state.status === ('IN_PLAY' || 'PAUSED')) {
+            if(this.state.status === 'IN_PLAY' || this.state.status === 'PAUSED') {
                 liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
             } else {
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;

@@ -3,6 +3,7 @@ import MatchList from './MatchList/MatchList'
 import SelectionArea from './SelectionArea/SelectionArea'
 import './Schedule.css'
 import { req, League } from '../../model/Model'
+import stringSimilarity from 'string-similarity'
 
 class Schedule extends React.Component{
 
@@ -10,7 +11,7 @@ class Schedule extends React.Component{
         super(props);
         this.state = {
             leagues: [], 
-            quantity: 10, 
+            quantity: 15, 
             onChangeLeague: this.onChangeLeague,
             onChangeTeam: this.onChangeTeam};
         this.arr = [];
@@ -47,90 +48,28 @@ class Schedule extends React.Component{
                     teams.forEach(team => {team.show = true; team.leagueName = schedule.competition.name});
                     league.teams = teams;
 
+                    let s;
+
                     league.matches.forEach(match => {
+                        
+                        let arr = [];
                         league.teams.forEach(team => {
-                            if(team.name.includes(match.homeTeam.name) || match.homeTeam.name.includes(team.name)) {
+                            arr.push(team.name);
+                            if(match.homeTeam.name.includes(team.name.slice(0,-2))) {
                                 match.homeTeam = team;
-                             }
-                            else {
-                                let a = team.name.split(' '); // rapid en
-                                let b = match.homeTeam.name.split(' ');  // football data foreight
-                                let q = 0;
-
-                                // b.forEach((word,i,arr) => {
-                                //     a.forEach(innerWord => {
-                                //         if(word.length > 2 && innerWord.length > 2) {
-                                //             if(word.slice(0,1) === innerWord.slice(0,1)) {
-                                //                 q++;
-                                //             }
-                                //         }
-                                //     })
-                                // });
-
-                                // if(q>1) {
-                                //     match.awayTeam = team;
-                                //                 return
-                                // }
-
-                                b.forEach((word,i,arr) => {
-                                    a.forEach(innerWord => {
-                                        if(word.length > 2 && innerWord.length > 2) {
-                                            if(word.localeCompare(innerWord,'en',{ sensitivity: 'base' }) === 0) {
-                                                match.homeTeam = team;
-                                                return
-                                            }
-                                        }
-                                    })
-                                   
-                                })
-
-                                if(team.name.slice(0,4).includes(match.homeTeam.name.slice(0,4)) || match.homeTeam.name.slice(0,4).includes(team.name.slice(0,4))) {
-                                    match.homeTeam = team;
-                                }
                             }
-                            
-
-                            if(team.name.includes(match.awayTeam.name) || match.awayTeam.name.includes(team.name)) {
+                            if(match.awayTeam.name.includes(team.name.slice(0,-2))) {
                                 match.awayTeam = team;
                             }
-                            else {
-                                let a = team.name.split(' '); // rapid en
-                                let b = match.awayTeam.name.split(' ');  // football data foreight
-                                let q = 0;
-
-                                // b.forEach((word,i,arr) => {
-                                //     a.forEach(innerWord => {
-                                //         if(word.length > 2 && innerWord.length > 2) {
-                                //             if(word.slice(0,1) === innerWord.slice(0,1)) {
-                                //                 q++;
-                                //             }
-                                //         }
-                                //     })
-                                // });
-
-                                // if(q>1) {
-                                //     match.awayTeam = team;
-                                //                 return
-                                // }
-
-                                b.forEach((word,i,arr) => {
-                                    a.forEach(innerWord => {
-                                        if(word.length > 2 && innerWord.length > 2) {
-                                            if(word.localeCompare(innerWord,'en',{ sensitivity: 'base' }) === 0) {
-                                                match.awayTeam = team;
-                                                return
-                                            }
-                                        }
-                                    })
-                                   
-                                })
-
-                                if(team.name.slice(0,4).includes(match.awayTeam.name.slice(0,4)) || match.awayTeam.name.slice(0,4).includes(team.name.slice(0,4))) {
-                                    match.awayTeam = team;
-                                }
-                            }
-                            
                         });
+                        
+                        if(match.homeTeam.logo === undefined) {
+                            match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name, arr).bestMatchIndex];
+                        }
+                        
+                        if(match.awayTeam.logo === undefined) {
+                            match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name, arr).bestMatchIndex];
+                        }
                     });
 
                     this.arr.push(league);
@@ -164,26 +103,14 @@ class Schedule extends React.Component{
     onChangeLeague(league, status) {
         let obj = this.state.leagues;
 
-        if(status === 'unchecked') {
-            obj.forEach(value => {
-                if(value.name === league.name) {
-                    value.teams.forEach(team => {
-                        team.show = false;
-                    });
-                }
-            });
-        }
-
-        if(status === 'checked') {
-            obj.forEach(value => {
-                if(value.name === league.name) {
-                    value.teams.forEach(team => {
-                        team.show = true;
-                    });
-                }
-            });
-        }
-
+        obj.forEach(value => {
+            if(value.name === league.name) {
+                value.teams.forEach(team => {
+                    status === 'unchecked' ? team.show = false : team.show = true;;
+                });
+            }
+        });
+        
         this.setState({leagues: obj});
 
     }
@@ -201,14 +128,12 @@ class Schedule extends React.Component{
                         } else {
                             t.show = true;
                         }
-                    }
-                        
+                    }  
                 });
             }
         });
 
         this.setState({leagues: obj});
-        // console.log(this.state.leagues);
     }
 
     render() {
