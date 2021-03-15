@@ -23,35 +23,13 @@ class Match extends React.Component {
         };
     }
 
-    getLogo(team) {
-        if(this.props.logotypes !== undefined) {
-            let obj = this.props.logotypes?.find(obj => {
-                if(team.includes(obj.name) || obj.name.includes(team))
-                    return true;
-                else
-                    return false;
-            });
-
-
-            if(obj === undefined) {
-                obj = this.props.logotypes?.find(obj => {
-                    if(team.slice(0,3) === obj.name.slice(0,3))
-                        return true;
-                    else return false;  
-                });
-            }
-            
-            return obj?.logo;
-        }
-    }
-
     render() {
         let todayLabel, tomorrowLabel, liveLabel;
         let date = this.props.todayDate.getDate();
         let month = this.props.todayDate.getMonth();
 
         if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
-            if(this.state.status === 'IN_PLAY' || 'PAUSED') {
+            if(this.state.status === ('IN_PLAY' || 'PAUSED')) {
                 liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
             } else {
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
@@ -76,11 +54,11 @@ class Match extends React.Component {
   				</Label>
             
 				<div className='container'>
-					<span className='home-team'>{this.props.homeTeam}</span>
-					<img src={this.getLogo(this.props.homeTeam)} alt='Team logo' width='80' />
+					<span className='home-team'>{this.props.homeTeam.name}</span>
+					<img src={this.props.homeTeam.logo} alt='Team logo' width='80' />
                 	<h3 className='devider'>–</h3>
-					<img src={this.getLogo(this.props.awayTeam)} alt='Team logo' width='80' />
-					<span className='away-team'>{this.props.awayTeam}</span>
+					<img src={this.props.awayTeam.logo} alt='Team logo' width='80' />
+					<span className='away-team'>{this.props.awayTeam.name}</span>
 				</div>
 
                 <img src={this.props.leagueLogo} alt='League logo' width='25' className='league-logo'></img>

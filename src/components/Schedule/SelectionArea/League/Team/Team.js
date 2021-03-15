@@ -11,21 +11,17 @@ class Team extends React.Component {
     }
 
     handleChange(e) {
-        if(this.state.status === 'checked') {
-            this.setState({status: 'unchecked'}, () => {
-                this.props.onChangeTeam(this.props.team, this.state.status);
-            });
+        if(this.props.team.show === true) {
+                this.props.onChangeTeam(this.props.team, 'unchecked');
         } else {
-            this.setState({status: 'checked'}, () => {
-                this.props.onChangeTeam(this.props.team, this.state.status);
-            });
+                this.props.onChangeTeam(this.props.team, 'checked');
         }
     }
 
     render() {
         return (
             <div>
-                <Checkbox onChange={this.handleChange} defaultChecked/>
+                <Checkbox onChange={this.handleChange} checked={this.props.team.show === true}/>
                 <label> {this.props.team.name}</label>
             </div>
         )

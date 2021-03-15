@@ -47,6 +47,92 @@ class Schedule extends React.Component{
                     teams.forEach(team => {team.show = true; team.leagueName = schedule.competition.name});
                     league.teams = teams;
 
+                    league.matches.forEach(match => {
+                        league.teams.forEach(team => {
+                            if(team.name.includes(match.homeTeam.name) || match.homeTeam.name.includes(team.name)) {
+                                match.homeTeam = team;
+                             }
+                            else {
+                                let a = team.name.split(' '); // rapid en
+                                let b = match.homeTeam.name.split(' ');  // football data foreight
+                                let q = 0;
+
+                                // b.forEach((word,i,arr) => {
+                                //     a.forEach(innerWord => {
+                                //         if(word.length > 2 && innerWord.length > 2) {
+                                //             if(word.slice(0,1) === innerWord.slice(0,1)) {
+                                //                 q++;
+                                //             }
+                                //         }
+                                //     })
+                                // });
+
+                                // if(q>1) {
+                                //     match.awayTeam = team;
+                                //                 return
+                                // }
+
+                                b.forEach((word,i,arr) => {
+                                    a.forEach(innerWord => {
+                                        if(word.length > 2 && innerWord.length > 2) {
+                                            if(word.localeCompare(innerWord,'en',{ sensitivity: 'base' }) === 0) {
+                                                match.homeTeam = team;
+                                                return
+                                            }
+                                        }
+                                    })
+                                   
+                                })
+
+                                if(team.name.slice(0,4).includes(match.homeTeam.name.slice(0,4)) || match.homeTeam.name.slice(0,4).includes(team.name.slice(0,4))) {
+                                    match.homeTeam = team;
+                                }
+                            }
+                            
+
+                            if(team.name.includes(match.awayTeam.name) || match.awayTeam.name.includes(team.name)) {
+                                match.awayTeam = team;
+                            }
+                            else {
+                                let a = team.name.split(' '); // rapid en
+                                let b = match.awayTeam.name.split(' ');  // football data foreight
+                                let q = 0;
+
+                                // b.forEach((word,i,arr) => {
+                                //     a.forEach(innerWord => {
+                                //         if(word.length > 2 && innerWord.length > 2) {
+                                //             if(word.slice(0,1) === innerWord.slice(0,1)) {
+                                //                 q++;
+                                //             }
+                                //         }
+                                //     })
+                                // });
+
+                                // if(q>1) {
+                                //     match.awayTeam = team;
+                                //                 return
+                                // }
+
+                                b.forEach((word,i,arr) => {
+                                    a.forEach(innerWord => {
+                                        if(word.length > 2 && innerWord.length > 2) {
+                                            if(word.localeCompare(innerWord,'en',{ sensitivity: 'base' }) === 0) {
+                                                match.awayTeam = team;
+                                                return
+                                            }
+                                        }
+                                    })
+                                   
+                                })
+
+                                if(team.name.slice(0,4).includes(match.awayTeam.name.slice(0,4)) || match.awayTeam.name.slice(0,4).includes(team.name.slice(0,4))) {
+                                    match.awayTeam = team;
+                                }
+                            }
+                            
+                        });
+                    });
+
                     this.arr.push(league);
                     this.setState({leagues: this.arr});
                 }
@@ -77,13 +163,13 @@ class Schedule extends React.Component{
 
     onChangeLeague(league, status) {
         let obj = this.state.leagues;
-        // league.show = status === 'unchecked' ? false :
 
         if(status === 'unchecked') {
             obj.forEach(value => {
                 if(value.name === league.name) {
-                    console.log('inside');
-                    value.show = false;
+                    value.teams.forEach(team => {
+                        team.show = false;
+                    });
                 }
             });
         }
@@ -91,7 +177,9 @@ class Schedule extends React.Component{
         if(status === 'checked') {
             obj.forEach(value => {
                 if(value.name === league.name) {
-                    value.show = true;
+                    value.teams.forEach(team => {
+                        team.show = true;
+                    });
                 }
             });
         }
@@ -101,10 +189,26 @@ class Schedule extends React.Component{
     }
 
     onChangeTeam(team, status) {
-        if(status === 'unchecked') {
-            team.show = false;
-        }
-        console.log(this.state.leagues);
+        console.log(team, status);
+        let obj = this.state.leagues;
+        
+        obj.forEach(value => {
+            if(value.name === team.leagueName) {
+                value.teams.forEach(t => {
+                    if(t.name === team.name) {
+                        if(status === 'unchecked') {
+                            t.show = false;
+                        } else {
+                            t.show = true;
+                        }
+                    }
+                        
+                });
+            }
+        });
+
+        this.setState({leagues: obj});
+        // console.log(this.state.leagues);
     }
 
     render() {

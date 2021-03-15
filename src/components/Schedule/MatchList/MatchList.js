@@ -43,12 +43,10 @@ class MatchList extends React.Component {
                 quantity=league.matches.length;
 
             for(let i = 0; i < quantity; i++) {
-                // if(league.matches[i].homeTeam === false)
-                //     return;
-
-                
-                league.matches[i].leagueLogo = league.logo;
-                boards.push(league.matches[i]);
+                if(league.matches[i].homeTeam.show === true || league.matches[i].awayTeam.show === true) {
+                    league.matches[i].leagueLogo = league.logo;
+                    boards.push(league.matches[i]);
+                }
             }
 
             logotypes = logotypes.concat(league.teams);
@@ -59,8 +57,8 @@ class MatchList extends React.Component {
         boards = boards.map((board) => {
             return (
                 <Match  key={board.id}
-                        homeTeam={board.homeTeam.name} 
-                        awayTeam={board.awayTeam.name} 
+                        homeTeam={board.homeTeam} 
+                        awayTeam={board.awayTeam} 
                         logotypes={logotypes}
                         time={board.utcDate}
                         status={board.status}
