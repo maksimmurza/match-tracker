@@ -6,10 +6,11 @@ class Match extends React.Component {
 
     constructor(props) {
         super(props);
+        let date = new Date(this.props.time);
         this.state = {
-            date: this.props.todayDate, 
-            dateStr:this.props.todayDate.toLocaleDateString('default', {month:'long',day:'numeric'}), 
-            timeStr:this.props.todayDate.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}), 
+            date: date,
+            dateStr:date.toLocaleDateString('default', {month:'long',day:'numeric'}), 
+            timeStr:date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}), 
             status:''
         };
     }
