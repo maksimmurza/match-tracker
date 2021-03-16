@@ -7,16 +7,32 @@ class MatchList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {leagues:[], todayDate: new Date(), quantity: this.props.quantity};
-
-        this.sortFunction = this.sortFunction.bind(this);
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return {leagues: props.leagues, todayDate: state.todayDate, quantity: state.quantity};
+    getMarkedMatches() {
+        let boards = [];
+
+        this.props.leagues.forEach(league => {
+            if(league.status !== 'checked' && league.status !== 'indeterminate')
+                return;
+                
+            let quantity;
+            this.props.quantity <= league.matches.length ? 
+                quantity=this.props.quantity : 
+                quantity=league.matches.length;
+
+            for(let i = 0; i < quantity; i++) {
+                if(league.matches[i].homeTeam.show === true || league.matches[i].awayTeam.show === true) {
+                    league.matches[i].leagueLogo = league.logo;
+                    boards.push(league.matches[i]);
+                }
+            }
+        });
+
+        return boards;
     }
 
-    sortFunction(a, b) {
+    sortByTime = (a, b) => {
         let aDate = new Date(a.utcDate);
         let bDate = new Date(b.utcDate);
         if(aDate.getMonth() - bDate.getMonth() !== 0) {
@@ -29,43 +45,18 @@ class MatchList extends React.Component {
     }
 
     render() {
-        let boards = [];
-        let logotypes = [];
-
-        this.state.leagues.forEach(league => {
-            console.log(this.state.leagues);
-            if(league.status !== 'checked' && league.status !== 'indeterminate') {
-                return;
-            }
-                
-
-            let quantity;
-
-            this.state.quantity <= league.matches.length ? 
-                quantity=this.state.quantity : 
-                quantity=league.matches.length;
-
-            for(let i = 0; i < quantity; i++) {
-                if(league.matches[i].homeTeam.show === true || league.matches[i].awayTeam.show === true) {
-                    league.matches[i].leagueLogo = league.logo;
-                    boards.push(league.matches[i]);
-                }
-            }
-
-            logotypes = logotypes.concat(league.teams);
-        });
-
-        boards.sort(this.sortFunction);
+        
+        let boards = this.getMarkedMatches();
+        boards.sort(this.sortByTime);
 
         boards = boards.map((board) => {
             return (
                 <Match  key={board.id}
                         homeTeam={board.homeTeam} 
-                        awayTeam={board.awayTeam} 
-                        logotypes={logotypes}
+                        awayTeam={board.awayTeam}
                         time={board.utcDate}
                         status={board.status}
-                        todayDate={this.state.todayDate}
+                        todayDate={this.props.todayDate}
                         leagueLogo={board.leagueLogo}
                 />
             )

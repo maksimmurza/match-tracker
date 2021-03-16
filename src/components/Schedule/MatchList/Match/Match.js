@@ -6,20 +6,11 @@ class Match extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {date:'', dateStr:'', timeStr:'', status:''};
-
-		this.date = new Date(props.time);
-		this.dateStr = this.date.toLocaleDateString('default', {month:'long',day:'numeric'});
-		this.timeStr = this.date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'});
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        let d = new Date(props.time);
-        return {
-            date: d, 
-            dateStr: d.toLocaleDateString('default', {month:'long',day:'numeric'}), 
-            timeStr: d.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}),
-            status: props.status
+        this.state = {
+            date: this.props.todayDate, 
+            dateStr:this.props.todayDate.toLocaleDateString('default', {month:'long',day:'numeric'}), 
+            timeStr:this.props.todayDate.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}), 
+            status:''
         };
     }
 
@@ -31,15 +22,11 @@ class Match extends React.Component {
         if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
             if(this.state.status === 'IN_PLAY' || this.state.status === 'PAUSED') {
                 liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
-            } else {
+            } else
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
-            }
-            
-            // console.log('today');
-        } else if(month === this.state.date.getMonth() && date+1 === this.state.date.getDate()) {
+
+        } else if(month === this.state.date.getMonth() && date+1 === this.state.date.getDate()) 
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
-            // console.log('tomorrow');
-        }
 
         return (
             <Segment>
@@ -63,8 +50,6 @@ class Match extends React.Component {
 
                 <img src={this.props.leagueLogo} alt='League logo' width='25' className='league-logo'></img>
                 
-                
-				
             </Segment>
         )
     }

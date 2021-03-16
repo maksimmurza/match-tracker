@@ -3,30 +3,38 @@ import { Checkbox } from 'semantic-ui-react'
 import './League.css'
 
 class League extends React.Component {
-
+    
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {status: 'checked'};
     }
 
-    handleChange(e) {
-        if(this.state.status === 'checked') {
-            this.setState({status: 'unchecked'}, () => {
-                this.props.onChangeLeague(this.props.league, this.state.status);
-            });
-        } else {
-            this.setState({status: 'checked'}, () => {
-                this.props.onChangeLeague(this.props.league, this.state.status);
-            });
-        }
+    handleChange = () => {
+        let league = this.props.league;
+        
+        league.teams.forEach(team => {
+            if(league.status === 'unchecked') {
+                team.show = true;
+                league.teamsShowed = league.teams.length;
+            } else {
+                team.show = false;
+                league.teamsShowed = 0;
+            }
+        });
+
+
+        if(league.status === 'unchecked')
+            league.status = 'checked';
+        else
+            league.status = 'unchecked';
+
+        this.props.onChangeLeague(league);
     }
 
     render() {
-       
         return (
             <div>
-                <Checkbox onChange={this.handleChange} defaultChecked 
+                <Checkbox onChange={this.handleChange} 
+                        checked={this.props.league.status === 'checked'} 
                         indeterminate={this.props.league.status === 'indeterminate'}/>
                 <span> {this.props.league.name}</span>
             </div>

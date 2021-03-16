@@ -15,8 +15,6 @@ class Schedule extends React.Component{
             onChangeLeague: this.onChangeLeague,
             onChangeTeam: this.onChangeTeam};
         this.arr = [];
-        this.onChangeLeague = this.onChangeLeague.bind(this);
-        this.onChangeTeam = this.onChangeTeam.bind(this);
     }
 
     componentDidMount() {
@@ -102,30 +100,16 @@ class Schedule extends React.Component{
         return data.api.teams;
     }
 
-    onChangeLeague(league, status) {
-        let obj = this.state.leagues;
-
-        obj.forEach(value => {
-            if(value.name === league.name) {
-                value.status = status;
-                value.teams.forEach(team => {
-                    if(status === 'checked') {
-                        team.show = true;
-                        value.teamsShowed = value.teams.length;
-                    } else {
-                        team.show = false;
-                        value.teamsShowed = 0;
-                    }
-                   
-                });
-            }
+    onChangeLeague = (league) => {
+        this.setState(state => {
+            let leagues = state.leagues.map(value => { 
+                return value.name === league.name ? league : value
+            });
+            return {...leagues};
         });
-        
-        this.setState({leagues: obj});
-
     }
 
-    onChangeTeam(team, status) {
+    onChangeTeam = (team, status) => {
         console.log(team, status);
         let obj = this.state.leagues;
         
@@ -133,6 +117,7 @@ class Schedule extends React.Component{
             if(league.name === team.leagueName) {
                 league.teams.forEach(t => {
                     if(t.name === team.name) {
+
                         if(status === 'unchecked') {
                             t.show = false;
                             league.teamsShowed--;
@@ -150,6 +135,7 @@ class Schedule extends React.Component{
                             t.show = true;
                             league.teamsShowed++;
                         }
+                        
                     }  
                 });
             }
@@ -162,7 +148,8 @@ class Schedule extends React.Component{
         return (
             <div className='flex-container'>
                 <MatchList  leagues={this.state.leagues} 
-                            quantity={this.state.quantity} />
+                            quantity={this.state.quantity}
+                            todayDate={new Date()} />
                 <SelectionArea leagues={this.state.leagues}
                                 onChangeLeague={this.onChangeLeague}
                                 onChangeTeam={this.onChangeTeam} />

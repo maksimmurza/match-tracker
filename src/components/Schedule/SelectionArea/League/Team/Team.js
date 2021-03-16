@@ -6,16 +6,16 @@ class Team extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {status: 'checked'}
     }
 
-    handleChange(e) {
-        if(this.props.team.show === true) {
-                this.props.onChangeTeam(this.props.team, 'unchecked');
-        } else {
-                this.props.onChangeTeam(this.props.team, 'checked');
-        }
+    handleChange = () => {
+
+        let team = this.props.team;
+
+        if(team.show === true)
+            this.props.onChangeTeam(team, 'unchecked');
+        else
+            this.props.onChangeTeam(team, 'checked');
     }
 
     render() {
