@@ -2,7 +2,8 @@ import React from 'react'
 import MatchList from './MatchList/MatchList'
 import SelectionArea from './SelectionArea/SelectionArea'
 import './Schedule.css'
-import { req, League } from '../../model/Model'
+import League from '../../model/Model'
+import req from '../../model/RequestOptions'
 import stringSimilarity from 'string-similarity'
 
 class Schedule extends React.Component{
