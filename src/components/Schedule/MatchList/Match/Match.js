@@ -10,8 +10,7 @@ class Match extends React.Component {
         this.state = {
             date: date,
             dateStr:date.toLocaleDateString('default', {month:'long',day:'numeric'}), 
-            timeStr:date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'}), 
-            status:''
+            timeStr:date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'})
         };
     }
 
@@ -21,11 +20,10 @@ class Match extends React.Component {
         let month = this.props.todayDate.getMonth();
 
         if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
-            if(this.state.status === 'IN_PLAY' || this.state.status === 'PAUSED') {
+            if(this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
                 liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
             } else
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
-
         } else if(month === this.state.date.getMonth() && date+1 === this.state.date.getDate()) 
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
 
