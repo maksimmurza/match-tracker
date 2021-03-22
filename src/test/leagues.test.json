@@ -1,0 +1,253 @@
+[
+    {
+        "status": "checked",
+        "name": "Premier League",
+        "country": "England",
+        "matches": [
+            {
+                "id": 304051,
+                "season": {
+                    "id": 619,
+                    "startDate": "2020-09-12",
+                    "endDate": "2021-05-23",
+                    "currentMatchday": 33
+                },
+                "utcDate": "2021-04-03T11:30:00Z",
+                "status": "SCHEDULED",
+                "homeTeam": {
+                    "team_id": 49,
+                    "name": "Chelsea",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/49.png",
+                    "country": "England",
+                    "is_national": false,
+                    "founded": 1905,
+                    "show": true,
+                    "leagueName": "Premier League"
+                },
+                "awayTeam": {
+                    "team_id": 60,
+                    "name": "West Brom",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/60.png",
+                    "country": "England",
+                    "is_national": false,
+                    "founded": 1878,
+                    "show": true,
+                    "leagueName": "Premier League"
+                },
+                "referees": [],
+                "leagueLogo": "https://media.api-sports.io/football/leagues/39.png"
+            },
+            {
+                "id": 304055,
+                "season": {
+                    "id": 619,
+                    "startDate": "2020-09-12",
+                    "endDate": "2021-05-23",
+                    "currentMatchday": 33
+                },
+                "utcDate": "2021-04-03T14:00:00Z",
+                "status": "SCHEDULED",
+                "homeTeam": {
+                    "team_id": 63,
+                    "name": "Leeds",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/63.png",
+                    "country": "England",
+                    "is_national": false,
+                    "founded": 1919,
+                    "show": true,
+                    "leagueName": "Premier League"
+                },
+                "awayTeam": {
+                    "team_id": 62,
+                    "name": "Sheffield Utd",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/62.png",
+                    "country": "England",
+                    "is_national": false,
+                    "founded": 1889,
+                    "show": true,
+                    "leagueName": "Premier League"
+                },
+                "referees": [],
+                "leagueLogo": "https://media.api-sports.io/football/leagues/39.png"
+            }
+        ],
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "teams": [
+            {
+                "team_id": 49,
+                "name": "Chelsea",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/49.png",
+                "country": "England",
+                "is_national": false,
+                "founded": 1905,
+                "show": true,
+                "leagueName": "Premier League"
+            },
+            {
+                "team_id": 60,
+                "name": "West Brom",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/60.png",
+                "country": "England",
+                "is_national": false,
+                "founded": 1878,
+                "show": true,
+                "leagueName": "Premier League"
+            },
+            {
+                "team_id": 62,
+                "name": "Sheffield Utd",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/62.png",
+                "country": "England",
+                "is_national": false,
+                "founded": 1889,
+                "show": true,
+                "leagueName": "Premier League"
+            },
+            {
+                "team_id": 63,
+                "name": "Leeds",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/63.png",
+                "country": "England",
+                "is_national": false,
+                "founded": 1919,
+                "show": true,
+                "leagueName": "Premier League"
+            }
+        ],
+        "teamsShowed": 4
+    },
+    {
+        "status": "checked",
+        "name": "Primera Division",
+        "country": "Spain",
+        "matches": [
+            {
+                "id": 308607,
+                "season": {
+                    "id": 635,
+                    "startDate": "2020-09-13",
+                    "endDate": "2021-05-23",
+                    "currentMatchday": 28
+                },
+                "utcDate": "2021-04-02T19:00:00Z",
+                "status": "SCHEDULED",
+                
+                "homeTeam": {
+                    "team_id": 539,
+                    "name": "Levante",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/539.png",
+                    "country": "Spain",
+                    "is_national": false,
+                    "founded": 1909,
+                    "show": true,
+                    "leagueName": "Primera Division"
+                },
+                "awayTeam": {
+                    "team_id": 726,
+                    "name": "Huesca",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/726.png",
+                    "country": "Spain",
+                    "is_national": false,
+                    "founded": 1922,
+                    "show": true,
+                    "leagueName": "Primera Division"
+                },
+                "referees": [],
+                "leagueLogo": "https://media.api-sports.io/football/leagues/140.png"
+            },
+            {
+                "id": 308611,
+                "season": {
+                    "id": 635,
+                    "startDate": "2020-09-13",
+                    "endDate": "2021-05-23",
+                    "currentMatchday": 28
+                },
+                "utcDate": "2021-04-03T12:00:00Z",
+                "status": "SCHEDULED",
+                "homeTeam": {
+                    "team_id": 715,
+                    "name": "Granada CF",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/715.png",
+                    "country": "Spain",
+                    "is_national": false,
+                    "founded": 1931,
+                    "show": true,
+                    "leagueName": "Primera Division"
+                },
+                "awayTeam": {
+                    "team_id": 533,
+                    "name": "Villarreal",
+                    "code": null,
+                    "logo": "https://media.api-sports.io/football/teams/533.png",
+                    "country": "Spain",
+                    "is_national": false,
+                    "founded": 1923,
+                    "show": true,
+                    "leagueName": "Primera Division"
+                },
+                "referees": [],
+                "leagueLogo": "https://media.api-sports.io/football/leagues/140.png"
+            }
+        ],
+        "logo": "https://media.api-sports.io/football/leagues/140.png",
+        "teams": [
+            {
+                "team_id": 533,
+                "name": "Villarreal",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/533.png",
+                "country": "Spain",
+                "is_national": false,
+                "founded": 1923,
+                "show": true,
+                "leagueName": "Primera Division"
+            },
+            {
+                "team_id": 539,
+                "name": "Levante",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/539.png",
+                "country": "Spain",
+                "is_national": false,
+                "founded": 1909,
+                "show": true,
+                "leagueName": "Primera Division"
+            },
+            {
+                "team_id": 715,
+                "name": "Granada CF",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/715.png",
+                "country": "Spain",
+                "is_national": false,
+                "founded": 1931,
+                "show": true,
+                "leagueName": "Primera Division"
+            },
+            {
+                "team_id": 726,
+                "name": "Huesca",
+                "code": null,
+                "logo": "https://media.api-sports.io/football/teams/726.png",
+                "country": "Spain",
+                "is_national": false,
+                "founded": 1922,
+                "show": true,
+                "leagueName": "Primera Division"
+            }
+        ],
+        "teamsShowed": 4
+    }
+]
