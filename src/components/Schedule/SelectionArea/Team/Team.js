@@ -4,12 +4,7 @@ import './Team.css'
 
 class Team extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     handleChange = () => {
-
         let team = this.props.team;
 
         if(team.show === true)
@@ -21,7 +16,7 @@ class Team extends React.Component {
     render() {
         return (
             <div>
-                <Checkbox onChange={this.handleChange} checked={this.props.team.show === true}/>
+                <Checkbox data-testid="input" onChange={this.handleChange} checked={this.props.team.show === true}/>
                 <label> {this.props.team.name}</label>
             </div>
         )

@@ -5,10 +5,6 @@ import './MatchList.css'
 
 class MatchList extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     getMarkedMatches() {
         let boards = [];
 

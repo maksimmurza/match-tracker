@@ -9,8 +9,8 @@ class Match extends React.Component {
         let date = new Date(this.props.time);
         this.state = {
             date: date,
-            dateStr:date.toLocaleDateString('default', {month:'long',day:'numeric'}), 
-            timeStr:date.toLocaleTimeString('default', {hour:'numeric',minute:'numeric'})
+            dateStr:date.toLocaleDateString('ru', {month:'long',day:'numeric'}), 
+            timeStr:date.toLocaleTimeString('ru', {hour:'numeric',minute:'numeric'})
         };
     }
 

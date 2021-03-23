@@ -19,17 +19,23 @@ class Schedule extends React.Component{
     }
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData().catch(e => {
+            console.log('Unable to get data from APIs after mounting component');
+            console.log(e);
+        });
     }
 
     async fetchData() {
 
-        let currentLeagues = await this.getCurrentLeagues();
-            
+        let currentLeagues = await this.getCurrentLeagues().catch(e => {throw e});
+
+        // for all leagues
         for(let key of req.footballData.leaguesKeys) {
 
-            let live = await this.getSchedule(key, req.footballData.liveFilter);
-            let schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
+            let live = await this.getSchedule(key, req.footballData.liveFilter).catch(e => {throw e});
+            let schedule = await this.getSchedule(key, req.footballData.scheduledFilter).catch(e => {throw e});
+
+            // merge all matches
             live.matches.forEach(liveMatch => {
                 schedule.matches.push(liveMatch);
             });
@@ -43,14 +49,13 @@ class Schedule extends React.Component{
                     
                     league.logo = l.logo;
                     
-                    let teams = await this.getTeamsInfo(l.league_id);
+                    let teams = await this.getTeamsInfo(l.league_id).catch(e => {throw e});
+
                     teams.forEach(team => {team.show = true; team.leagueName = schedule.competition.name});
                     league.teams = teams;
-                    console.log(teams.length);
                     league.teamsShowed = teams.length;
 
-                    let s;
-
+                    // finding logo for teams from schedule comparing names
                     league.matches.forEach(match => {
                         
                         let arr = [];
@@ -82,21 +87,33 @@ class Schedule extends React.Component{
 
     async getCurrentLeagues() {
         let source = req.rapidApi;
-        const response = await fetch(source.currentSeasonLeaguesURL, source.requestOptions);
+        const response = await fetch(source.currentSeasonLeaguesURL, source.requestOptions)
+        .catch(e => {
+            throw new Error(e.message);
+        });
+
         const data = await response.json();
         return data.api.leagues;
     }
 
     async getSchedule(leagueKey, filter) {
         let source = req.footballData;
-        const response = await fetch(source.leaguesBaseURL + leagueKey + filter, source.requestOptions);
+        const response = await fetch(source.leaguesBaseURL + leagueKey + filter, source.requestOptions)
+        .catch(e => {
+            throw new Error(e.message + " (Possibly because of too much requets per minute");
+        });
+
         const data = await response.json();
         return data;
     }
 
     async getTeamsInfo(leagueId) {
         let source = req.rapidApi;
-        const response = await fetch(source.leaguesBaseURL + leagueId, source.requestOptions);
+        const response = await fetch(source.leaguesBaseURL + leagueId, source.requestOptions)
+        .catch(e => {
+            throw new Error(e.message);
+        });
+
         const data = await response.json();
         return data.api.teams;
     }
@@ -124,13 +141,13 @@ class Schedule extends React.Component{
                             league.teamsShowed--;
                             if(league.status !== 'indeterminate') {
                                 league.status = 'indeterminate';
-                            } else if(league.teamsShowed == 0) {
+                            } else if(league.teamsShowed === 0) {
                                 league.status = 'unchecked'
                             }
                         } else {
-                            if(league.teamsShowed == league.teams.length - 1) {
+                            if(league.teamsShowed === league.teams.length - 1) {
                                 league.status = 'checked';
-                            } else if(league.teamsShowed == 0) {
+                            } else if(league.teamsShowed === 0) {
                                 league.status = 'indeterminate';
                             }
                             t.show = true;
