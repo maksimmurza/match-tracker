@@ -28,13 +28,13 @@ class League extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='league-tab'>
                 <Checkbox onChange={this.handleChange} 
                         checked={this.props.league.status === 'checked'} 
                         indeterminate={this.props.league.status === 'indeterminate'}
                         data-testid="input"
                         />
-                <span> {this.props.league.name}</span>
+                <img src={this.props.league.logo} className='league-tab-logo'></img>
             </div>
         )
     }

@@ -39,7 +39,7 @@ class Match extends React.Component {
     				<Icon name='time' /> {this.state.timeStr}
   				</Label>
             
-				<div className='container'>
+				<div className='teams'>
 					<span className='home-team'>{this.props.homeTeam.name}</span>
 					<img src={this.props.homeTeam.logo} alt='Team logo' width='80' />
                 	<h3 className='devider'>–</h3>

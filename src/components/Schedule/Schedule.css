@@ -1,5 +1,10 @@
-.flex-container {
+.schedule {
     display: flex;
     flex-direction: row;
     justify-items:center;
+
+    /* flex-wrap: wrap-reverse; */
+
+    max-height: 100vh;
+    /* overflow: auto; */
 }

@@ -19,7 +19,7 @@ function SelectionArea(props) {
                             status='checked' 
                             onChangeLeague={props.onChangeLeague}></League>
             }, 
-            render: () => <Tab.Pane>{teams}</Tab.Pane>
+            render: () => <Tab.Pane className='tab-content'>{teams}</Tab.Pane>
         });
     });
 

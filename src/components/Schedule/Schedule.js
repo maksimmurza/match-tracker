@@ -164,7 +164,7 @@ class Schedule extends React.Component{
 
     render() {
         return (
-            <div className='flex-container'>
+            <div className='schedule'>
                 <MatchList  leagues={this.state.leagues} 
                             quantity={this.state.quantity}
                             todayDate={new Date()} />

@@ -1,4 +1,15 @@
 .wrapper {
     width: 35vw;
-    margin: 1em 3em 0 0;
+    margin: 1em auto 0 0;
+    height: calc(100vh - 3em);
+}
+
+.tab-content {
+    height: 50vh;
+    overflow-y: auto;
+}
+
+.tab-content::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }

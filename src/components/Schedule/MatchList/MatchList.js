@@ -59,8 +59,8 @@ class MatchList extends React.Component {
         });
         
         return (
-            <Container text className='match-list'>
-            	<SegmentGroup>
+            <Container text className='block'>
+            	<SegmentGroup className='match-list'>
 					{boards}
             	</SegmentGroup>
             </Container>

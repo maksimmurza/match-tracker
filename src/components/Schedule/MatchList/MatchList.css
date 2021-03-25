@@ -1,7 +1,12 @@
 .match-list {
-    margin: 1em 0;
-	height: calc(100% - 2em);
+    height: 100%;
     border-radius: 5px;
+    overflow-y: auto;
+}
+
+.block {
+    border-radius: 5px;
+    margin: 1rem 0;
     box-shadow: 0 0 200px 0 rgba(0, 33, 36, 0.3);
 }
 
@@ -9,3 +14,4 @@
     width: 0px;
     background: transparent;
 }
+

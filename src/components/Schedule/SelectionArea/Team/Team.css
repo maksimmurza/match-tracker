@@ -1,0 +1,11 @@
+.team-tab-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 2px 0;
+}
+
+.team-name-tab-content {
+    padding-left: 5px;
+}

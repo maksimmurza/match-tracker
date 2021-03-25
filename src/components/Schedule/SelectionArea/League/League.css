@@ -1,0 +1,11 @@
+.league-tab {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.league-tab-logo {
+    box-sizing: content-box;
+    padding-left: 1rem;
+    width: 25px;
+}
