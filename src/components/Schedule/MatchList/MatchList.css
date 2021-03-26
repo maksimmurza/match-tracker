@@ -7,7 +7,7 @@
 .block {
     border-radius: 5px;
     margin: 1rem 0;
-    box-shadow: 0 0 200px 0 rgba(0, 33, 36, 0.3);
+    box-shadow: 0 0 10px 0 rgba(0, 33, 36, 0.205);
 }
 
 .match-list::-webkit-scrollbar {

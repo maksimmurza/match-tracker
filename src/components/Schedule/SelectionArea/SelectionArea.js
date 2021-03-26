@@ -24,9 +24,7 @@ function SelectionArea(props) {
     });
 
     return (
-        <div className='wrapper'>
-            <Tab panes={panes}/>
-        </div>
+        <Tab className='wrapper'panes={panes}/>
     )
     
 }

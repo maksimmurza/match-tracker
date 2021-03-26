@@ -163,6 +163,7 @@ class Schedule extends React.Component{
     }
 
     render() {
+        if(this.state.leagues.length !== 0) {
         return (
             <div className='schedule'>
                 <MatchList  leagues={this.state.leagues} 
@@ -172,8 +173,21 @@ class Schedule extends React.Component{
                                 onChangeLeague={this.onChangeLeague}
                                 onChangeTeam={this.onChangeTeam} />
             </div>
-        );
-    };
+        );} else if(!this.fetchError){
+            return (
+                <div className='message-wrapper'>
+                <div class="ui icon message">
+                    <i class="notched circle loading icon"></i>
+                    <div class="content">
+                      <div class="header">
+                        Just one second
+                      </div>
+                      <p>Getting match list</p>
+                    </div>
+                </div>
+                </div>
+            )
+        }
+    }
 }
-
 export default Schedule;

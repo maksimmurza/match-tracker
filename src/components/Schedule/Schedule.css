@@ -8,3 +8,9 @@
     max-height: 100vh;
     /* overflow: auto; */
 }
+
+.message-wrapper {
+    width: 60vw;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
