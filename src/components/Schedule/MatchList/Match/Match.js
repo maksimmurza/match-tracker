@@ -1,42 +1,42 @@
 import React from 'react'
 import { Segment, Icon, Label } from 'semantic-ui-react';
 import './Match.css';
+import {LocaleContext} from "../../LocaleContext";
 
 class Match extends React.Component {
 
-    constructor(props) {
-        super(props);
-        let date = new Date(this.props.time);
-        this.state = {
-            date: date,
-            dateStr:date.toLocaleDateString('ru', {month:'long',day:'numeric'}), 
-            timeStr:date.toLocaleTimeString('ru', {hour:'numeric',minute:'numeric'})
-        };
-    }
+    static contextType = LocaleContext;
 
     render() {
+
+        let matchDate = new Date(this.props.time);
+        let matchDateStr = matchDate.toLocaleDateString(this.context, {month:'long',day:'numeric'}); 
+        let matchTimeStr = matchDate.toLocaleTimeString(this.context, {hour:'numeric',minute:'numeric'});
+
         let todayLabel, tomorrowLabel, liveLabel;
         let date = this.props.todayDate.getDate();
         let month = this.props.todayDate.getMonth();
 
-        if(date === this.state.date.getDate() && month === this.state.date.getMonth()) {
+        if(date === matchDate.getDate() && month === matchDate.getMonth()) {
             if(this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
                 liveLabel = <Label color='red' ribbon='right' className='day-label'>live</Label>;
             } else
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
-        } else if(month === this.state.date.getMonth() && date+1 === this.state.date.getDate()) 
+        } else if(month === matchDate.getMonth() && date+1 === matchDate.getDate()) 
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
 
+        // console.log(this.context);
+        
         return (
             <Segment>
                 {todayLabel}
                 {tomorrowLabel}
                 {liveLabel}
                 <Label>
-    				<Icon name='calendar' /> {this.state.dateStr}
+    				<Icon name='calendar' /> {matchDateStr}
   				</Label>
 				<Label>
-    				<Icon name='time' /> {this.state.timeStr}
+    				<Icon name='time' /> {matchTimeStr}
   				</Label>
             
 				<div className='teams'>

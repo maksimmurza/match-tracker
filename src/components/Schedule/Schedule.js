@@ -5,6 +5,7 @@ import './Schedule.css'
 import League from '../../model/Model'
 import req from '../../model/RequestOptions'
 import stringSimilarity from 'string-similarity'
+import {LocaleContext} from "./LocaleContext";
 
 class Schedule extends React.Component{
 
@@ -14,7 +15,8 @@ class Schedule extends React.Component{
             leagues: [], 
             quantity: 15, 
             onChangeLeague: this.onChangeLeague,
-            onChangeTeam: this.onChangeTeam};
+            onChangeTeam: this.onChangeTeam,
+            locale: 'ru'}
         this.arr = [];
     }
 
@@ -162,18 +164,33 @@ class Schedule extends React.Component{
         this.setState({leagues: obj});
     }
 
+    setLocale = (e) =>  {
+        this.setState({locale:e.target.value});
+    }
+
     render() {
         if(this.state.leagues.length !== 0) {
         return (
             <div className='schedule'>
+
+            <LocaleContext.Provider value={this.state.locale}>
                 <MatchList  leagues={this.state.leagues} 
                             quantity={this.state.quantity}
                             todayDate={new Date()} />
-                <SelectionArea leagues={this.state.leagues}
-                                onChangeLeague={this.onChangeLeague}
-                                onChangeTeam={this.onChangeTeam} />
+                
+            </LocaleContext.Provider>
+            <SelectionArea leagues={this.state.leagues}
+                            onChangeLeague={this.onChangeLeague}
+                            onChangeTeam={this.onChangeTeam} />
+
+                <select onChange={this.setLocale} value={this.state.locale} class="ui dropdown">
+                    <option value="en">en</option>
+                    <option value="ru">ru</option>
+                </select>
+
             </div>
-        );} else if(!this.fetchError){
+            
+        );} else {
             return (
                 <div className='message-wrapper'>
                 <div class="ui icon message">
