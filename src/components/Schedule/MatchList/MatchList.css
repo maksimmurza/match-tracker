@@ -2,6 +2,7 @@
     height: 100%;
     border-radius: 5px;
     overflow-y: auto;
+    background-color: white;
 }
 
 .block {
@@ -15,3 +16,8 @@
     background: transparent;
 }
 
+.empty-list {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}

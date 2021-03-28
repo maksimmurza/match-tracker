@@ -22,8 +22,7 @@ class Schedule extends React.Component{
 
     componentDidMount() {
         this.fetchData().catch(e => {
-            console.log('Unable to get data from APIs after mounting component');
-            console.log(e);
+            console.log('Problems while fetching data from APIs after mounting component');
         });
     }
 
@@ -34,8 +33,17 @@ class Schedule extends React.Component{
         // for all leagues
         for(let key of req.footballData.leaguesKeys) {
 
-            let live = await this.getSchedule(key, req.footballData.liveFilter).catch(e => {throw e});
-            let schedule = await this.getSchedule(key, req.footballData.scheduledFilter).catch(e => {throw e});
+            let live;
+            let schedule;
+
+            try {
+                live = await this.getSchedule(key, req.footballData.liveFilter);
+                schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
+            } catch(e) {
+                this.arr.push(null);
+                this.setState({leagues: this.arr});
+                continue;
+            }
 
             // merge all matches
             live.matches.forEach(liveMatch => {
@@ -122,8 +130,8 @@ class Schedule extends React.Component{
 
     onChangeLeague = (league) => {
         this.setState(state => {
-            let leagues = state.leagues.map(value => { 
-                return value.name === league.name ? league : value
+            let leagues = state.leagues.map(value => {
+                return value?.name === league.name ? league : value
             });
             return {...leagues};
         });
@@ -134,7 +142,7 @@ class Schedule extends React.Component{
         let obj = this.state.leagues;
         
         obj.forEach(league => {
-            if(league.name === team.leagueName) {
+            if(league?.name === team.leagueName) {
                 league.teams.forEach(t => {
                     if(t.name === team.name) {
 
@@ -169,28 +177,8 @@ class Schedule extends React.Component{
     }
 
     render() {
-        if(this.state.leagues.length !== 0) {
-        return (
-            <div className='schedule'>
-
-            <LocaleContext.Provider value={this.state.locale}>
-                <MatchList  leagues={this.state.leagues} 
-                            quantity={this.state.quantity}
-                            todayDate={new Date()} />
-                
-            </LocaleContext.Provider>
-            <SelectionArea leagues={this.state.leagues}
-                            onChangeLeague={this.onChangeLeague}
-                            onChangeTeam={this.onChangeTeam} />
-
-                <select onChange={this.setLocale} value={this.state.locale} class="ui dropdown">
-                    <option value="en">en</option>
-                    <option value="ru">ru</option>
-                </select>
-
-            </div>
-            
-        );} else {
+        // loading
+        if(this.state.leagues.length === 0) {
             return (
                 <div className='message-wrapper'>
                 <div class="ui icon message">
@@ -204,6 +192,26 @@ class Schedule extends React.Component{
                 </div>
                 </div>
             )
+        } else {
+            return (
+                <div className='schedule'>
+
+                <LocaleContext.Provider value={this.state.locale}>
+                    <MatchList  leagues={this.state.leagues.filter(value => value)} 
+                                quantity={this.state.quantity}
+                                todayDate={new Date()} />
+                </LocaleContext.Provider>
+                <SelectionArea leagues={this.state.leagues}
+                                onChangeLeague={this.onChangeLeague}
+                                onChangeTeam={this.onChangeTeam} />
+
+                    <select onChange={this.setLocale} value={this.state.locale} class="ui dropdown">
+                        <option value="en">en</option>
+                        <option value="ru">ru</option>
+                    </select>
+
+                </div>
+            );
         }
     }
 }

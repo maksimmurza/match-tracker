@@ -61,7 +61,8 @@ class MatchList extends React.Component {
         return (
             <Container text className='block'>
             	<SegmentGroup className='match-list'>
-					{boards}
+					{boards.length > 0 ? boards : 
+                    <span className='empty-list'>Select one league at least or reload the page</span> }
             	</SegmentGroup>
             </Container>
         )
