@@ -16,14 +16,40 @@ class Schedule extends React.Component{
             quantity: 15, 
             onChangeLeague: this.onChangeLeague,
             onChangeTeam: this.onChangeTeam,
-            locale: 'ru'}
+            locale: 'ru',
+            message:''}
         this.arr = [];
     }
 
     componentDidMount() {
-        this.fetchData().catch(e => {
-            console.log('Problems while fetching data from APIs after mounting component');
-        });
+        this.setState({message: 'Checking local storage...'});
+        this.getLocalData().then(leagues => {
+            this.setState({leagues: leagues})
+        }).catch(() => {
+            this.setState({message: 'Local schedule is empty or out of date. Fetching data from API...'});
+            this.fetchData().catch(e => {
+                console.log('Problems while fetching data from APIs after mounting component');
+            });
+        })
+    }
+
+    getLocalData() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let leaguesLocal = JSON.parse(localStorage.getItem('leagues'));
+                if(!leaguesLocal || leaguesLocal.length === 0) {
+                    reject()
+                } else {
+                    
+                    let today = new Date(); //  '2021-04-03T11:30:00Z'
+                    leaguesLocal.forEach(league => {
+                        if(league.matches.some(match => new Date(match.utcDate) < today))
+                            reject();
+                    })  
+                    resolve(leaguesLocal);
+                }
+            });
+        })
     }
 
     async fetchData() {
@@ -40,6 +66,7 @@ class Schedule extends React.Component{
                 live = await this.getSchedule(key, req.footballData.liveFilter);
                 schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
             } catch(e) {
+                console.log('dfghjkl;');
                 this.arr.push(null);
                 this.setState({leagues: this.arr});
                 continue;
@@ -93,6 +120,10 @@ class Schedule extends React.Component{
                 }
             }  
         }
+
+        if(this.state.leagues.every(league => league)) {
+            localStorage.setItem('leagues', JSON.stringify(this.state.leagues));
+        }
     }
 
     async getCurrentLeagues() {
@@ -102,8 +133,12 @@ class Schedule extends React.Component{
             throw new Error(e.message);
         });
 
-        const data = await response.json();
-        return data.api.leagues;
+        if(response.ok) {
+            const data = await response.json();
+            return data.api.leagues;
+        } else {
+            throw new Error();
+        }
     }
 
     async getSchedule(leagueKey, filter) {
@@ -113,8 +148,12 @@ class Schedule extends React.Component{
             throw new Error(e.message + " (Possibly because of too much requets per minute");
         });
 
-        const data = await response.json();
-        return data;
+        if(response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            throw new Error();
+        }
     }
 
     async getTeamsInfo(leagueId) {
@@ -124,8 +163,12 @@ class Schedule extends React.Component{
             throw new Error(e.message);
         });
 
-        const data = await response.json();
-        return data.api.teams;
+        if(response.ok) {
+            const data = await response.json();
+            return data.api.teams;
+        } else {
+            throw new Error();
+        }
     }
 
     onChangeLeague = (league) => {
@@ -187,7 +230,7 @@ class Schedule extends React.Component{
                       <div class="header">
                         Just one second
                       </div>
-                      <p>Getting match list</p>
+                      <p>{this.state.message}</p>
                     </div>
                 </div>
                 </div>
