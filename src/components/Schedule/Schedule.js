@@ -24,7 +24,19 @@ class Schedule extends React.Component{
     componentDidMount() {
         this.setState({message: 'Checking local storage...'});
         this.getLocalData().then(leagues => {
-            this.setState({leagues: leagues})
+
+            leagues.forEach(league => {
+                league.matches.forEach(match => {
+                    let arr = [];
+                    league.teams.forEach(team => {arr.push(team.name)});
+                    
+                    match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name.split('hampton').join(''), arr).bestMatchIndex];
+                    match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name.split('hampton').join(''), arr).bestMatchIndex];
+                });
+            })
+            
+            this.setState({leagues: leagues});
+            
         }).catch(() => {
             this.setState({message: 'Local schedule is empty or out of date. Fetching data from API...'});
             this.fetchData().catch(e => {
@@ -41,7 +53,7 @@ class Schedule extends React.Component{
                     reject()
                 } else {
                     
-                    let today = new Date(); //  '2021-04-03T11:30:00Z'
+                    let today = new Date('2021-04-03T11:30:00Z'); //  '2021-04-03T11:30:00Z'
                     leaguesLocal.forEach(league => {
                         if(league.matches.some(match => new Date(match.utcDate) < today))
                             reject();
@@ -94,25 +106,11 @@ class Schedule extends React.Component{
 
                     // finding logo for teams from schedule comparing names
                     league.matches.forEach(match => {
-                        
                         let arr = [];
-                        league.teams.forEach(team => {
-                            arr.push(team.name);
-                            if(match.homeTeam.name.includes(team.name.slice(0,-2))) {
-                                match.homeTeam = team;
-                            }
-                            if(match.awayTeam.name.includes(team.name.slice(0,-2))) {
-                                match.awayTeam = team;
-                            }
-                        });
+                        league.teams.forEach(team => {arr.push(team.name)});
                         
-                        if(match.homeTeam.logo === undefined) {
-                            match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name, arr).bestMatchIndex];
-                        }
-                        
-                        if(match.awayTeam.logo === undefined) {
-                            match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name, arr).bestMatchIndex];
-                        }
+                        match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name.split('hampton').join(''), arr).bestMatchIndex];
+                        match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name.split('hampton').join(''), arr).bestMatchIndex];
                     });
 
                     this.arr.push(league);
