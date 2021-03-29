@@ -53,7 +53,7 @@ class Schedule extends React.Component{
                     reject()
                 } else {
                     
-                    let today = new Date('2021-04-03T11:30:00Z'); //  '2021-04-03T11:30:00Z'
+                    let today = new Date(); //  '2021-04-03T11:30:00Z'
                     leaguesLocal.forEach(league => {
                         if(league.matches.some(match => new Date(match.utcDate) < today))
                             reject();
@@ -78,7 +78,6 @@ class Schedule extends React.Component{
                 live = await this.getSchedule(key, req.footballData.liveFilter);
                 schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
             } catch(e) {
-                console.log('dfghjkl;');
                 this.arr.push(null);
                 this.setState({leagues: this.arr});
                 continue;
