@@ -13,9 +13,14 @@ function SelectionArea(props) {
 
         let teams = [];
 
-        league?.teams.forEach(team => teams.push(
-            <Team key={team.name} team={team} onChangeTeam={props.onChangeTeam}></Team>
-        )); 
+        league?.teams.forEach(team => {
+            //league.teams.length > 20 && 
+            if(league.teams.length <= 20 || 
+                league.matches.some(m => (m.homeTeam.name === team.name || m.awayTeam.name === team.name))) {
+                teams.push(<Team key={team.name} team={team} onChangeTeam={props.onChangeTeam}></Team>);
+            }
+            
+        }); 
         
         panes.push({menuItem: {
             key: league?.name,
