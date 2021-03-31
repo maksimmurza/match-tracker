@@ -5,7 +5,25 @@ import {LocaleContext} from "../../LocaleContext";
 
 class Match extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.dateLabels = React.createRef();
+    }
+
     static contextType = LocaleContext;
+
+    hoverDateLabels = () => {
+        let current = this.dateLabels.current.style.backgroundColor;
+
+        if(current === 'rgb(232, 232, 232)') {
+            this.dateLabels.current.style.backgroundColor = 'transparent';
+            this.dateLabels.current.style.boxShadow = 'none';
+        } else {
+            this.dateLabels.current.style.backgroundColor = 'rgb(232, 232, 232)';
+            this.dateLabels.current.style.boxShadow = '0 0 5px 0 rgba(0, 0, 0, 0.5)';
+
+        }        
+    }
 
     render() {
 
@@ -24,20 +42,25 @@ class Match extends React.Component {
                 todayLabel = <Label color='blue' ribbon='right' className='day-label'>today</Label>;
         } else if(month === matchDate.getMonth() && date+1 === matchDate.getDate()) 
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
-
-        // console.log(this.context);
         
         return (
             <Segment>
                 {todayLabel}
                 {tomorrowLabel}
                 {liveLabel}
-                <Label>
-    				<Icon name='calendar' /> {matchDateStr}
-  				</Label>
-				<Label>
-    				<Icon name='time' /> {matchTimeStr}
-  				</Label>
+
+                <div ref={this.dateLabels} 
+                    onMouseEnter={this.hoverDateLabels} 
+                    onMouseLeave={this.hoverDateLabels} 
+                    className='date-labels-container' 
+                    title='Push to the calender'>
+                    <Label>
+    			    	<Icon name='calendar' /> {matchDateStr}
+  				    </Label>
+				    <Label>
+    			    	<Icon name='time' /> {matchTimeStr}
+  				    </Label>
+                </div>
             
 				<div className='teams'>
 					<span className='home-team'>{this.props.homeTeam.name}</span>

@@ -49,3 +49,13 @@
     position: relative;
     left: 95%;
 }
+
+.date-labels-container {
+    padding: 2px;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    transition: ease all .2s;
+}
