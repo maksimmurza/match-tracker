@@ -44,7 +44,7 @@ class Match extends React.Component {
             tomorrowLabel = <Label color='teal' ribbon='right' className='day-label'>tomorrow</Label>;
         
         return (
-            <Segment>
+            <Segment className='match'>
                 {todayLabel}
                 {tomorrowLabel}
                 {liveLabel}

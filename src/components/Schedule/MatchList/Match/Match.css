@@ -1,3 +1,8 @@
+.match {
+    background-color: white;
+    width: calc(100% - 1.1em) !important;
+}
+
 .teams {
     display: flex;
     flex-direction: row;
@@ -43,6 +48,7 @@
 .day-label {
     position: absolute !important;
     left: calc(100% + 1.2em) !important;
+    /* margin-right: 0.5rem !important; */
 }
 
 .league-logo {
@@ -51,7 +57,6 @@
 }
 
 .date-labels-container {
-    padding: 2px;
     box-shadow: none;
     background-color: transparent;
     border-radius: 5px;

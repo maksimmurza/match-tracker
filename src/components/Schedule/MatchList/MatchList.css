@@ -2,13 +2,20 @@
     height: 100%;
     border-radius: 5px;
     overflow-y: auto;
-    background-color: white;
+    overflow-x: visible;
+    border: none !important;
+    box-shadow: none !important;
+    margin-right: -1.1rem !important;
 }
 
 .block {
+    overflow-x: visible;
+    width: 55vw;
+    position: relative;
     border-radius: 5px;
-    margin: 1rem 0;
-    box-shadow: 0 0 10px 0 rgba(0, 33, 36, 0.205);
+    margin: 1rem;
+    margin-right: 2rem;
+    box-shadow: 0 0 10px 0 rgba(0, 33, 36, 0.305);
 }
 
 .match-list::-webkit-scrollbar {
