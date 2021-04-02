@@ -54,19 +54,19 @@ class Match extends React.Component {
                     onMouseLeave={this.hoverDateLabels} 
                     className='date-labels-container' 
                     title='Push to the calender'>
-                    <Label>
+                    <Label className='date-label'>
     			    	<Icon name='calendar' /> {matchDateStr}
   				    </Label>
-				    <Label>
+				    <Label className='date-label'>
     			    	<Icon name='time' /> {matchTimeStr}
   				    </Label>
                 </div>
             
 				<div className='teams'>
 					<span className='home-team'>{this.props.homeTeam.name}</span>
-					<img src={this.props.homeTeam.logo} alt='Team logo' width='80' />
+					<img src={this.props.homeTeam.logo} alt='Team logo' className='team-logo' />
                 	<h3 className='devider'>–</h3>
-					<img src={this.props.awayTeam.logo} alt='Team logo' width='80' />
+					<img src={this.props.awayTeam.logo} alt='Team logo' className='team-logo' />
 					<span className='away-team'>{this.props.awayTeam.name}</span>
 				</div>
 

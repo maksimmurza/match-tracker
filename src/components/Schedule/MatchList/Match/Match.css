@@ -1,6 +1,8 @@
 .match {
     background-color: white;
-    width: calc(100% - 1.1em) !important;
+    width: calc(100% - 1.1vw) !important;
+    min-height: 25%;
+    padding: 1vw !important;
 }
 
 .teams {
@@ -11,20 +13,22 @@
 }
 
 .devider {
-    width: 80px;
+    width: 5.5vw;
+    font-size: 1.5vw;
     text-align: center;
     margin: 0;
 }
 
 .home-team {
-    font-size: 1.3em;
+    font-size: 1.5vw;
     display: inline;
-    width: 300px;
+    width: 20vw;
     text-align: right;
     margin: 0;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    line-height: 2vw;
 }
 
 .home-team::after {
@@ -33,9 +37,9 @@
 }
 
 .away-team {
-    font-size: 1.3em;
+    font-size: 1.5vw;
     display: inline;
-    width: 300px;
+    width: 20vw;
     text-align: left;
     margin: 0;
     text-indent: 20px;
@@ -43,15 +47,21 @@
     white-space: nowrap;
     overflow: hidden;
     white-space: nowrap;
+    line-height: 2vw;
+}
+
+.team-logo {
+    width: 5.5vw;
 }
 
 .day-label {
     position: absolute !important;
-    left: calc(100% + 1.2em) !important;
-    /* margin-right: 0.5rem !important; */
+    left: calc(100% + 1.1vw) !important;
+    font-size: 0.9vw !important;
 }
 
 .league-logo {
+    width: 1.8vw;
     position: relative;
     left: 95%;
 }
@@ -63,4 +73,8 @@
     display: inline-block;
     cursor: pointer;
     transition: ease all .2s;
+}
+
+.date-label {
+    font-size: 0.9vw !important;
 }

@@ -1,6 +1,6 @@
 .wrapper {
     width: 35vw;
-    margin: 1em auto 0 0;
+    margin: 1vw auto 0 0;
     height: calc(100vh - 2em);
     position: relative;
 }
