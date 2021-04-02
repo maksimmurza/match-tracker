@@ -16,7 +16,7 @@ class Team extends React.Component {
     render() {
         return (
             <div className='team-tab-content'>
-                <Checkbox data-testid="input" onChange={this.handleChange} checked={this.props.team.show === true}/>
+                <Checkbox data-testid="input" className='check-box-tab-content' onChange={this.handleChange} checked={this.props.team.show === true}/>
                 <label className='team-name-tab-content'> {this.props.team.name}</label>
             </div>
         )
