@@ -14,3 +14,19 @@
     margin: 0 auto;
     margin-top: 2rem;
 }
+
+.controls {
+    width: 200px;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logIn-button {
+    width: 120px;
+    height: 45px;
+}

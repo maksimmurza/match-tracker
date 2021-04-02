@@ -6,6 +6,7 @@ import League from '../../model/Model'
 import req from '../../model/RequestOptions'
 import stringSimilarity from 'string-similarity'
 import {LocaleContext} from "./LocaleContext";
+import GoogleLogin from 'react-google-login';
 
 class Schedule extends React.Component{
 
@@ -216,6 +217,10 @@ class Schedule extends React.Component{
         this.setState({locale:e.target.value});
     }
 
+    onLogIn(res) {
+        console.log(res);
+    }
+
     render() {
         // loading
         if(this.state.leagues.length === 0) {
@@ -245,10 +250,22 @@ class Schedule extends React.Component{
                                 onChangeLeague={this.onChangeLeague}
                                 onChangeTeam={this.onChangeTeam} />
 
+                <div className='controls'>
                     <select onChange={this.setLocale} value={this.state.locale} class="ui dropdown">
                         <option value="en">en</option>
                         <option value="ru">ru</option>
                     </select>
+
+                    <GoogleLogin
+                        className='logIn-button'
+                        clientId={process.env.REACT_APP_OAuthClientId}
+                        buttonText="Sign in"
+                        onSuccess={this.onLogIn}
+                        onFailure={this.onLogIn}
+                        cookiePolicy={'single_host_origin'}
+                    />
+                </div>
+                    
 
                 </div>
             );
