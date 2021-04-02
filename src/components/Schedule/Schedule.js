@@ -85,7 +85,7 @@ class Schedule extends React.Component{
 
             // merge all matches
             live.matches.forEach(liveMatch => {
-                schedule.matches.push(liveMatch);
+                schedule.matches.unshift(liveMatch);
             });
             
             let league = new League(schedule.competition.name, schedule.competition.area.name);
