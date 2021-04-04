@@ -18,7 +18,6 @@ class Schedule extends React.Component{
             onChangeTeam: this.onChangeTeam,
             locale: 'ru',
             message:''}
-        this.arr = [];
     }
 
     componentDidMount() {
@@ -52,7 +51,6 @@ class Schedule extends React.Component{
                 if(!leaguesLocal || leaguesLocal.length === 0) {
                     reject()
                 } else {
-                    
                     let today = new Date(); //  '2021-04-03T11:30:00Z'
                     leaguesLocal.forEach(league => {
                         if(league.matches.some(match => new Date(match.utcDate) < today))
@@ -66,20 +64,21 @@ class Schedule extends React.Component{
 
     async fetchData() {
 
+        // get list of current leagues for using id's in future requests
         let currentLeagues = await this.getCurrentLeagues().catch(e => {throw e});
 
-        // for all leagues
+        // for all leagues that we "track"
         for(let key of req.footballData.leaguesKeys) {
 
             let live;
             let schedule;
-
+            
+            // get live and scheduled matches
             try {
                 live = await this.getSchedule(key, req.footballData.liveFilter);
                 schedule = await this.getSchedule(key, req.footballData.scheduledFilter);
             } catch(e) {
-                this.arr.push(null);
-                this.setState({leagues: this.arr});
+                this.setState(state => ({leagues: [...state.leagues, null]}));
                 continue;
             }
 
@@ -92,9 +91,7 @@ class Schedule extends React.Component{
             league.matches = schedule.matches;
             
             for(let l of currentLeagues) {
-                
                 if(l.name === league.name && (l.country === league.country || l.country === ('World' || 'Europe'))) {
-                    
                     league.logo = l.logo;
                     
                     let teams = await this.getTeamsInfo(l.league_id).catch(e => {throw e});
@@ -103,17 +100,8 @@ class Schedule extends React.Component{
                     league.teams = teams;
                     league.teamsShowed = teams.length;
 
-                    // finding logo for teams from schedule comparing names
-                    league.matches.forEach(match => {
-                        let arr = [];
-                        league.teams.forEach(team => {arr.push(team.name)});
-                        
-                        match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name.split('hampton').join(''), arr).bestMatchIndex];
-                        match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name.split('hampton').join(''), arr).bestMatchIndex];
-                    });
-
-                    this.arr.push(league);
-                    this.setState({leagues: this.arr});
+                    this.resolveTeamNames(league);
+                    this.setState(state => ({leagues: [...state.leagues, league]}));
                 }
             }  
         }
@@ -166,6 +154,17 @@ class Schedule extends React.Component{
         } else {
             throw new Error();
         }
+    }
+
+    resolveTeamNames(league) {
+        // finding logo for teams from schedule comparing names
+        league.matches.forEach(match => {
+            let arr = [];
+            league.teams.forEach(team => {arr.push(team.name)});
+            
+            match.homeTeam = league.teams[stringSimilarity.findBestMatch(match.homeTeam.name.split('hampton').join(''), arr).bestMatchIndex];
+            match.awayTeam = league.teams[stringSimilarity.findBestMatch(match.awayTeam.name.split('hampton').join(''), arr).bestMatchIndex];
+        });
     }
 
     onChangeLeague = (league) => {
