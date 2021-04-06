@@ -6,7 +6,8 @@ import League from '../../model/League'
 import req from '../../utils/requestOptions'
 import stringSimilarity from 'string-similarity'
 import {LocaleContext} from "./LocaleContext";
-import {getSchedule, getCurrentLeagues, getTeamsInfo, getLocalData} from '../../utils/fetch'
+import {getSchedule, getCurrentLeagues, getTeamsInfo} from '../../utils/fetch'
+import {getLocalLeagues, writeLocalLeagues} from '../../utils/local'
 
 class Schedule extends React.Component{
 
@@ -21,7 +22,7 @@ class Schedule extends React.Component{
 
     componentDidMount() {
         this.setState({message: 'Checking local storage...'});
-        getLocalData().then(leagues => {
+        getLocalLeagues().then(leagues => {
             leagues.forEach(league => {
                 this.resolveTeamNames(league);
             })
@@ -30,6 +31,7 @@ class Schedule extends React.Component{
             this.setState({message: 'Local schedule is empty or out of date. Fetching data from API...'});
             this.fetchData().catch(e => {
                 console.log('Problems while fetching data from APIs after mounting component');
+                console.log(e);
             });
         })
     }
@@ -75,12 +77,10 @@ class Schedule extends React.Component{
                     this.resolveTeamNames(league);
                     this.setState(state => ({leagues: [...state.leagues, league]}));
                 }
-            }  
+            }
         }
 
-        if(this.state.leagues.every(league => league)) {
-            localStorage.setItem('leagues', JSON.stringify(this.state.leagues));
-        }
+        writeLocalLeagues(this.state.leagues);
     }
 
     resolveTeamNames(league) {

@@ -45,22 +45,4 @@ async function getTeamsInfo(leagueId) {
     }
 }
 
-function getLocalData() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            let leaguesLocal = JSON.parse(localStorage.getItem('leagues'));
-            if(!leaguesLocal || leaguesLocal.length === 0) {
-                reject()
-            } else {
-                let today = new Date(); //  '2021-04-03T11:30:00Z'
-                leaguesLocal.forEach(league => {
-                    if(league.matches.some(match => new Date(match.utcDate) < today))
-                        reject();
-                })  
-                resolve(leaguesLocal);
-            }
-        });
-    })
-}
-
-export {getCurrentLeagues, getSchedule, getTeamsInfo, getLocalData};
+export {getCurrentLeagues, getSchedule, getTeamsInfo};
