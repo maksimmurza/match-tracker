@@ -20,8 +20,8 @@ class League {
 			matches: this.#matches,
 			teams: this.#teams,
 			status: this.#status,
-			teamsShowed: this.#teamsShowed
-		 }
+			teamsShowed: this.#teamsShowed,
+		};
 	}
 
 	get name() {
@@ -29,7 +29,7 @@ class League {
 	}
 
 	set name(name) {
-		if(!/\d/.test(name)) {
+		if (!/\d/.test(name)) {
 			this.#name = name;
 		} else {
 			throw new Error('Incorect symbols in league name');
@@ -41,7 +41,7 @@ class League {
 	}
 
 	set country(country) {
-		if(!/\d/.test(country)) {
+		if (!/\d/.test(country)) {
 			this.#country = country;
 		} else {
 			throw new Error('Incorect symbols in league country');
@@ -53,12 +53,11 @@ class League {
 	}
 
 	set logo(logo) {
-		if(/^https:/.test(logo) && /png$/.test(logo)) {
+		if (/^https:/.test(logo) && /png$/.test(logo)) {
 			this.#logo = logo;
 		} else {
 			throw new Error('Incorect link to the logotype');
 		}
-		
 	}
 
 	get matches() {
@@ -66,8 +65,11 @@ class League {
 	}
 
 	set matches(matches) {
-		if(Array.isArray(matches)) {
-			if(matches.length >= 1 && matches.every(match => ['utcDate', 'homeTeam', 'awayTeam'].every(prop => prop in match))) {
+		if (Array.isArray(matches)) {
+			if (
+				matches.length >= 1 &&
+				matches.every(match => ['utcDate', 'homeTeam', 'awayTeam'].every(prop => prop in match))
+			) {
 				this.#matches = matches;
 			} else {
 				throw new Error('Incorrect properties in "matches"');
@@ -75,7 +77,6 @@ class League {
 		} else {
 			throw new Error('Incorrect type of property "matches"');
 		}
-		
 	}
 
 	get teams() {
@@ -83,7 +84,7 @@ class League {
 	}
 
 	set teams(teams) {
-		if(teams.length > 1 && teams.every(team => ['name', 'logo'].every(prop => prop in team))) {
+		if (teams.length > 1 && teams.every(team => ['name', 'logo'].every(prop => prop in team))) {
 			this.#teams = teams;
 		} else {
 			throw new Error('Incorrect type of property "teams"');
@@ -95,12 +96,11 @@ class League {
 	}
 
 	set status(status) {
-		if(status === 'checked' || status === 'unchecked' || status === 'indeterminate') {
+		if (status === 'checked' || status === 'unchecked' || status === 'indeterminate') {
 			this.#status = status;
 		} else {
 			throw new Error('Incorect league status');
 		}
-		
 	}
 
 	get teamsShowed() {
@@ -108,7 +108,7 @@ class League {
 	}
 
 	set teamsShowed(teamsShowed) {
-		if(typeof teamsShowed === 'number') {
+		if (typeof teamsShowed === 'number') {
 			this.#teamsShowed = teamsShowed;
 		} else {
 			throw new Error('Incorect type of league property');

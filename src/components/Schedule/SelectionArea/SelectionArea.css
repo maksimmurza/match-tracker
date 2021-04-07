@@ -1,16 +1,16 @@
 .wrapper {
-    width: 35vw;
-    margin: 1em auto 0 0;
-    height: calc(100vh - 2em);
-    position: relative;
+	width: 35vw;
+	margin: 1em auto 0 0;
+	height: calc(100vh - 2em);
+	position: relative;
 }
 
 .tab-content {
-    max-height: calc(100% - 54px); /* semantic ui tab height */
-    overflow-y: auto;
+	max-height: calc(100% - 54px); /* semantic ui tab height */
+	overflow-y: auto;
 }
 
 .tab-content::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+	width: 0px;
+	background: transparent;
 }
