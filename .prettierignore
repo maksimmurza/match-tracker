@@ -1,0 +1,13 @@
+# Ignore artifacts:
+build
+coverage
+node_modules
+.vscode
+public
+
+# Ignore all HTML files:
+*.html
+*.json
+*.md
+.env
+.gitignore
