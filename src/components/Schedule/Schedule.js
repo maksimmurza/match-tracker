@@ -84,9 +84,15 @@ class Schedule extends React.Component {
 						team.leagueName = schedule.competition.name;
 					});
 					league.teams = teams;
-					league.teamsShowed = teams.length;
 
 					this.resolveTeamNames(league);
+					league.activeTeams = teams.filter(team =>
+						league.matches.some(match => {
+							return team.name === match.homeTeam.name || team.name === match.awayTeam.name;
+						})
+					).length;
+					league.teamsShowed = league.activeTeams;
+
 					this.setState(state => ({
 						leagues: [...state.leagues, league],
 					}));
@@ -122,46 +128,29 @@ class Schedule extends React.Component {
 		});
 	}
 
-	onChangeLeague = league => {
+	onChangeLeague = alreadyChangedLeague => {
 		this.setState(state => {
 			let leagues = state.leagues.map(value => {
-				return value?.name === league.name ? league : value;
+				return value?.name === alreadyChangedLeague.name ? alreadyChangedLeague : value;
 			});
 			return { ...leagues };
 		});
 	};
 
-	onChangeTeam = (team, status) => {
-		console.log(team, status);
-		let obj = this.state.leagues;
+	onChangeTeam = (changedTeam, newTeamStatus) => {
+		let leagues = this.state.leagues;
+		let changedLeague = leagues.find(league => league.name === changedTeam.leagueName);
+		changedTeam.show = newTeamStatus !== 'unchecked' && true;
+		changedLeague.teams.map(team => (team.name === changedTeam.name ? changedTeam : team));
 
-		obj.forEach(league => {
-			if (league?.name === team.leagueName) {
-				league.teams.forEach(t => {
-					if (t.name === team.name) {
-						if (status === 'unchecked') {
-							t.show = false;
-							league.teamsShowed--;
-							if (league.status !== 'indeterminate') {
-								league.status = 'indeterminate';
-							} else if (league.teamsShowed === 0) {
-								league.status = 'unchecked';
-							}
-						} else {
-							if (league.teamsShowed === league.teams.length - 1) {
-								league.status = 'checked';
-							} else if (league.teamsShowed === 0) {
-								league.status = 'indeterminate';
-							}
-							t.show = true;
-							league.teamsShowed++;
-						}
-					}
-				});
-			}
-		});
+		if (newTeamStatus === 'unchecked') {
+			changedLeague.status = --changedLeague.teamsShowed === 0 ? 'unchecked' : 'indeterminate';
+		} else {
+			changedLeague.status =
+				++changedLeague.teamsShowed === changedLeague.activeTeams ? 'checked' : 'indeterminate';
+		}
 
-		this.setState({ leagues: obj });
+		this.onChangeLeague(changedLeague);
 	};
 
 	setLocale = e => {

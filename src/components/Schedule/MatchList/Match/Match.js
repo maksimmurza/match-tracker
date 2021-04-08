@@ -23,18 +23,17 @@ class Match extends React.Component {
 		}
 	};
 
-	render() {
+	preRender(matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel) {
 		let matchDate = new Date(this.props.time);
-		let matchDateStr = matchDate.toLocaleDateString(this.context, {
+		matchDateStr = matchDate.toLocaleDateString(this.context, {
 			month: 'long',
 			day: 'numeric',
 		});
-		let matchTimeStr = matchDate.toLocaleTimeString(this.context, {
+		matchTimeStr = matchDate.toLocaleTimeString(this.context, {
 			hour: 'numeric',
 			minute: 'numeric',
 		});
 
-		let todayLabel, tomorrowLabel, liveLabel;
 		let date = this.props.todayDate.getDate();
 		let month = this.props.todayDate.getMonth();
 
@@ -57,6 +56,19 @@ class Match extends React.Component {
 					tomorrow
 				</Label>
 			);
+
+		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
+	}
+
+	render() {
+		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
+		[matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender(
+			matchDateStr,
+			matchTimeStr,
+			todayLabel,
+			tomorrowLabel,
+			liveLabel
+		);
 
 		return (
 			<Segment className="match">

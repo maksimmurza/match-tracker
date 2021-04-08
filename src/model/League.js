@@ -6,6 +6,7 @@ class League {
 	#teams;
 	#status = 'checked';
 	#teamsShowed;
+	#activeTeams;
 
 	constructor(name, country) {
 		this.#name = name;
@@ -21,6 +22,7 @@ class League {
 			teams: this.#teams,
 			status: this.#status,
 			teamsShowed: this.#teamsShowed,
+			activeTeams: this.#activeTeams,
 		};
 	}
 
@@ -110,6 +112,18 @@ class League {
 	set teamsShowed(teamsShowed) {
 		if (typeof teamsShowed === 'number') {
 			this.#teamsShowed = teamsShowed;
+		} else {
+			throw new Error('Incorect type of league property');
+		}
+	}
+
+	get activeTeams() {
+		return this.#activeTeams;
+	}
+
+	set activeTeams(activeTeams) {
+		if (typeof activeTeams === 'number') {
+			this.#activeTeams = activeTeams;
 		} else {
 			throw new Error('Incorect type of league property');
 		}

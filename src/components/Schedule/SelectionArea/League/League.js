@@ -9,7 +9,7 @@ class League extends React.Component {
 		league.teams.forEach(team => {
 			if (league.status === 'unchecked') {
 				team.show = true;
-				league.teamsShowed = league.teams.length;
+				league.teamsShowed = league.activeTeams;
 			} else {
 				team.show = false;
 				league.teamsShowed = 0;
