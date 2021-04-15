@@ -1,16 +1,23 @@
 .schedule {
-	display: flex;
-	flex-direction: row;
-	justify-items: center;
-
-	/* flex-wrap: wrap-reverse; */
-
 	max-height: 100vh;
-	/* overflow: auto; */
+	overflow: auto;
 }
 
 .message-wrapper {
 	width: 60vw;
 	margin: 0 auto;
 	margin-top: 2rem;
+}
+
+.controls {
+	margin: 1rem 0;
+}
+
+.locale-input {
+	margin-bottom: 1rem;
+	min-width: fit-content !important;
+}
+
+.mobile-sidebar {
+	background-color: gainsboro;
 }

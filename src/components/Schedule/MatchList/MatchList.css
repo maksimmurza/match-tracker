@@ -10,11 +10,9 @@
 
 .block {
 	overflow-x: visible;
-	width: 55vw;
-	position: relative;
+	height: calc(100vh - 2rem);
 	border-radius: 5px;
-	margin: 1rem;
-	margin-right: 2rem;
+	margin: 1rem 0;
 	box-shadow: 0 0 10px 0 rgba(0, 33, 36, 0.305);
 }
 

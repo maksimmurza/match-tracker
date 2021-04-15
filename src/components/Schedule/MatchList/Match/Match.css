@@ -1,6 +1,7 @@
 .match {
 	background-color: white;
 	width: calc(100% - 1.1em) !important;
+	max-height: calc(100% / 4);
 }
 
 .teams {

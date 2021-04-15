@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab } from 'semantic-ui-react';
 import League from './League/League';
 import Team from './Team/Team';
-import './SelectionArea.css';
+// import './SelectionArea.css';
 import LocalErrorBoundary from '../../LocalErrorBoundary';
 
 function SelectionArea(props) {

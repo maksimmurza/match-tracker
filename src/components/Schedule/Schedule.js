@@ -8,6 +8,11 @@ import stringSimilarity from 'string-similarity';
 import { LocaleContext } from './LocaleContext';
 import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch';
 import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
+import { Grid, Select, Sidebar, Icon, Menu } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
+import { SidebarPushable } from 'semantic-ui-react';
+import { SidebarPusher } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 class Schedule extends React.Component {
 	constructor(props) {
@@ -17,6 +22,7 @@ class Schedule extends React.Component {
 			quantity: 15,
 			locale: 'ru',
 			message: '',
+			mobileSideBar: false,
 		};
 	}
 
@@ -153,8 +159,14 @@ class Schedule extends React.Component {
 		this.onChangeLeague(changedLeague);
 	};
 
-	setLocale = e => {
-		this.setState({ locale: e.target.value });
+	sidebarToggle = () => {
+		this.setState(state => ({ mobileSideBar: !state.mobileSideBar }));
+		console.log(this.state.mobileSideBar);
+	};
+
+	setLocale = (event, selected) => {
+		console.log(selected);
+		this.setState({ locale: selected.value });
 	};
 
 	render() {
@@ -174,23 +186,61 @@ class Schedule extends React.Component {
 		} else {
 			return (
 				<div className="schedule">
-					<LocaleContext.Provider value={this.state.locale}>
-						<MatchList
-							leagues={this.state.leagues.filter(value => value)}
-							quantity={this.state.quantity}
-							todayDate={new Date()}
-						/>
-					</LocaleContext.Provider>
-					<SelectionArea
-						leagues={this.state.leagues}
-						onChangeLeague={this.onChangeLeague}
-						onChangeTeam={this.onChangeTeam}
-					/>
+					<SidebarPushable>
+						<Sidebar
+							className="mobile-sidebar"
+							as={Container}
+							animation="overlay"
+							icon="labeled"
+							inverted
+							onHide={() => this.setState({ mobileSideBar: false })}
+							vertical
+							visible={this.state.mobileSideBar}
+							width="wide">
+							<SelectionArea
+								leagues={this.state.leagues}
+								onChangeLeague={this.onChangeLeague}
+								onChangeTeam={this.onChangeTeam}></SelectionArea>
+						</Sidebar>
+						<SidebarPusher dimmed={this.state.mobileSideBar}>
+							<Grid stackable centered reversed="mobile vertically">
+								<Grid.Column computer={9} tablet={10} mobile={16}>
+									<Button onClick={this.sidebarToggle}></Button>
+									<LocaleContext.Provider value={this.state.locale}>
+										<MatchList
+											leagues={this.state.leagues.filter(value => value)}
+											quantity={this.state.quantity}
+											todayDate={new Date()}
+										/>
+									</LocaleContext.Provider>
+								</Grid.Column>
 
-					<select onChange={this.setLocale} value={this.state.locale} className="ui dropdown">
-						<option value="en">en</option>
-						<option value="ru">ru</option>
-					</select>
+								<Grid.Column
+									className="controls"
+									computer={5}
+									tablet={6}
+									only="computer tablet">
+									<Grid.Row>
+										<Select
+											className="locale-input"
+											onChange={this.setLocale}
+											value={this.state.locale}
+											options={[
+												{ key: 'en', value: 'en', text: 'en' },
+												{ key: 'ru', value: 'ru', text: 'ru' },
+											]}
+										/>
+									</Grid.Row>
+									<Grid.Row>
+										<SelectionArea
+											leagues={this.state.leagues}
+											onChangeLeague={this.onChangeLeague}
+											onChangeTeam={this.onChangeTeam}></SelectionArea>
+									</Grid.Row>
+								</Grid.Column>
+							</Grid>
+						</SidebarPusher>
+					</SidebarPushable>
 				</div>
 			);
 		}
