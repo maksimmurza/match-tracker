@@ -21,3 +21,13 @@
 .mobile-sidebar {
 	background-color: gainsboro;
 }
+
+.sidebar-toggle {
+	margin-top: 10px;
+	/* padding-bottom: 0 !important;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between; */
+}

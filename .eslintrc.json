@@ -25,7 +25,7 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": "warn",
+        "prettier/prettier": 0,
         "no-unused-vars":"warn",
         "jest/valid-title": "warn",
         "react/prop-types":0,

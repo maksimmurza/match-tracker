@@ -72,29 +72,31 @@ class Match extends React.Component {
 
 		return (
 			<Segment className="match">
-				{todayLabel}
-				{tomorrowLabel}
-				{liveLabel}
+				<div className="labels">
+					{todayLabel}
+					{tomorrowLabel}
+					{liveLabel}
 
-				<div
-					ref={this.dateLabels}
-					onMouseEnter={this.hoverDateLabels}
-					onMouseLeave={this.hoverDateLabels}
-					className="date-labels-container"
-					title="Push to the calender">
-					<Label>
-						<Icon name="calendar" /> {matchDateStr}
-					</Label>
-					<Label>
-						<Icon name="time" /> {matchTimeStr}
-					</Label>
+					<div
+						ref={this.dateLabels}
+						onMouseEnter={this.hoverDateLabels}
+						onMouseLeave={this.hoverDateLabels}
+						className="date-labels-container"
+						title="Push to the calender">
+						<Label>
+							<Icon name="calendar" /> {matchDateStr}
+						</Label>
+						<Label>
+							<Icon name="time" /> {matchTimeStr}
+						</Label>
+					</div>
 				</div>
 
 				<div className="teams">
 					<span className="home-team">{this.props.homeTeam.name}</span>
-					<img src={this.props.homeTeam.logo} alt="Team logo" width="80" />
+					<img src={this.props.homeTeam.logo} className="team-logo" alt="Team logo" />
 					<h3 className="devider">–</h3>
-					<img src={this.props.awayTeam.logo} alt="Team logo" width="80" />
+					<img src={this.props.awayTeam.logo} className="team-logo" alt="Team logo" />
 					<span className="away-team">{this.props.awayTeam.name}</span>
 				</div>
 
