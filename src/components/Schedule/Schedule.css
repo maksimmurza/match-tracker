@@ -23,11 +23,24 @@
 }
 
 .sidebar-toggle {
-	margin-top: 10px;
-	/* padding-bottom: 0 !important;
-
+	margin: 5px 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between; */
+	justify-content: space-between;
+	align-items: center;
+}
+
+#mobile-bar {
+	padding-bottom: 0 !important;
+}
+
+#match-list-column {
+	padding: 1rem;
+}
+
+@media (max-width: 768px) {
+	#match-list-column {
+		padding: 0 !important;
+	}
 }

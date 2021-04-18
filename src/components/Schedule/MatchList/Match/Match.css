@@ -9,6 +9,7 @@
 	flex-direction: row;
 	align-items: center;
 	justify-items: center;
+	padding-top: 5px;
 }
 
 .devider {
@@ -60,7 +61,7 @@
 }
 
 .team-logo {
-	width: calc(50px + 2.2vw);
+	width: calc(35px + 3.2vw);
 }
 
 .date-labels-container {
@@ -70,4 +71,28 @@
 	display: inline-block;
 	cursor: pointer;
 	transition: ease all 0.2s;
+}
+
+@media (max-width: 768px) {
+	.labels .label {
+		font-size: 0.7em !important;
+	}
+
+	.teams {
+		padding-bottom: 8px;
+	}
+
+	.match {
+		padding-bottom: 5px !important;
+		padding-top: 5px !important;
+	}
+
+	.league-logo {
+		display: none;
+	}
+
+	.away-team,
+	.home-team {
+		font-size: 0.9em;
+	}
 }

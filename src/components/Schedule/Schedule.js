@@ -10,6 +10,7 @@ import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch'
 import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
 import { Grid, Select, Button, SidebarPushable, SidebarPusher } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
+import { Header } from 'semantic-ui-react';
 
 class Schedule extends React.Component {
 	constructor(props) {
@@ -187,22 +188,25 @@ class Schedule extends React.Component {
 							<SelectionArea
 								leagues={this.state.leagues}
 								onChangeLeague={this.onChangeLeague}
-								onChangeTeam={this.onChangeTeam}></SelectionArea>
+								onChangeTeam={this.onChangeTeam}
+								style={{ height: '100%' }}></SelectionArea>
 						</MobileSidebar>
 						<SidebarPusher dimmed={this.state.sidebarVisible}>
 							<Grid stackable centered>
-								{/* <Grid.Column only="mobile" className="sidebar-toggle"> */}
-								<Grid.Column only="mobile">
+								<Grid.Column only="mobile" id="mobile-bar">
 									<div className="sidebar-toggle">
 										<Button
 											icon="content"
 											style={{ backgroundColor: 'transparent' }}
 											onClick={this.sidebarToggle}></Button>
+										<Header as="h5" style={{ marginTop: '14px' }}>
+											Match tracker
+										</Header>
 										<Select
 											className="locale-input"
 											onChange={this.setLocale}
 											value={this.state.locale}
-											style={{ float: 'right' }}
+											style={{ marginBottom: 0 }}
 											options={[
 												{ key: 'en', value: 'en', text: 'en' },
 												{ key: 'ru', value: 'ru', text: 'ru' },
@@ -210,8 +214,7 @@ class Schedule extends React.Component {
 										/>
 									</div>
 								</Grid.Column>
-								{/* </Grid.Column> */}
-								<Grid.Column computer={9} tablet={10} mobile={16}>
+								<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
 									<LocaleContext.Provider value={this.state.locale}>
 										<MatchList
 											leagues={this.state.leagues.filter(value => value)}
