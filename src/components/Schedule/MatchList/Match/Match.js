@@ -6,6 +6,7 @@ import { LocaleContext } from '../../LocaleContext';
 class Match extends React.Component {
 	constructor(props) {
 		super(props);
+		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
 	}
 
@@ -60,6 +61,34 @@ class Match extends React.Component {
 		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
 	}
 
+	pushEventHandler = () => {
+		if (this.gapi.auth2.getAuthInstance().isSignedIn.get() === false) {
+			alert('You should sign in!');
+			return;
+		}
+
+		const gameEvent = {
+			summary: `${this.props.homeTeam.name} - ${this.props.awayTeam.name}`,
+			start: {
+				dateTime: `${this.props.time}`,
+			},
+			end: {
+				dateTime: `${this.props.time}`,
+			},
+			reminders: {
+				useDefault: false,
+				overrides: [{ method: 'popup', minutes: 15 }],
+			},
+		};
+
+		const request = this.gapi.client.calendar.events.insert({
+			calendarId: 'primary',
+			resource: gameEvent,
+		});
+
+		request.execute();
+	};
+
 	render() {
 		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
 		[matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender(
@@ -82,7 +111,8 @@ class Match extends React.Component {
 						onMouseEnter={this.hoverDateLabels}
 						onMouseLeave={this.hoverDateLabels}
 						className="date-labels-container"
-						title="Push to the calender">
+						title="Push to the calender"
+						onClick={this.pushEventHandler}>
 						<Label>
 							<Icon name="calendar" /> {matchDateStr}
 						</Label>

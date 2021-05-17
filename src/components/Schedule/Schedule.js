@@ -8,14 +8,18 @@ import stringSimilarity from 'string-similarity';
 import { LocaleContext } from './LocaleContext';
 import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch';
 import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
-import { Grid, Select, Button, SidebarPushable, SidebarPusher } from 'semantic-ui-react';
+import { Grid, Select, Button, SidebarPushable, SidebarPusher, Icon, Dropdown } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
 import { Header } from 'semantic-ui-react';
+import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
 
 class Schedule extends React.Component {
 	constructor(props) {
 		super(props);
+		this.gapi = window.gapi;
 		this.state = {
+			user: null,
+			isSignedIn: false,
 			leagues: [],
 			quantity: 15,
 			locale: 'ru',
@@ -42,6 +46,8 @@ class Schedule extends React.Component {
 					console.log(e);
 				});
 			});
+
+		this.authInit();
 	}
 
 	async fetchData() {
@@ -166,6 +172,44 @@ class Schedule extends React.Component {
 		this.setState({ locale: selected.value });
 	};
 
+	authInit = () => {
+		this.gapi.load('client:auth2', async () => {
+			await this.gapi.client.init({
+				apiKey: API_KEY,
+				clientId: CLIENT_ID,
+				discoveryDocs: DISCOVERY_DOCS,
+				scope: SCOPES,
+			});
+
+			if (this.gapi.auth2.getAuthInstance().isSignedIn.get() === true) {
+				this.setState({ isSignedIn: true });
+				const profile = this.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+				this.setState({ user: profile });
+			}
+		});
+	};
+
+	handleAuthClick = () => {
+		if (this.state.isSignedIn === true) {
+			this.gapi.auth2
+				.getAuthInstance()
+				.signOut()
+				.then(() => {
+					this.setState({ user: null });
+					this.setState({ isSignedIn: false });
+				});
+		} else {
+			this.gapi.auth2
+				.getAuthInstance()
+				.signIn()
+				.then(() => {
+					const profile = this.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+					this.setState({ user: profile });
+					this.setState({ isSignedIn: true });
+				});
+		}
+	};
+
 	render() {
 		// loading
 		if (this.state.leagues.length === 0) {
@@ -231,6 +275,7 @@ class Schedule extends React.Component {
 									only="computer tablet">
 									<Grid.Row>
 										<Select
+											style={{ marginRight: '10px' }}
 											className="locale-input"
 											onChange={this.setLocale}
 											value={this.state.locale}
@@ -239,6 +284,31 @@ class Schedule extends React.Component {
 												{ key: 'ru', value: 'ru', text: 'ru' },
 											]}
 										/>
+										{this.state.isSignedIn === false ? (
+											<Button primary onClick={this.handleAuthClick}>
+												<Icon name="google"></Icon>
+												Sign In
+											</Button>
+										) : this.state.user ? (
+											<Button.Group color="blue">
+												<Dropdown
+													button
+													pointing
+													className="icon"
+													labeled
+													icon="google"
+													text={this.state.user.getName()}>
+													<Dropdown.Menu>
+														<Dropdown.Item
+															onClick={this.handleAuthClick}
+															text="Sign Out"
+														/>
+													</Dropdown.Menu>
+												</Dropdown>
+											</Button.Group>
+										) : (
+											<Icon name="circle notch"></Icon>
+										)}
 									</Grid.Row>
 									<Grid.Row>
 										<SelectionArea
