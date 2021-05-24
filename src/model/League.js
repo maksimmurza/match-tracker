@@ -69,7 +69,7 @@ class League {
 	set matches(matches) {
 		if (Array.isArray(matches)) {
 			if (
-				matches.length >= 1 &&
+				matches.length === 0 ||
 				matches.every(match => ['utcDate', 'homeTeam', 'awayTeam'].every(prop => prop in match))
 			) {
 				this.#matches = matches;
