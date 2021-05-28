@@ -80,8 +80,9 @@ class Schedule extends React.Component {
 
 			for (let l of currentLeagues) {
 				if (
-					l.name === league.name &&
-					(l.country === league.country || l.country === ('World' || 'Europe'))
+					(l.name === league.name ||
+						(league.name === 'European Championship' && l.name === 'Euro Championship')) &&
+					(l.country === league.country || l.country === 'World' || l.country === 'Europe')
 				) {
 					league.logo = l.logo;
 
@@ -115,27 +116,32 @@ class Schedule extends React.Component {
 
 	resolveTeamNames(league) {
 		// finding logo for teams from schedule comparing names
-		league.matches.forEach(match => {
-			let arr = [];
-			league.teams.forEach(team => {
-				arr.push(team.name);
-			});
+		league.matches.length > 0 &&
+			league.matches.forEach(match => {
+				let arr = [];
+				league.teams.forEach(team => {
+					arr.push(team.name);
+				});
 
-			match.homeTeam =
-				league.teams[
-					stringSimilarity.findBestMatch(
-						match.homeTeam.name.split('hampton').join(''),
-						arr
-					).bestMatchIndex
-				];
-			match.awayTeam =
-				league.teams[
-					stringSimilarity.findBestMatch(
-						match.awayTeam.name.split('hampton').join(''),
-						arr
-					).bestMatchIndex
-				];
-		});
+				match.homeTeam.name
+					? (match.homeTeam =
+							league.teams[
+								stringSimilarity.findBestMatch(
+									match.homeTeam.name.split('hampton').join(''),
+									arr
+								).bestMatchIndex
+							])
+					: 'Home Team';
+				match.awayTeam.name
+					? (match.awayTeam =
+							league.teams[
+								stringSimilarity.findBestMatch(
+									match.awayTeam.name.split('hampton').join(''),
+									arr
+								).bestMatchIndex
+							])
+					: 'Away Team';
+			});
 	}
 
 	onChangeLeague = alreadyChangedLeague => {
