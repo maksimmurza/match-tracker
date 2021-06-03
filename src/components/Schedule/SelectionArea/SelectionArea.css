@@ -1,3 +1,8 @@
+.tab-content {
+	max-height: calc(100vh - 136px);
+	overflow-y: auto;
+}
+
 @media (max-width: 768px) {
 	.wrapper {
 		height: 100%;

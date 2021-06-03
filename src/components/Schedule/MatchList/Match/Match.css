@@ -73,6 +73,15 @@
 	transition: ease all 0.2s;
 }
 
+.event-success-message {
+	position: fixed !important;
+	bottom: 10px !important;
+	right: 10px !important;
+	max-width: 400px;
+	max-height: 100px;
+	z-index: 500;
+}
+
 @media (max-width: 768px) {
 	.labels .label {
 		font-size: 0.7em !important;

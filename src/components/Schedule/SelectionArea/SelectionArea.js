@@ -35,13 +35,7 @@ function SelectionArea(props) {
 			},
 			render: () => (
 				<Tab.Pane className="tab-content">
-					{teams.length > 0 ? (
-						teams
-					) : (
-						<span>
-							Error while fetching data for this league. Try to reload page after minute
-						</span>
-					)}
+					{teams.length > 0 ? teams : <span>No teams to show</span>}
 				</Tab.Pane>
 			),
 		});

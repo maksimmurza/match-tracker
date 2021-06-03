@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Icon, Label } from 'semantic-ui-react';
+import { Segment, Icon, Label, Message } from 'semantic-ui-react';
 import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
 
@@ -8,6 +8,8 @@ class Match extends React.Component {
 		super(props);
 		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
+
+		this.state = { successMessage: false };
 	}
 
 	static contextType = LocaleContext;
@@ -86,7 +88,14 @@ class Match extends React.Component {
 			resource: gameEvent,
 		});
 
-		request.execute();
+		request.execute(event => {
+			if (event) {
+				this.setState({ successMessage: true });
+				setInterval(() => {
+					this.setState({ successMessage: false });
+				}, 10000);
+			}
+		});
 	};
 
 	render() {
@@ -100,38 +109,52 @@ class Match extends React.Component {
 		);
 
 		return (
-			<Segment className="match">
-				<div className="labels">
-					{todayLabel}
-					{tomorrowLabel}
-					{liveLabel}
+			<>
+				<Segment className="match">
+					<div className="labels">
+						{todayLabel}
+						{tomorrowLabel}
+						{liveLabel}
 
-					<div
-						ref={this.dateLabels}
-						onMouseEnter={this.hoverDateLabels}
-						onMouseLeave={this.hoverDateLabels}
-						className="date-labels-container"
-						title="Push to the calender"
-						onClick={this.pushEventHandler}>
-						<Label>
-							<Icon name="calendar" /> {matchDateStr}
-						</Label>
-						<Label>
-							<Icon name="time" /> {matchTimeStr}
-						</Label>
+						<div
+							ref={this.dateLabels}
+							onMouseEnter={this.hoverDateLabels}
+							onMouseLeave={this.hoverDateLabels}
+							className="date-labels-container"
+							title="Push to the calender"
+							onClick={this.pushEventHandler}>
+							<Label>
+								<Icon name="calendar" /> {matchDateStr}
+							</Label>
+							<Label>
+								<Icon name="time" /> {matchTimeStr}
+							</Label>
+						</div>
 					</div>
-				</div>
 
-				<div className="teams">
-					<span className="home-team">{this.props.homeTeam.name}</span>
-					<img src={this.props.homeTeam.logo} className="team-logo" alt="Team logo" />
-					<h3 className="devider">–</h3>
-					<img src={this.props.awayTeam.logo} className="team-logo" alt="Team logo" />
-					<span className="away-team">{this.props.awayTeam.name}</span>
-				</div>
+					<div className="teams">
+						<span className="home-team">{this.props.homeTeam.name}</span>
+						<img src={this.props.homeTeam.logo} className="team-logo" alt="Team logo" />
+						<h3 className="devider">–</h3>
+						<img src={this.props.awayTeam.logo} className="team-logo" alt="Team logo" />
+						<span className="away-team">{this.props.awayTeam.name}</span>
+					</div>
 
-				<img src={this.props.leagueLogo} alt="League logo" width="25" className="league-logo"></img>
-			</Segment>
+					<img
+						src={this.props.leagueLogo}
+						alt="League logo"
+						width="25"
+						className="league-logo"></img>
+				</Segment>
+				<Message
+					hidden={!this.state.successMessage}
+					success
+					icon="check"
+					className="event-success-message"
+					content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}`}
+					header="Event successfuly created"
+				/>
+			</>
 		);
 	}
 }
