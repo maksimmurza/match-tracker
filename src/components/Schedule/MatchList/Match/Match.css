@@ -74,15 +74,13 @@
 }
 
 .event-success-message {
-	position: fixed !important;
-	bottom: 10px !important;
 	right: 10px !important;
-	max-width: 400px;
-	max-height: 100px;
 	z-index: 500;
+	margin: 5px 0 0 0 !important;
+	opacity: 0.9;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	.labels .label {
 		font-size: 0.7em !important;
 	}

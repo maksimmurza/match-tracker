@@ -27,9 +27,9 @@
 	left: 1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	.block {
 		margin: 0;
-		height: calc(100vh - 50px);
+		height: calc(100vh - 42px);
 	}
 }

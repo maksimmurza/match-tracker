@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Segment, Icon, Label, Message } from 'semantic-ui-react';
 import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
@@ -9,7 +10,7 @@ class Match extends React.Component {
 		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
 
-		this.state = { successMessage: false };
+		this.state = { showSuccessMessage: false };
 	}
 
 	static contextType = LocaleContext;
@@ -90,9 +91,9 @@ class Match extends React.Component {
 
 		request.execute(event => {
 			if (event) {
-				this.setState({ successMessage: true });
+				this.setState({ showSuccessMessage: true });
 				setInterval(() => {
-					this.setState({ successMessage: false });
+					this.setState({ showSuccessMessage: false });
 				}, 10000);
 			}
 		});
@@ -146,14 +147,17 @@ class Match extends React.Component {
 						width="25"
 						className="league-logo"></img>
 				</Segment>
-				<Message
-					hidden={!this.state.successMessage}
-					success
-					icon="check"
-					className="event-success-message"
-					content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}`}
-					header="Event successfuly created"
-				/>
+				{this.state.showSuccessMessage &&
+					ReactDOM.createPortal(
+						<Message
+							success
+							icon="check"
+							className="event-success-message"
+							header="Event successfuly created!"
+							content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}, ${matchDateStr}, ${matchTimeStr}`}
+							onDismiss={() => this.setState({ showSuccessMessage: false })}></Message>,
+						document.getElementById('notification-area')
+					)}
 			</>
 		);
 	}
