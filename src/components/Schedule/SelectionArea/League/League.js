@@ -24,7 +24,7 @@ class League extends React.Component {
 
 	render() {
 		return (
-			<div className="league-tab">
+			<div className="league-tab" title={`${this.props.league.name}`}>
 				<Checkbox
 					onChange={this.handleChange}
 					checked={this.props.league.status === 'checked'}

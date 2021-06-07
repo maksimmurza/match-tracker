@@ -10,7 +10,6 @@ import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch'
 import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
 import { Grid, Select, Button, SidebarPushable, SidebarPusher, Icon, Dropdown } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
-import { Header } from 'semantic-ui-react';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
 
 class Schedule extends React.Component {
@@ -244,24 +243,48 @@ class Schedule extends React.Component {
 						<SidebarPusher dimmed={this.state.sidebarVisible}>
 							<Grid stackable centered>
 								<Grid.Column only="mobile" id="mobile-bar">
-									<div className="sidebar-toggle">
+									<div className="mobile-bar">
 										<Button
 											icon="content"
 											style={{ backgroundColor: 'transparent' }}
 											onClick={this.sidebarToggle}></Button>
-										<Header as="h5" style={{ marginTop: '14px' }}>
-											Match tracker
-										</Header>
-										<Select
-											className="locale-input"
-											onChange={this.setLocale}
-											value={this.state.locale}
-											style={{ marginBottom: 0 }}
-											options={[
-												{ key: 'en', value: 'en', text: 'en' },
-												{ key: 'ru', value: 'ru', text: 'ru' },
-											]}
-										/>
+										<div className="mobile-bar-buttons">
+											<Select
+												className="locale-input"
+												onChange={this.setLocale}
+												value={this.state.locale}
+												style={{ marginBottom: 0 }}
+												options={[
+													{ key: 'en', value: 'en', text: 'en' },
+													{ key: 'ru', value: 'ru', text: 'ru' },
+												]}
+											/>
+											{this.state.isSignedIn === false ? (
+												<Button primary onClick={this.handleAuthClick}>
+													<Icon name="google"></Icon>
+													Sign In
+												</Button>
+											) : (
+												this.state.user && (
+													<Button.Group color="blue">
+														<Dropdown
+															button
+															pointing
+															className="icon"
+															labeled
+															icon="google"
+															text={this.state.user.getName()}>
+															<Dropdown.Menu>
+																<Dropdown.Item
+																	onClick={this.handleAuthClick}
+																	text="Sign Out"
+																/>
+															</Dropdown.Menu>
+														</Dropdown>
+													</Button.Group>
+												)
+											)}
+										</div>
 									</div>
 								</Grid.Column>
 								<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
@@ -295,25 +318,25 @@ class Schedule extends React.Component {
 												<Icon name="google"></Icon>
 												Sign In
 											</Button>
-										) : this.state.user ? (
-											<Button.Group color="blue">
-												<Dropdown
-													button
-													pointing
-													className="icon"
-													labeled
-													icon="google"
-													text={this.state.user.getName()}>
-													<Dropdown.Menu>
-														<Dropdown.Item
-															onClick={this.handleAuthClick}
-															text="Sign Out"
-														/>
-													</Dropdown.Menu>
-												</Dropdown>
-											</Button.Group>
 										) : (
-											<Icon name="circle notch"></Icon>
+											this.state.user && (
+												<Button.Group color="blue">
+													<Dropdown
+														button
+														pointing
+														className="icon"
+														labeled
+														icon="google"
+														text={this.state.user.getName()}>
+														<Dropdown.Menu>
+															<Dropdown.Item
+																onClick={this.handleAuthClick}
+																text="Sign Out"
+															/>
+														</Dropdown.Menu>
+													</Dropdown>
+												</Button.Group>
+											)
 										)}
 									</Grid.Row>
 									<Grid.Row>

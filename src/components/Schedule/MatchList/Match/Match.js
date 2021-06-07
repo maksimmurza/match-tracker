@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Segment, Icon, Label, Message } from 'semantic-ui-react';
+import { Segment, Icon, Label, Message, Popup } from 'semantic-ui-react';
 import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
 
@@ -10,7 +10,7 @@ class Match extends React.Component {
 		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
 
-		this.state = { showSuccessMessage: false };
+		this.state = { notification: { show: false, success: false, header: '' } };
 	}
 
 	static contextType = LocaleContext;
@@ -70,17 +70,19 @@ class Match extends React.Component {
 			return;
 		}
 
+		const endDate = new Date(this.props.time).addHours(1.5).toISOString();
+
 		const gameEvent = {
 			summary: `${this.props.homeTeam.name} - ${this.props.awayTeam.name}`,
 			start: {
 				dateTime: `${this.props.time}`,
 			},
 			end: {
-				dateTime: `${this.props.time}`,
+				dateTime: `${endDate}`,
 			},
 			reminders: {
 				useDefault: false,
-				overrides: [{ method: 'popup', minutes: 15 }],
+				overrides: [{ method: 'popup', minutes: 60 }],
 			},
 		};
 
@@ -89,13 +91,31 @@ class Match extends React.Component {
 			resource: gameEvent,
 		});
 
-		request.execute(event => {
-			if (event) {
-				this.setState({ showSuccessMessage: true });
-				setInterval(() => {
-					this.setState({ showSuccessMessage: false });
-				}, 10000);
+		request.execute(response => {
+			if (response.status === 'confirmed') {
+				this.setState({
+					notification: {
+						show: true,
+						success: true,
+						header: 'Event successfuly created!',
+					},
+				});
+			} else {
+				this.setState({
+					notification: {
+						show: true,
+						success: false,
+						header: `${response.message}`,
+					},
+				});
 			}
+			setTimeout(() => {
+				this.setState({
+					notification: {
+						show: false,
+					},
+				});
+			}, 10000);
 		});
 	};
 
@@ -117,20 +137,26 @@ class Match extends React.Component {
 						{tomorrowLabel}
 						{liveLabel}
 
-						<div
-							ref={this.dateLabels}
-							onMouseEnter={this.hoverDateLabels}
-							onMouseLeave={this.hoverDateLabels}
-							className="date-labels-container"
-							title="Push to the calender"
-							onClick={this.pushEventHandler}>
-							<Label>
-								<Icon name="calendar" /> {matchDateStr}
-							</Label>
-							<Label>
-								<Icon name="time" /> {matchTimeStr}
-							</Label>
-						</div>
+						<Popup
+							trigger={
+								<div
+									ref={this.dateLabels}
+									onMouseEnter={this.hoverDateLabels}
+									onMouseLeave={this.hoverDateLabels}
+									className="date-labels-container"
+									onClick={this.pushEventHandler}>
+									<Label>
+										<Icon name="calendar" /> {matchDateStr}
+									</Label>
+									<Label>
+										<Icon name="time" /> {matchTimeStr}
+									</Label>
+								</div>
+							}
+							mouseEnterDelay={800}
+							content="Push to the calendar"
+							position="top left"
+						/>
 					</div>
 
 					<div className="teams">
@@ -147,15 +173,16 @@ class Match extends React.Component {
 						width="25"
 						className="league-logo"></img>
 				</Segment>
-				{this.state.showSuccessMessage &&
+				{this.state.notification.show &&
 					ReactDOM.createPortal(
 						<Message
-							success
-							icon="check"
-							className="event-success-message"
-							header="Event successfuly created!"
+							success={this.state.notification.success}
+							error={!this.state.notification.success}
+							icon={this.state.notification.success ? 'check' : 'warning'}
+							className="calendar-event-message"
+							header={this.state.notification.header}
 							content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}, ${matchDateStr}, ${matchTimeStr}`}
-							onDismiss={() => this.setState({ showSuccessMessage: false })}></Message>,
+							onDismiss={() => this.setState({ notification: { show: false } })}></Message>,
 						document.getElementById('notification-area')
 					)}
 			</>
