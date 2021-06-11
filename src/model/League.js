@@ -1,20 +1,21 @@
 class League {
+	#id;
 	#name;
 	#country;
 	#logo;
 	#matches;
 	#teams;
-	#status = 'checked';
+	#status = 'loading';
 	#teamsShowed;
 	#activeTeams;
 
-	constructor(name, country) {
-		this.#name = name;
-		this.#country = country;
+	constructor(id) {
+		this.#id = id;
 	}
 
 	toJSON() {
 		return {
+			id: this.#id,
 			name: this.#name,
 			country: this.#country,
 			logo: this.#logo,
@@ -24,6 +25,10 @@ class League {
 			teamsShowed: this.#teamsShowed,
 			activeTeams: this.#activeTeams,
 		};
+	}
+
+	get id() {
+		return this.#id;
 	}
 
 	get name() {
@@ -98,7 +103,12 @@ class League {
 	}
 
 	set status(status) {
-		if (status === 'checked' || status === 'unchecked' || status === 'indeterminate') {
+		if (
+			status === 'checked' ||
+			status === 'unchecked' ||
+			status === 'indeterminate' ||
+			status === 'loading'
+		) {
 			this.#status = status;
 		} else {
 			throw new Error('Incorect league status');

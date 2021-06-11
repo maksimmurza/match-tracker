@@ -13,7 +13,9 @@ function getLocalLeagues() {
 				});
 
 				leaguesLocal.map(l => {
-					let league = new League(l.name, l.country);
+					let league = new League(l.id);
+					league.name = l.name;
+					league.country = l.country;
 					league.logo = l.logo;
 					league.matches = l.matches;
 					league.teams = l.teams;
@@ -28,7 +30,7 @@ function getLocalLeagues() {
 }
 
 function writeLocalLeagues(leagues) {
-	if (leagues.every(league => league)) {
+	if (leagues.length === 4 && leagues.every(league => league && league.status !== 'loading')) {
 		let arr = [];
 		leagues.forEach(l => arr.push(l.toJSON()));
 		localStorage.setItem('leagues', JSON.stringify(arr));

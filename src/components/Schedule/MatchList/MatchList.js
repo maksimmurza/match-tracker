@@ -1,6 +1,6 @@
 import React from 'react';
 import Match from './Match/Match';
-import { SegmentGroup } from 'semantic-ui-react';
+import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
 import './MatchList.css';
 
 class MatchList extends React.Component {
@@ -59,10 +59,24 @@ class MatchList extends React.Component {
 		return (
 			<div className="block">
 				<SegmentGroup className="match-list">
-					{boards.length > 0 ? (
+					{(this.props.leagues.length > 0 &&
+						this.props.leagues.every(l => l.status === 'loading')) ||
+					(this.props.leagues.length > 0 &&
+						this.props.leagues.some(l => l.status === 'loading') &&
+						boards.length === 0) ? (
+						<Loader style={{ marginTop: '2em' }} active inline="centered" />
+					) : boards.length > 0 ? (
 						boards
 					) : (
-						<span className="empty-list">Select one league at least or reload the page</span>
+						<Message style={{ margin: '1em 2em 1em 1em' }}>
+							<Message.Header>No matches to show</Message.Header>
+							<Message.List
+								items={[
+									'All matches in leagues have been played',
+									'Errors while fetching informaion',
+								]}
+							/>
+						</Message>
 					)}
 				</SegmentGroup>
 			</div>

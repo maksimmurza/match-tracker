@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from 'semantic-ui-react';
+import { Checkbox, Icon, Loader, Dimmer, Segment } from 'semantic-ui-react';
 import './League.css';
 
 class League extends React.Component {
@@ -23,7 +23,9 @@ class League extends React.Component {
 	};
 
 	render() {
-		return (
+		return !this.props.league ? (
+			<Icon name="exclamation"></Icon>
+		) : this.props.league.status !== 'loading' ? (
 			<div className="league-tab" title={`${this.props.league.name}`}>
 				<Checkbox
 					onChange={this.handleChange}
@@ -33,6 +35,8 @@ class League extends React.Component {
 				/>
 				<img src={this.props.league.logo} className="league-tab-logo"></img>
 			</div>
+		) : (
+			<Loader size="tiny" active></Loader>
 		);
 	}
 }

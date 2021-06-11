@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Placeholder, Message } from 'semantic-ui-react';
 import League from './League/League';
 import Team from './Team/Team';
 import './SelectionArea.css';
@@ -11,7 +11,7 @@ function SelectionArea(props) {
 	props.leagues.forEach(league => {
 		let teams = [];
 
-		league?.teams.forEach(team => {
+		league?.teams?.forEach(team => {
 			//league.teams.length > 20 &&
 			if (
 				league.teams.length <= 20 ||
@@ -23,7 +23,7 @@ function SelectionArea(props) {
 
 		panes.push({
 			menuItem: {
-				key: league?.name,
+				key: league?.id,
 				content: (
 					<LocalErrorBoundary>
 						<League
@@ -35,7 +35,21 @@ function SelectionArea(props) {
 			},
 			render: () => (
 				<Tab.Pane className="tab-content">
-					{teams.length > 0 ? teams : <span>No teams to show</span>}
+					{teams.length > 0 ? (
+						teams
+					) : league?.status === 'loading' ? (
+						<Placeholder fluid>
+							{new Array(20).fill(<Placeholder.Line length="full" />)}
+						</Placeholder>
+					) : (
+						<Message warning>
+							<Message.Header>Receiving information failed</Message.Header>
+							<p>
+								There have been several attempts to fetch information from API. All them
+								failed. Check browser console.
+							</p>
+						</Message>
+					)}
 				</Tab.Pane>
 			),
 		});

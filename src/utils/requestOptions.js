@@ -1,8 +1,7 @@
 let req = {
 	footballData: {
 		leaguesBaseURL: 'https://api.football-data.org/v2/competitions/',
-		// leaguesKeys: ['PL/', 'PD/', 'CL/', 'EC'],
-		leaguesKeys: ['EC/', 'PL/', 'CL/'],
+		leaguesKeys: ['EC/', 'PL/', 'PD/', 'CL/'],
 		scheduledFilter: 'matches?status=SCHEDULED',
 		liveFilter: 'matches?status=LIVE',
 		requestOptions: {

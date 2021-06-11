@@ -40,10 +40,12 @@ class Schedule extends React.Component {
 				this.setState({
 					message: 'Local schedule is empty or out of date. Fetching data from API...',
 				});
-				this.fetchData().catch(e => {
-					console.log('Problems while fetching data from APIs after mounting component');
-					console.log(e);
-				});
+				this.fetchData()
+					.then(() => writeLocalLeagues(this.state.leagues))
+					.catch(e => {
+						console.log('Problems while fetching data from APIs after mounting component');
+						console.log(e);
+					});
 			});
 
 		this.authInit();
@@ -55,62 +57,80 @@ class Schedule extends React.Component {
 			throw e;
 		});
 
+		const fetchProcesses = [];
+
 		// for all leagues that we "track"
 		for (let key of req.footballData.leaguesKeys) {
-			let live;
-			let schedule;
+			let league = new League(key);
+			this.setState(state => ({ leagues: [...state.leagues, league] }));
 
-			// get live and scheduled matches
-			try {
-				live = await getSchedule(key, req.footballData.liveFilter);
-				schedule = await getSchedule(key, req.footballData.scheduledFilter);
-			} catch (e) {
-				this.setState(state => ({ leagues: [...state.leagues, null] }));
-				continue;
-			}
+			const process = async () => {
+				// get live and scheduled matches
+				const [live, schedule] = await Promise.all([
+					getSchedule(key, req.footballData.liveFilter),
+					getSchedule(key, req.footballData.scheduledFilter),
+				]);
 
-			// merge all matches
-			live.matches.forEach(liveMatch => {
-				schedule.matches.unshift(liveMatch);
-			});
-
-			let league = new League(schedule.competition.name, schedule.competition.area.name);
-			league.matches = schedule.matches;
-
-			for (let l of currentLeagues) {
-				if (
-					(l.name === league.name ||
-						(league.name === 'European Championship' && l.name === 'Euro Championship')) &&
-					(l.country === league.country || l.country === 'World' || l.country === 'Europe')
-				) {
-					league.logo = l.logo;
-
-					let teams = await getTeamsInfo(l.league_id).catch(e => {
-						throw e;
+				if (!live || !schedule) {
+					this.setState(state => {
+						let leagues = state.leagues.map(value => {
+							return value?.id === league.id ? null : value;
+						});
+						return { leagues: [...leagues] };
 					});
-
-					teams.forEach(team => {
-						team.show = true;
-						team.leagueName = schedule.competition.name;
-					});
-					league.teams = teams;
-
-					this.resolveTeamNames(league);
-					league.activeTeams = teams.filter(team =>
-						league.matches.some(match => {
-							return team.name === match.homeTeam.name || team.name === match.awayTeam.name;
-						})
-					).length;
-					league.teamsShowed = league.activeTeams;
-
-					this.setState(state => ({
-						leagues: [...state.leagues, league],
-					}));
+					return;
 				}
-			}
+
+				// merge all matches
+				live.matches.forEach(liveMatch => {
+					schedule.matches.unshift(liveMatch);
+				});
+
+				league.name = schedule.competition.name;
+				league.country = schedule.competition.area.name;
+				league.matches = schedule.matches;
+
+				for (let l of currentLeagues) {
+					if (
+						(l.name === league.name ||
+							(league.name === 'European Championship' && l.name === 'Euro Championship')) &&
+						(l.country === league.country || l.country === 'World' || l.country === 'Europe')
+					) {
+						league.logo = l.logo;
+
+						let teams = await getTeamsInfo(l.league_id).catch(e => {
+							throw e;
+						});
+
+						teams.forEach(team => {
+							team.show = true;
+							team.leagueName = schedule.competition.name;
+						});
+						league.teams = teams;
+
+						this.resolveTeamNames(league);
+						league.activeTeams = teams.filter(team =>
+							league.matches.some(match => {
+								return team.name === match.homeTeam.name || team.name === match.awayTeam.name;
+							})
+						).length;
+						league.teamsShowed = league.activeTeams;
+
+						league.status = 'checked';
+						this.setState(state => {
+							let leagues = state.leagues.map(value => {
+								return value?.id === league.id ? league : value;
+							});
+							return { leagues: [...leagues] };
+						});
+					}
+				}
+			};
+
+			fetchProcesses.push(process());
 		}
 
-		writeLocalLeagues(this.state.leagues);
+		await Promise.all(fetchProcesses);
 	}
 
 	resolveTeamNames(league) {
@@ -148,7 +168,7 @@ class Schedule extends React.Component {
 			let leagues = state.leagues.map(value => {
 				return value?.name === alreadyChangedLeague.name ? alreadyChangedLeague : value;
 			});
-			return { ...leagues };
+			return { leagues: [...leagues] };
 		});
 	};
 
@@ -217,7 +237,7 @@ class Schedule extends React.Component {
 
 	render() {
 		// loading
-		if (this.state.leagues.length === 0) {
+		if (this.state.leagues.length < 4 && !this.state.leagues.some(l => l?.matches)) {
 			return (
 				<div className="message-wrapper">
 					<div className="ui icon message">

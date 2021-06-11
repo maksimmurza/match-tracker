@@ -1,3 +1,4 @@
+import { reject } from 'lodash-es';
 import req from './requestOptions';
 
 async function getCurrentLeagues() {
@@ -14,19 +15,29 @@ async function getCurrentLeagues() {
 	}
 }
 
-async function getSchedule(leagueKey, filter) {
+async function getSchedule(leagueKey, filter, attemps = 10) {
 	let source = req.footballData;
-	const response = await fetch(source.leaguesBaseURL + leagueKey + filter, source.requestOptions).catch(
-		e => {
-			throw new Error(e.message + ' (Possibly because of too much requets per minute');
-		}
-	);
+	let response, data;
 
-	if (response.ok) {
-		const data = await response.json();
+	response = await fetch(source.leaguesBaseURL + leagueKey + filter, source.requestOptions).catch(error => {
+		console.log(error.message);
+	});
+
+	if (response && response.ok) {
+		data = await response.json();
 		return data;
 	} else {
-		throw new Error();
+		data = await new Promise(resolve => {
+			if (attemps !== 0) {
+				setTimeout(() => {
+					resolve(getSchedule(leagueKey, filter, --attemps));
+				}, 10000);
+			} else {
+				resolve(null);
+			}
+		});
+
+		return data;
 	}
 }
 
