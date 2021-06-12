@@ -6,6 +6,9 @@
 	border: none !important;
 	box-shadow: none !important;
 	margin-right: -1.1rem !important;
+
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
 }
 
 .block {
@@ -17,8 +20,7 @@
 }
 
 .match-list::-webkit-scrollbar {
-	width: 0px;
-	background: transparent;
+	display: none;
 }
 
 .empty-list {

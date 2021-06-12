@@ -1,11 +1,10 @@
 import React from 'react';
-import { Sidebar, Container } from 'semantic-ui-react';
+import { Sidebar } from 'semantic-ui-react';
 
 export default function MobileSidebar(props) {
 	return (
 		<Sidebar
 			className="mobile-sidebar"
-			as={Container}
 			animation="overlay"
 			icon="labeled"
 			onHide={() => props.onHide()}

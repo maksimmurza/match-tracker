@@ -4,8 +4,6 @@
 }
 
 .message-wrapper {
-	width: 60vw;
-	margin: 0 auto;
 	margin-top: 2rem;
 }
 
@@ -49,5 +47,9 @@
 
 	.locale-input {
 		margin: 0 10px 0 0 !important;
+	}
+
+	.mobile-sidebar {
+		max-width: 70vw;
 	}
 }

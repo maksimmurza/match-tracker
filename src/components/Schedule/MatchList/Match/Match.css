@@ -73,7 +73,7 @@
 	transition: ease all 0.2s;
 }
 
-.event-success-message {
+.calendar-event-message {
 	right: 10px !important;
 	z-index: 500;
 	margin: 5px 0 0 0 !important;

@@ -1,21 +1,55 @@
+.selection-area {
+	max-height: calc(100vh - 52px - 2em);
+	display: flex;
+	flex-direction: column;
+}
+
 .tab-content {
-	max-height: calc(100vh - 136px);
+	flex-grow: 1;
 	overflow-y: auto;
 }
 
+/* custom scroll for tabs */
+.selection-area > .ui.attached.tabular.menu {
+	overflow-y: auto !important;
+	border-bottom: none !important;
+	position: relative;
+	flex-shrink: 0;
+}
+
+.selection-area > .ui.attached.tabular.menu > a:not(.active) {
+	border-bottom: 1px solid #d4d4d5;
+}
+
+/* .selection-area > .ui.attached.tabular.menu > .item {
+	border-bottom: none !important;
+} */
+
+.selection-area > .ui.attached.tabular.menu::after {
+	visibility: visible !important;
+	content: ' ';
+	flex-grow: 2;
+	height: auto;
+	border-bottom: 1px solid #d4d4d5;
+}
+
+.selection-area > .ui.attached.tabular.menu::-webkit-scrollbar {
+	height: 8px;
+	cursor: pointer;
+}
+
+.selection-area > .ui.attached.tabular.menu::-webkit-scrollbar-track {
+	background-color: white;
+	border-left: 1px solid #d4d4d5;
+	border-right: 1px solid #d4d4d5;
+}
+
+.selection-area > .ui.tabular.menu .active.item {
+	margin-bottom: initial;
+}
+
 @media (max-width: 767px) {
-	.wrapper {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.tab-content {
-		flex-grow: 2;
-	}
-
-	.tab-content {
-		max-height: initial;
-		overflow-y: show;
+	.selection-area {
+		min-height: 100%;
 	}
 }

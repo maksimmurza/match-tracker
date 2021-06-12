@@ -55,7 +55,7 @@ function SelectionArea(props) {
 		});
 	});
 
-	return <Tab className="wrapper" panes={panes} />;
+	return <Tab className="selection-area" panes={panes} />;
 }
 
 export default SelectionArea;

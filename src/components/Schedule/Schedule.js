@@ -8,7 +8,16 @@ import stringSimilarity from 'string-similarity';
 import { LocaleContext } from './LocaleContext';
 import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch';
 import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
-import { Grid, Select, Button, SidebarPushable, SidebarPusher, Icon, Dropdown } from 'semantic-ui-react';
+import {
+	Grid,
+	Select,
+	Button,
+	SidebarPushable,
+	SidebarPusher,
+	Icon,
+	Dropdown,
+	Message,
+} from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
 
@@ -193,7 +202,6 @@ class Schedule extends React.Component {
 	};
 
 	setLocale = (event, selected) => {
-		console.log(selected);
 		this.setState({ locale: selected.value });
 	};
 
@@ -239,15 +247,17 @@ class Schedule extends React.Component {
 		// loading
 		if (this.state.leagues.length < 4 && !this.state.leagues.some(l => l?.matches)) {
 			return (
-				<div className="message-wrapper">
-					<div className="ui icon message">
-						<i className="notched circle loading icon"></i>
-						<div className="content">
-							<div className="header">Just one second</div>
-							<p>{this.state.message}</p>
-						</div>
-					</div>
-				</div>
+				<Grid centered>
+					<Grid.Column className="message-wrapper" computer={8} tablet={10} mobile={14}>
+						<Message icon>
+							<Icon name="circle notched" loading />
+							<Message.Content>
+								<Message.Header>Just one second</Message.Header>
+								<p>{this.state.message}</p>
+							</Message.Content>
+						</Message>
+					</Grid.Column>
+				</Grid>
 			);
 		} else {
 			return (
