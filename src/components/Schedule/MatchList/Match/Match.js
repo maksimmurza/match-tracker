@@ -10,7 +10,7 @@ class Match extends React.Component {
 		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
 
-		this.state = { notification: { show: false, success: false, header: '' } };
+		this.state = { notification: { show: false, status: '', header: '' } };
 	}
 
 	static contextType = LocaleContext;
@@ -64,16 +64,46 @@ class Match extends React.Component {
 		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
 	}
 
-	pushEventHandler = () => {
+	showNotification(type, header) {
+		this.setState({
+			notification: {
+				show: true,
+				status: `${type}`,
+				header: `${header}`,
+			},
+		});
+		setTimeout(() => {
+			this.setState({
+				notification: {
+					show: false,
+				},
+			});
+		}, 10000);
+	}
+
+	pushEventHandler = async () => {
 		if (this.gapi.auth2.getAuthInstance().isSignedIn.get() === false) {
-			alert('You should sign in!');
+			this.showNotification('warning', 'You should sign in!');
 			return;
 		}
 
+		const summary = `${this.props.homeTeam.name} - ${this.props.awayTeam.name}`;
 		const endDate = new Date(this.props.time).addHours(1.5).toISOString();
+		const eventExist = await this.gapi.client.calendar.events
+			.list({
+				calendarId: 'primary',
+				timeMin: `${this.props.time}`,
+			})
+			.then(response => response.result.items.filter(event => event.summary === summary).length > 0)
+			.catch(error => this.showNotification('error', error));
+
+		if (eventExist) {
+			this.showNotification('warning', 'Event is already in you calendar');
+			return;
+		}
 
 		const gameEvent = {
-			summary: `${this.props.homeTeam.name} - ${this.props.awayTeam.name}`,
+			summary,
 			start: {
 				dateTime: `${this.props.time}`,
 			},
@@ -91,32 +121,17 @@ class Match extends React.Component {
 			resource: gameEvent,
 		});
 
-		request.execute(response => {
-			if (response.status === 'confirmed') {
-				this.setState({
-					notification: {
-						show: true,
-						success: true,
-						header: 'Event successfuly created!',
-					},
-				});
-			} else {
-				this.setState({
-					notification: {
-						show: true,
-						success: false,
-						header: `${response.message}`,
-					},
-				});
-			}
-			setTimeout(() => {
-				this.setState({
-					notification: {
-						show: false,
-					},
-				});
-			}, 10000);
-		});
+		try {
+			request.execute(response => {
+				if (response.status === 'confirmed') {
+					this.showNotification('success', 'Event successfuly created!');
+				} else {
+					this.showNotification('error', response.message);
+				}
+			});
+		} catch (error) {
+			this.showNotification('error', error);
+		}
 	};
 
 	render() {
@@ -176,10 +191,10 @@ class Match extends React.Component {
 				{this.state.notification.show &&
 					ReactDOM.createPortal(
 						<Message
-							success={this.state.notification.success}
-							error={!this.state.notification.success}
-							icon={this.state.notification.success ? 'check' : 'warning'}
-							className="calendar-event-message"
+							success={this.state.notification.status === 'success'}
+							error={this.state.notification.status === 'error'}
+							warning={this.state.notification.status === 'warning'}
+							icon={this.state.notification.status === 'success' ? 'check' : 'warning'}
 							header={this.state.notification.header}
 							content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}, ${matchDateStr}, ${matchTimeStr}`}
 							onDismiss={() => this.setState({ notification: { show: false } })}></Message>,
