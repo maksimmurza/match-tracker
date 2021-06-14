@@ -20,11 +20,13 @@ import {
 } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
+import notificationable from '../Notification/Notification';
 
 class Schedule extends React.Component {
 	constructor(props) {
 		super(props);
 		this.gapi = window.gapi;
+		this.showNotification = props.showNotification;
 		this.state = {
 			user: null,
 			isSignedIn: false,
@@ -44,13 +46,17 @@ class Schedule extends React.Component {
 					this.resolveTeamNames(league);
 				});
 				this.setState({ leagues: leagues });
+				this.showNotification('', 'Loaded from local storage');
 			})
 			.catch(() => {
 				this.setState({
 					message: 'Local schedule is empty or out of date. Fetching data from API...',
 				});
 				this.fetchData()
-					.then(() => writeLocalLeagues(this.state.leagues))
+					.then(() => {
+						writeLocalLeagues(this.state.leagues);
+						this.showNotification('', 'Loaded from API');
+					})
 					.catch(e => {
 						console.log('Problems while fetching data from APIs after mounting component');
 						console.log(e);
@@ -384,4 +390,4 @@ class Schedule extends React.Component {
 		}
 	}
 }
-export default Schedule;
+export default notificationable(Schedule);

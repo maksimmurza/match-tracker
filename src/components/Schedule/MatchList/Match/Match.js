@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import { Segment, Icon, Label, Message, Popup } from 'semantic-ui-react';
 import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
+import Notificationable from '../../../Notification/Notification';
 
 class Match extends React.Component {
 	constructor(props) {
 		super(props);
 		this.gapi = window.gapi;
 		this.dateLabels = React.createRef();
-
-		this.state = { notification: { show: false, status: '', header: '' } };
+		this.showNotification = props.showNotification;
 	}
 
 	static contextType = LocaleContext;
@@ -37,6 +37,7 @@ class Match extends React.Component {
 			hour: 'numeric',
 			minute: 'numeric',
 		});
+		this.prettyDate = `${matchDateStr}, ${matchTimeStr}`;
 
 		let date = this.props.todayDate.getDate();
 		let month = this.props.todayDate.getMonth();
@@ -64,23 +65,6 @@ class Match extends React.Component {
 		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
 	}
 
-	showNotification(type, header) {
-		this.setState({
-			notification: {
-				show: true,
-				status: `${type}`,
-				header: `${header}`,
-			},
-		});
-		setTimeout(() => {
-			this.setState({
-				notification: {
-					show: false,
-				},
-			});
-		}, 10000);
-	}
-
 	pushEventHandler = async () => {
 		if (this.gapi.auth2.getAuthInstance().isSignedIn.get() === false) {
 			this.showNotification('warning', 'You should sign in!');
@@ -98,7 +82,7 @@ class Match extends React.Component {
 			.catch(error => this.showNotification('error', error));
 
 		if (eventExist) {
-			this.showNotification('warning', 'Event is already in you calendar');
+			this.showNotification('warning', 'Event is already in you calendar', summary);
 			return;
 		}
 
@@ -124,9 +108,13 @@ class Match extends React.Component {
 		try {
 			request.execute(response => {
 				if (response.status === 'confirmed') {
-					this.showNotification('success', 'Event successfuly created!');
+					this.showNotification(
+						'success',
+						'Event successfuly created!',
+						`${summary}, ${this.prettyDate}`
+					);
 				} else {
-					this.showNotification('error', response.message);
+					this.showNotification('error', response.message, `${summary}, ${this.prettyDate}`);
 				}
 			});
 		} catch (error) {
@@ -188,21 +176,9 @@ class Match extends React.Component {
 						width="25"
 						className="league-logo"></img>
 				</Segment>
-				{this.state.notification.show &&
-					ReactDOM.createPortal(
-						<Message
-							success={this.state.notification.status === 'success'}
-							error={this.state.notification.status === 'error'}
-							warning={this.state.notification.status === 'warning'}
-							icon={this.state.notification.status === 'success' ? 'check' : 'warning'}
-							header={this.state.notification.header}
-							content={`${this.props.homeTeam.name} - ${this.props.awayTeam.name}, ${matchDateStr}, ${matchTimeStr}`}
-							onDismiss={() => this.setState({ notification: { show: false } })}></Message>,
-						document.getElementById('notification-area')
-					)}
 			</>
 		);
 	}
 }
 
-export default Match;
+export default Notificationable(Match);
