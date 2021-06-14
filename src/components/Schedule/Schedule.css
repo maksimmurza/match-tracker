@@ -9,21 +9,36 @@
 
 .controls {
 	margin: 1rem 0;
+	height: 100vh;
+	display: flex !important;
+	flex-direction: column;
+}
+
+.sign-out-button {
+	min-width: fit-content;
+}
+
+.settings-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.settings-wrapper > * {
+	margin: 0 10px 1rem 0 !important;
+	max-width: 8rem;
 }
 
 .locale-input {
-	margin-bottom: 1rem;
 	min-width: fit-content !important;
 }
 
-.mobile-sidebar {
-	background-color: gainsboro;
+#mobile-layout {
+	padding: 1rem 0 0 0 !important;
 }
 
 .mobile-bar {
 	margin: 5px 0;
 	display: flex;
-	align-items: center;
 }
 
 .mobile-bar-buttons {
@@ -32,8 +47,8 @@
 	justify-content: flex-end;
 }
 
-#mobile-bar {
-	padding-bottom: 0 !important;
+.mobile-sidebar {
+	background-color: gainsboro;
 }
 
 #match-list-column {
@@ -51,5 +66,18 @@
 
 	.mobile-sidebar {
 		max-width: 70vw;
+	}
+
+	.settings-wrapper > * {
+		margin: 0 5px 0 0 !important;
+		align-self: center;
+	}
+
+	.toggle-sidebar {
+		margin: 0 auto 0 0 !important;
+	}
+
+	.filter {
+		width: 6rem;
 	}
 }

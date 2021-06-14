@@ -17,6 +17,7 @@ import {
 	Icon,
 	Dropdown,
 	Message,
+	Input,
 } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
@@ -278,38 +279,45 @@ class Schedule extends React.Component {
 						</MobileSidebar>
 						<SidebarPusher dimmed={this.state.sidebarVisible}>
 							<Grid stackable centered>
-								<Grid.Column only="mobile" id="mobile-bar">
+								<Grid.Column only="mobile" id="mobile-layout">
 									<div className="mobile-bar">
 										<Button
 											icon="content"
+											className="toggle-sidebar"
 											style={{ backgroundColor: 'transparent' }}
 											onClick={this.sidebarToggle}></Button>
-										<div className="mobile-bar-buttons">
+										<div className="settings-wrapper">
+											<Input
+												value={this.state.quantity}
+												onChange={e => this.setState({ quantity: e.target.value })}
+												type="number"
+												title="Number of upcoming matches with selected teams"
+												icon="filter"
+												iconPosition="left"
+												className="filter"
+											/>
 											<Select
+												style={{ marginRight: '10px' }}
 												className="locale-input"
 												onChange={this.setLocale}
 												value={this.state.locale}
-												style={{ marginBottom: 0 }}
 												options={[
 													{ key: 'en', value: 'en', text: 'en' },
 													{ key: 'ru', value: 'ru', text: 'ru' },
 												]}
 											/>
 											{this.state.isSignedIn === false ? (
-												<Button primary onClick={this.handleAuthClick}>
+												<Button icon primary onClick={this.handleAuthClick}>
 													<Icon name="google"></Icon>
-													Sign In
 												</Button>
 											) : (
 												this.state.user && (
-													<Button.Group color="blue">
+													<Button.Group color="blue" className="sign-out-button">
 														<Dropdown
 															button
 															pointing
 															className="icon"
-															labeled
-															icon="google"
-															text={this.state.user.getName()}>
+															icon="google">
 															<Dropdown.Menu>
 																<Dropdown.Item
 																	onClick={this.handleAuthClick}
@@ -338,7 +346,16 @@ class Schedule extends React.Component {
 									computer={5}
 									tablet={6}
 									only="computer tablet">
-									<Grid.Row>
+									<div className="settings-wrapper">
+										<Input
+											value={this.state.quantity}
+											onChange={e => this.setState({ quantity: e.target.value })}
+											type="number"
+											title="Number of upcoming matches with selected teams"
+											icon="filter"
+											iconPosition="left"
+											className="filter"
+										/>
 										<Select
 											style={{ marginRight: '10px' }}
 											className="locale-input"
@@ -356,7 +373,7 @@ class Schedule extends React.Component {
 											</Button>
 										) : (
 											this.state.user && (
-												<Button.Group color="blue">
+												<Button.Group color="blue" className="sign-out-button">
 													<Dropdown
 														button
 														pointing
@@ -374,13 +391,11 @@ class Schedule extends React.Component {
 												</Button.Group>
 											)
 										)}
-									</Grid.Row>
-									<Grid.Row>
-										<SelectionArea
-											leagues={this.state.leagues}
-											onChangeLeague={this.onChangeLeague}
-											onChangeTeam={this.onChangeTeam}></SelectionArea>
-									</Grid.Row>
+									</div>
+									<SelectionArea
+										leagues={this.state.leagues}
+										onChangeLeague={this.onChangeLeague}
+										onChangeTeam={this.onChangeTeam}></SelectionArea>
 								</Grid.Column>
 							</Grid>
 						</SidebarPusher>

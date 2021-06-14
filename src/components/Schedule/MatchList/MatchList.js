@@ -5,25 +5,23 @@ import './MatchList.css';
 
 class MatchList extends React.Component {
 	getMarkedMatches() {
-		let boards = [];
+		let markedMatches = [];
+		let qty = this.props.quantity;
 
 		this.props.leagues.forEach(league => {
 			if (league.status !== 'checked' && league.status !== 'indeterminate') return;
 
-			let quantity;
-			this.props.quantity <= league.matches.length
-				? (quantity = this.props.quantity)
-				: (quantity = league.matches.length);
-
-			for (let i = 0; i < quantity; i++) {
-				if (league.matches[i].homeTeam.show === true || league.matches[i].awayTeam.show === true) {
-					league.matches[i].leagueLogo = league.logo;
-					boards.push(league.matches[i]);
+			league.matches.forEach(match => {
+				if (match.homeTeam.show === true || match.awayTeam.show === true) {
+					match.leagueLogo = league.logo;
+					markedMatches.push(match);
 				}
-			}
+			});
 		});
 
-		return boards;
+		markedMatches.sort(this.sortByTime);
+		qty = qty <= markedMatches.length ? qty : markedMatches.length;
+		return markedMatches.slice(0, qty);
 	}
 
 	sortByTime = (a, b) => {
@@ -39,19 +37,16 @@ class MatchList extends React.Component {
 	};
 
 	render() {
-		let boards = this.getMarkedMatches();
-		boards.sort(this.sortByTime);
-
-		boards = boards.map(board => {
+		let markedMatches = this.getMarkedMatches().map(match => {
 			return (
 				<Match
-					key={board.id}
-					homeTeam={board.homeTeam}
-					awayTeam={board.awayTeam}
-					time={board.utcDate}
-					status={board.status}
+					key={match.id}
+					homeTeam={match.homeTeam}
+					awayTeam={match.awayTeam}
+					time={match.utcDate}
+					status={match.status}
 					todayDate={this.props.todayDate}
-					leagueLogo={board.leagueLogo}
+					leagueLogo={match.leagueLogo}
 				/>
 			);
 		});
@@ -63,10 +58,10 @@ class MatchList extends React.Component {
 						this.props.leagues.every(l => l.status === 'loading')) ||
 					(this.props.leagues.length > 0 &&
 						this.props.leagues.some(l => l.status === 'loading') &&
-						boards.length === 0) ? (
+						markedMatches.length === 0) ? (
 						<Loader style={{ marginTop: '2em' }} active inline="centered" />
-					) : boards.length > 0 ? (
-						boards
+					) : markedMatches.length > 0 ? (
+						markedMatches
 					) : (
 						<Message style={{ margin: '1em 2em 1em 1em' }}>
 							<Message.Header>No matches to show</Message.Header>
