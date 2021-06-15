@@ -1,18 +1,20 @@
 import League from '../model/League';
 
 function getLocalLeagues() {
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		setTimeout(() => {
-			let leaguesLocal = JSON.parse(localStorage.getItem('leagues'));
-			if (!leaguesLocal || leaguesLocal.length === 0) {
-				reject();
+			let localLeagues = JSON.parse(localStorage.getItem('leagues'));
+			if (!localLeagues || localLeagues.length === 0) {
+				resolve({ leagues: null });
 			} else {
 				let today = new Date(); //  '2021-04-03T11:30:00Z'
-				leaguesLocal.forEach(league => {
-					if (league.matches.some(match => new Date(match.utcDate) < today)) reject();
+				localLeagues.forEach(league => {
+					if (league.matches.some(match => new Date(match.utcDate) < today))
+						resolve({ localLeagues, outOfDate: true });
 				});
 
-				leaguesLocal.map(l => {
+				const leagues = [];
+				localLeagues.forEach(l => {
 					let league = new League(l.id);
 					league.name = l.name;
 					league.country = l.country;
@@ -21,9 +23,9 @@ function getLocalLeagues() {
 					league.teams = l.teams;
 					league.status = l.status;
 					league.teamsShowed = l.teamsShowed;
-					return league;
+					leagues.push(league);
 				});
-				resolve(leaguesLocal);
+				resolve({ localLeagues: leagues, outOfDate: false });
 			}
 		});
 	});

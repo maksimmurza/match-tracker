@@ -41,20 +41,21 @@ class Schedule extends React.Component {
 
 	componentDidMount() {
 		this.setState({ message: 'Checking local storage...' });
-		getLocalLeagues()
-			.then(leagues => {
-				leagues.forEach(league => {
+		getLocalLeagues().then(({ localLeagues, outOfDate }) => {
+			if (localLeagues && !outOfDate) {
+				localLeagues.forEach(league => {
 					this.resolveTeamNames(league);
 				});
-				this.setState({ leagues: leagues });
+				this.setState({ leagues: localLeagues });
 				this.showNotification('', 'Loaded from local storage');
-			})
-			.catch(() => {
+			} else {
 				this.setState({
 					message: 'Local schedule is empty or out of date. Fetching data from API...',
 				});
-				this.fetchData()
+				console.log('before fetch', localLeagues);
+				this.fetchData(localLeagues)
 					.then(() => {
+						console.log('created in fetch data', this.state.leagues);
 						writeLocalLeagues(this.state.leagues);
 						this.showNotification('', 'Loaded from API');
 					})
@@ -62,12 +63,13 @@ class Schedule extends React.Component {
 						console.log('Problems while fetching data from APIs after mounting component');
 						console.log(e);
 					});
-			});
+			}
+		});
 
 		this.authInit();
 	}
 
-	async fetchData() {
+	async fetchData(localLeagues) {
 		// get list of current leagues for using id's in future requests
 		let currentLeagues = await getCurrentLeagues().catch(e => {
 			throw e;
@@ -132,7 +134,24 @@ class Schedule extends React.Component {
 						).length;
 						league.teamsShowed = league.activeTeams;
 
-						league.status = 'checked';
+						if (
+							localLeagues &&
+							localLeagues.some(l => l.id === league.id && l.name === league.name)
+						) {
+							const localLeague = localLeagues.find(l => l.id === league.id);
+							league.status = localLeague.status;
+							league.teams.forEach(team => {
+								const localTeam = localLeague.teams.find(
+									t => t.id === team.id && t.name === team.name
+								);
+								if (localTeam) {
+									team.show = localTeam.show;
+								}
+							});
+						} else {
+							league.status = 'checked';
+						}
+
 						this.setState(state => {
 							let leagues = state.leagues.map(value => {
 								return value?.id === league.id ? league : value;
@@ -180,12 +199,17 @@ class Schedule extends React.Component {
 	}
 
 	onChangeLeague = alreadyChangedLeague => {
-		this.setState(state => {
-			let leagues = state.leagues.map(value => {
-				return value?.name === alreadyChangedLeague.name ? alreadyChangedLeague : value;
-			});
-			return { leagues: [...leagues] };
-		});
+		this.setState(
+			state => {
+				let leagues = state.leagues.map(value => {
+					return value?.name === alreadyChangedLeague.name ? alreadyChangedLeague : value;
+				});
+				return { leagues: [...leagues] };
+			},
+			() => {
+				writeLocalLeagues(this.state.leagues);
+			}
+		);
 	};
 
 	onChangeTeam = (changedTeam, newTeamStatus) => {
