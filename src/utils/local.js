@@ -13,19 +13,23 @@ function getLocalLeagues() {
 						resolve({ localLeagues, outOfDate: true });
 				});
 
-				const leagues = [];
-				localLeagues.forEach(l => {
-					let league = new League(l.id);
-					league.name = l.name;
-					league.country = l.country;
-					league.logo = l.logo;
-					league.matches = l.matches;
-					league.teams = l.teams;
-					league.status = l.status;
-					league.teamsShowed = l.teamsShowed;
-					leagues.push(league);
-				});
-				resolve({ localLeagues: leagues, outOfDate: false });
+				try {
+					const leagues = [];
+					localLeagues.forEach(l => {
+						let league = new League(l.id);
+						league.name = l.name;
+						league.country = l.country;
+						league.logo = l.logo;
+						league.matches = l.matches;
+						league.teams = l.teams;
+						league.status = l.status;
+						league.teamsShowed = l.teamsShowed;
+						leagues.push(league);
+					});
+					resolve({ localLeagues: leagues, outOfDate: false });
+				} catch (error) {
+					resolve({ localLeagues, outOfDate: true });
+				}
 			}
 		});
 	});

@@ -27,7 +27,9 @@ class MatchList extends React.Component {
 	sortByTime = (a, b) => {
 		let aDate = new Date(a.utcDate);
 		let bDate = new Date(b.utcDate);
-		if (aDate.getMonth() - bDate.getMonth() !== 0) {
+		if (aDate.getFullYear() - bDate.getFullYear() !== 0) {
+			return aDate.getFullYear() - bDate.getFullYear();
+		} else if (aDate.getMonth() - bDate.getMonth() !== 0) {
 			return aDate.getMonth() - bDate.getMonth();
 		} else if (aDate.getDate() - bDate.getDate() !== 0) {
 			return aDate.getDate() - bDate.getDate();

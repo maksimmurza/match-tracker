@@ -169,32 +169,49 @@ class Schedule extends React.Component {
 	}
 
 	resolveTeamNames(league) {
-		// finding logo for teams from schedule comparing names
 		league.matches.length > 0 &&
 			league.matches.forEach(match => {
 				let arr = [];
+				const separators = /United|City|FC|hampton/;
 				league.teams.forEach(team => {
 					arr.push(team.name);
 				});
 
-				match.homeTeam.name
-					? (match.homeTeam =
-							league.teams[
-								stringSimilarity.findBestMatch(
-									match.homeTeam.name.split('hampton').join(''),
-									arr
-								).bestMatchIndex
-							])
-					: 'Home Team';
-				match.awayTeam.name
-					? (match.awayTeam =
-							league.teams[
-								stringSimilarity.findBestMatch(
-									match.awayTeam.name.split('hampton').join(''),
-									arr
-								).bestMatchIndex
-							])
-					: 'Away Team';
+				if (match.homeTeam.name) {
+					const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
+						match.homeTeam.name,
+						arr
+					);
+					if (bestMatches[bestMatchIndex].rating > 0.75) {
+						match.homeTeam = league.teams[bestMatchIndex];
+					} else {
+						const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
+							match.homeTeam.name.split(separators).join(''),
+							arr
+						);
+						if (bestMatches[bestMatchIndex].rating > 0.38) {
+							match.homeTeam = league.teams[bestMatchIndex];
+						}
+					}
+				}
+
+				if (match.awayTeam.name) {
+					const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
+						match.awayTeam.name,
+						arr
+					);
+					if (bestMatches[bestMatchIndex].rating > 0.75) {
+						match.awayTeam = league.teams[bestMatchIndex];
+					} else {
+						const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
+							match.awayTeam.name.split(separators).join(''),
+							arr
+						);
+						if (bestMatches[bestMatchIndex].rating > 0.38) {
+							match.awayTeam = league.teams[bestMatchIndex];
+						}
+					}
+				}
 			});
 	}
 
