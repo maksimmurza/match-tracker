@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Segment, Icon, Label, Message, Popup } from 'semantic-ui-react';
+import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
 import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
 import Notificationable from '../../../Notification/Notification';

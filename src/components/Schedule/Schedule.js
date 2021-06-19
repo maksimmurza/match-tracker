@@ -15,22 +15,18 @@ import {
 	SidebarPushable,
 	SidebarPusher,
 	Icon,
-	Dropdown,
 	Message,
 	Input,
 } from 'semantic-ui-react';
 import MobileSidebar from '../MobileSidebar/MobileSideBar';
-import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../utils/authOptions';
+import GoogleAuthButton from '../GoogleAuthButton/GoogleAuthButton';
 import notificationable from '../Notification/Notification';
 
 class Schedule extends React.Component {
 	constructor(props) {
 		super(props);
-		this.gapi = window.gapi;
 		this.showNotification = props.showNotification;
 		this.state = {
-			user: null,
-			isSignedIn: false,
 			leagues: [],
 			quantity: 15,
 			locale: 'ru',
@@ -52,7 +48,6 @@ class Schedule extends React.Component {
 				this.setState({
 					message: 'Local schedule is empty or out of date. Fetching data from API...',
 				});
-				console.log('before fetch', localLeagues);
 				this.fetchData(localLeagues)
 					.then(() => {
 						console.log('created in fetch data', this.state.leagues);
@@ -65,8 +60,6 @@ class Schedule extends React.Component {
 					});
 			}
 		});
-
-		this.authInit();
 	}
 
 	async fetchData(localLeagues) {
@@ -253,44 +246,6 @@ class Schedule extends React.Component {
 		this.setState({ locale: selected.value });
 	};
 
-	authInit = () => {
-		this.gapi.load('client:auth2', async () => {
-			await this.gapi.client.init({
-				apiKey: API_KEY,
-				clientId: CLIENT_ID,
-				discoveryDocs: DISCOVERY_DOCS,
-				scope: SCOPES,
-			});
-
-			if (this.gapi.auth2.getAuthInstance().isSignedIn.get() === true) {
-				this.setState({ isSignedIn: true });
-				const profile = this.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-				this.setState({ user: profile });
-			}
-		});
-	};
-
-	handleAuthClick = () => {
-		if (this.state.isSignedIn === true) {
-			this.gapi.auth2
-				.getAuthInstance()
-				.signOut()
-				.then(() => {
-					this.setState({ user: null });
-					this.setState({ isSignedIn: false });
-				});
-		} else {
-			this.gapi.auth2
-				.getAuthInstance()
-				.signIn()
-				.then(() => {
-					const profile = this.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-					this.setState({ user: profile });
-					this.setState({ isSignedIn: true });
-				});
-		}
-	};
-
 	render() {
 		// loading
 		if (this.state.leagues.length < 4 && !this.state.leagues.some(l => l?.matches)) {
@@ -347,28 +302,7 @@ class Schedule extends React.Component {
 													{ key: 'ru', value: 'ru', text: 'ru' },
 												]}
 											/>
-											{this.state.isSignedIn === false ? (
-												<Button icon primary onClick={this.handleAuthClick}>
-													<Icon name="google"></Icon>
-												</Button>
-											) : (
-												this.state.user && (
-													<Button.Group color="blue" className="sign-out-button">
-														<Dropdown
-															button
-															pointing
-															className="icon"
-															icon="google">
-															<Dropdown.Menu>
-																<Dropdown.Item
-																	onClick={this.handleAuthClick}
-																	text="Sign Out"
-																/>
-															</Dropdown.Menu>
-														</Dropdown>
-													</Button.Group>
-												)
-											)}
+											<GoogleAuthButton size={'small'}></GoogleAuthButton>
 										</div>
 									</div>
 								</Grid.Column>
@@ -407,31 +341,7 @@ class Schedule extends React.Component {
 												{ key: 'ru', value: 'ru', text: 'ru' },
 											]}
 										/>
-										{this.state.isSignedIn === false ? (
-											<Button primary onClick={this.handleAuthClick}>
-												<Icon name="google"></Icon>
-												Sign In
-											</Button>
-										) : (
-											this.state.user && (
-												<Button.Group color="blue" className="sign-out-button">
-													<Dropdown
-														button
-														pointing
-														className="icon"
-														labeled
-														icon="google"
-														text={this.state.user.getName()}>
-														<Dropdown.Menu>
-															<Dropdown.Item
-																onClick={this.handleAuthClick}
-																text="Sign Out"
-															/>
-														</Dropdown.Menu>
-													</Dropdown>
-												</Button.Group>
-											)
-										)}
+										<GoogleAuthButton></GoogleAuthButton>
 									</div>
 									<SelectionArea
 										leagues={this.state.leagues}
