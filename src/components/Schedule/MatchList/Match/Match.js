@@ -4,7 +4,7 @@ import './Match.css';
 import { LocaleContext } from '../../LocaleContext';
 import Notificationable from '../../../Notification/Notification';
 
-class Match extends React.Component {
+class Match extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.gapi = window.gapi;

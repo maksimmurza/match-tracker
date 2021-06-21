@@ -23,6 +23,7 @@ function getLocalLeagues() {
 						league.matches = l.matches;
 						league.teams = l.teams;
 						league.status = l.status;
+						league.activeTeams = l.activeTeams;
 						league.teamsShowed = l.teamsShowed;
 						leagues.push(league);
 					});

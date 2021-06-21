@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Icon, Loader, Dimmer, Segment } from 'semantic-ui-react';
+import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 import './League.css';
 
 class League extends React.Component {

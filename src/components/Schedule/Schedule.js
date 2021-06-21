@@ -50,7 +50,6 @@ class Schedule extends React.Component {
 				});
 				this.fetchData(localLeagues)
 					.then(() => {
-						console.log('created in fetch data', this.state.leagues);
 						writeLocalLeagues(this.state.leagues);
 						this.showNotification('', 'Loaded from API');
 					})

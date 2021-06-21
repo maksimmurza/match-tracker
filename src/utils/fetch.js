@@ -1,4 +1,3 @@
-import { reject } from 'lodash-es';
 import req from './requestOptions';
 
 async function getCurrentLeagues() {
