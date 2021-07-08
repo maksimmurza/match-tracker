@@ -1,7 +1,8 @@
 import React from 'react';
-import Match from './Match';
+import { Match } from './Match';
 import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import 'regenerator-runtime/runtime';
 
 let date = new Date();
 date.setDate(date.getDate() + 7);

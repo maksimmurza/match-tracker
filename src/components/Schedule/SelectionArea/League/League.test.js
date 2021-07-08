@@ -12,14 +12,13 @@ Enzyme.configure({ adapter: new Adapter() });
 
 let props;
 let league = leagues[0];
-
-let fn = jest.fn(function () {});
+let onChangeLeague = jest.fn();
 
 beforeEach(() => {
 	props = {
 		league: cloneDeep(league),
 		status: 'checked',
-		onChangeLeague: fn,
+		onChangeLeague,
 	};
 });
 
@@ -31,31 +30,37 @@ test('league name and checkbox displaying', () => {
 	render(<League {...props}></League>);
 
 	expect(screen.getByRole('img')).not.toBeNull();
-	expect(screen.getByTestId('input').children[0]).not.toBeNull();
+	expect(screen.getByTestId('leagueCheckbox').children[0]).not.toBeNull();
 });
 
-describe('Test behaviour after click', () => {
-	test('handlers invocation after click', () => {
+describe('Test click on league checkbox', () => {
+	let leagueCheckbox;
+
+	beforeEach(() => {
 		render(<League {...props}></League>);
-		const element = screen.getByTestId('input');
-		fireEvent.click(element.children[0]); // cause of Semantic UI
-		expect(fn.mock.calls.length).toEqual(1);
+		leagueCheckbox = screen.getByTestId('leagueCheckbox').children[0];
 	});
 
-	test('changing props responsible for displaying', () => {
-		let wrapper = shallow(<League {...props}></League>);
-		let checkbox = wrapper.find('Checkbox');
-		expect(wrapper.instance().props.league.status).toEqual('checked');
-		checkbox.props().onChange();
-		expect(wrapper.instance().props.league.status).toEqual('unchecked');
+	test('handlers invocation after click', () => {
+		expect(onChangeLeague).not.toHaveBeenCalled();
+		fireEvent.click(leagueCheckbox);
+		expect(onChangeLeague).toHaveBeenCalled();
 	});
 
-	test('changing quantity of showed teams', () => {
-		let wrapper = shallow(<League {...props}></League>);
-		let checkbox = wrapper.find('Checkbox');
-		expect(wrapper.instance().props.league.teamsShowed).toEqual(props.league.teams.length);
-		checkbox.props().onChange();
-		expect(wrapper.instance().props.league.teamsShowed).toEqual(0);
+	test('checkbox status', () => {
+		const leagueComponentWrapper = shallow(<League {...props}></League>);
+		expect(leagueComponentWrapper.instance().props.league.status).toEqual('checked');
+		fireEvent.click(leagueCheckbox);
+		expect(onChangeLeague.mock.calls[0][0].status).toEqual('unchecked');
+		expect(leagueComponentWrapper.instance().props.league.status).toEqual('unchecked');
+	});
+
+	test('showed teams', () => {
+		const leagueComponentWrapper = shallow(<League {...props}></League>);
+		expect(leagueComponentWrapper.instance().props.league.teamsShowed).toEqual(props.league.teams.length);
+		fireEvent.click(leagueCheckbox);
+		expect(onChangeLeague.mock.calls[2][0].teamsShowed).toEqual(0);
+		expect(leagueComponentWrapper.instance().props.league.teamsShowed).toEqual(0);
 	});
 });
 
@@ -64,6 +69,6 @@ test('is league unchecked after changing its prop and is its team not in the lis
 
 	render(<League {...props}></League>);
 
-	expect(screen.getByTestId('input').children[0].checked).toEqual(false);
+	expect(screen.getByTestId('leagueCheckbox').children[0].checked).toEqual(false);
 	expect(screen.queryByText(league.teams[0].name)).not.toBeInTheDocument();
 });
