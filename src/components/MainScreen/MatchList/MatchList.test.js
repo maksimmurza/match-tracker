@@ -2,7 +2,7 @@ import React from 'react';
 import MatchList from './MatchList';
 import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../mock/leagues.test.json';
+import leagues from '../../../mock/leagues.test.json';
 import cloneDeep from 'lodash/cloneDeep';
 import shallow from 'enzyme/shallow';
 import Enzyme from 'enzyme';

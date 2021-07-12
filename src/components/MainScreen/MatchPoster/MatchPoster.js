@@ -1,8 +1,8 @@
 import React from 'react';
 import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
 import './MatchPoster.css';
-import { LocaleContext } from '../../context/LocaleContext';
-import Notificationable from '../Notification/Notification';
+import { LocaleContext } from '../../../context/LocaleContext';
+import Notificationable from '../../Notification/Notification';
 
 export class MatchPoster extends React.PureComponent {
 	constructor(props) {
