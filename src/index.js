@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Schedule from './components/Schedule';
+import DataProvider from './components/DataProvider/DataProvider';
+import App from './components/App';
 import 'semantic-ui-css/semantic.min.css';
 import GlobalErrorBoundary from './components/ErrorBoundaries/GlobalErrorBoundary';
 
@@ -12,7 +13,7 @@ Date.prototype.addHours = function (hours) {
 ReactDOM.render(
 	<React.StrictMode>
 		<GlobalErrorBoundary>
-			<Schedule />
+			<DataProvider render={leagues => <App leagues={leagues}></App>} />
 		</GlobalErrorBoundary>
 	</React.StrictMode>,
 	document.getElementById('root')
