@@ -2,7 +2,7 @@ import React from 'react';
 import TeamCheckbox from './TeamCheckbox';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../mock/leagues.test.json';
+import leagues from '../../../mock/leagues.test.json';
 import { shallow } from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

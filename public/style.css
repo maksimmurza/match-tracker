@@ -19,8 +19,8 @@ body {
 	position: fixed;
 	bottom: 5px;
 	right: 0;
-  width: 350px;
-  height: max-content;
+  	width: 350px;
+  	height: max-content;
 	display: flex;
 	flex-direction: column;
 }

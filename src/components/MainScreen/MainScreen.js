@@ -1,12 +1,12 @@
 import React from 'react';
-import MatchList from '../MatchList/MatchList';
-import SelectionArea from '../SelectionArea/SelectionArea';
+import MatchList from './MatchList/MatchList';
+import SelectionArea from './SelectionArea/SelectionArea';
 import './MainScreen.css';
 import { LocaleContext } from '../../context/LocaleContext';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { Grid, Select, Button, SidebarPushable, SidebarPusher, Input } from 'semantic-ui-react';
-import MobileSidebar from '../MobileSidebar/MobileSideBar';
-import GoogleAuthButton from '../GoogleAuthButton/GoogleAuthButton';
+import MobileSidebar from './MobileSidebar/MobileSideBar';
+import GoogleAuthButton from './GoogleAuthButton/GoogleAuthButton';
 import notificationable from '../Notification/Notification';
 
 class MainScreen extends React.Component {

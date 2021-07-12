@@ -3,7 +3,7 @@ import { Tab, Placeholder, Message } from 'semantic-ui-react';
 import League from '../LeagueTab/League';
 import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
-import LocalErrorBoundary from '../ErrorBoundaries/LocalErrorBoundary';
+import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
 
 function SelectionArea(props) {
 	let panes = [];
