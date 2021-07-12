@@ -1,5 +1,5 @@
 import React from 'react';
-import Match from './Match/Match';
+import MatchPoster from '../MatchPoster/MatchPoster';
 import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
 import './MatchList.css';
 
@@ -41,7 +41,7 @@ class MatchList extends React.Component {
 	render() {
 		let markedMatches = this.getMarkedMatches().map(match => {
 			return (
-				<Match
+				<MatchPoster
 					key={match.id}
 					homeTeam={match.homeTeam}
 					awayTeam={match.awayTeam}

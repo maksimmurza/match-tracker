@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 import './League.css';
 
-class League extends React.Component {
+class LeagueTab extends React.Component {
 	handleChange = event => {
 		event.stopPropagation();
 		let league = this.props.league;
@@ -40,4 +40,4 @@ class League extends React.Component {
 	}
 }
 
-export default League;
+export default LeagueTab;

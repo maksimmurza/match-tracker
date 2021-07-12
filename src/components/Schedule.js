@@ -2,12 +2,12 @@ import React from 'react';
 import MatchList from './MatchList/MatchList';
 import SelectionArea from './SelectionArea/SelectionArea';
 import './Schedule.css';
-import League from '../../model/League';
-import req from '../../utils/requestOptions';
+import League from '../model/League';
+import req from '../utils/requestOptions';
 import stringSimilarity from 'string-similarity';
-import { LocaleContext } from './LocaleContext';
-import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../../utils/fetch';
-import { getLocalLeagues, writeLocalLeagues } from '../../utils/local';
+import { LocaleContext } from '../context/LocaleContext';
+import { getSchedule, getCurrentLeagues, getTeamsInfo } from '../utils/fetchData';
+import { getLocalLeagues, writeLocalLeagues } from '../utils/localStorage';
 import {
 	Grid,
 	Select,
@@ -18,9 +18,9 @@ import {
 	Message,
 	Input,
 } from 'semantic-ui-react';
-import MobileSidebar from '../MobileSidebar/MobileSideBar';
-import GoogleAuthButton from '../GoogleAuthButton/GoogleAuthButton';
-import notificationable from '../Notification/Notification';
+import MobileSidebar from './MobileSidebar/MobileSideBar';
+import GoogleAuthButton from './GoogleAuthButton/GoogleAuthButton';
+import notificationable from './Notification/Notification';
 
 class Schedule extends React.Component {
 	constructor(props) {

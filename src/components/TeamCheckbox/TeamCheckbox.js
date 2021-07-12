@@ -1,8 +1,8 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
-import './Team.css';
+import './TeamCheckbox.css';
 
-class Team extends React.Component {
+class TeamCheckbox extends React.Component {
 	handleChange = () => {
 		let team = this.props.team;
 
@@ -24,4 +24,4 @@ class Team extends React.Component {
 	}
 }
 
-export default Team;
+export default TeamCheckbox;

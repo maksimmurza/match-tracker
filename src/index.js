@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Schedule from './components/Schedule/Schedule';
+import Schedule from './components/Schedule';
 import 'semantic-ui-css/semantic.min.css';
-import GlobalErrorBoundary from './components/GlobalErrorBoundary';
+import GlobalErrorBoundary from './components/ErrorBoundaries/GlobalErrorBoundary';
 
 Date.prototype.addHours = function (hours) {
 	this.setTime(this.getTime() + hours * 60 * 60 * 1000);

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
-import './Match.css';
-import { LocaleContext } from '../../LocaleContext';
-import Notificationable from '../../../Notification/Notification';
+import './MatchPoster.css';
+import { LocaleContext } from '../../context/LocaleContext';
+import Notificationable from '../Notification/Notification';
 
-export class Match extends React.PureComponent {
+export class MatchPoster extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.gapi = window.gapi;
@@ -180,4 +180,4 @@ export class Match extends React.PureComponent {
 	}
 }
 
-export default Notificationable(Match);
+export default Notificationable(MatchPoster);

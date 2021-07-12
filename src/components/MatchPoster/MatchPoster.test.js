@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match } from './Match';
+import { MatchPoster } from './MatchPoster';
 import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import 'regenerator-runtime/runtime';
@@ -32,14 +32,14 @@ let props = {
 };
 
 test('teams names displaying', () => {
-	render(<Match {...props}></Match>);
+	render(<MatchPoster {...props}></MatchPoster>);
 
 	expect(screen.getByText('Barcelona')).not.toBeNull();
 	expect(screen.getByText('Real Madrid')).not.toBeNull();
 });
 
 test('date and time displaying', () => {
-	render(<Match {...props}></Match>);
+	render(<MatchPoster {...props}></MatchPoster>);
 
 	let dateStr = date.toLocaleDateString('ru', {
 		month: 'long',
@@ -56,7 +56,7 @@ test('date and time displaying', () => {
 
 describe('Test labels', () => {
 	test('schedeled after week, no labels', () => {
-		render(<Match {...props}></Match>);
+		render(<MatchPoster {...props}></MatchPoster>);
 
 		liveLabel = screen.queryByText('live');
 		todayLabel = screen.queryByText('today');
@@ -70,7 +70,7 @@ describe('Test labels', () => {
 	test('scheduled today', () => {
 		date = new Date();
 		props.time = date.toISOString();
-		render(<Match {...props}></Match>);
+		render(<MatchPoster {...props}></MatchPoster>);
 
 		liveLabel = screen.queryByText('live');
 		todayLabel = screen.queryByText('today');
@@ -84,7 +84,7 @@ describe('Test labels', () => {
 	test('scheduled tomorrow', () => {
 		date.setDate(date.getDate() + 1);
 		props.time = date.toISOString();
-		render(<Match {...props}></Match>);
+		render(<MatchPoster {...props}></MatchPoster>);
 
 		liveLabel = screen.queryByText('live');
 		todayLabel = screen.queryByText('today');
@@ -98,7 +98,7 @@ describe('Test labels', () => {
 	test('live match', () => {
 		props.status = 'IN_PLAY';
 		props.time = new Date().toISOString();
-		render(<Match {...props}></Match>);
+		render(<MatchPoster {...props}></MatchPoster>);
 
 		liveLabel = screen.queryByText('live');
 		todayLabel = screen.queryByText('today');
@@ -111,7 +111,7 @@ describe('Test labels', () => {
 });
 
 test('logotypes displaying', () => {
-	render(<Match {...props}></Match>);
+	render(<MatchPoster {...props}></MatchPoster>);
 
 	let logotypes = screen.queryAllByRole('img');
 

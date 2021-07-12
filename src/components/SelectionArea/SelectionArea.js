@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tab, Placeholder, Message } from 'semantic-ui-react';
-import League from './League/League';
-import Team from './Team/Team';
+import League from '../LeagueTab/League';
+import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
-import LocalErrorBoundary from '../../LocalErrorBoundary';
+import LocalErrorBoundary from '../ErrorBoundaries/LocalErrorBoundary';
 
 function SelectionArea(props) {
 	let panes = [];
@@ -17,7 +17,12 @@ function SelectionArea(props) {
 				league.teams.length <= 20 ||
 				league.matches.some(m => m.homeTeam.name === team.name || m.awayTeam.name === team.name)
 			) {
-				teams.push(<Team key={team.name} team={team} onChangeTeam={props.onChangeTeam}></Team>);
+				teams.push(
+					<TeamCheckbox
+						key={team.name}
+						team={team}
+						onChangeTeam={props.onChangeTeam}></TeamCheckbox>
+				);
 			}
 		});
 

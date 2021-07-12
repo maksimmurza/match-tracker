@@ -59,7 +59,7 @@ const GoogleAuthButton = ({ size }) => {
 					className="icon"
 					labeled={size !== 'small'}
 					icon="google"
-					text={size !== 'small' && user.getName()}>
+					text={size !== 'small' ? user.getName() : ''}>
 					<Dropdown.Menu>
 						<Dropdown.Item onClick={handleAuthClick} text="Sign Out" />
 					</Dropdown.Menu>
