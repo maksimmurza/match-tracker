@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
-import './League.css';
+import './LeagueTab.css';
 import PropTypes from 'prop-types';
 import League from '../../../model/League';
 

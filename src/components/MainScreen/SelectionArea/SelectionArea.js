@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab, Placeholder, Message } from 'semantic-ui-react';
-import LeagueTab from '../LeagueTab/League';
+import LeagueTab from '../LeagueTab/LeagueTab';
 import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
 import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
