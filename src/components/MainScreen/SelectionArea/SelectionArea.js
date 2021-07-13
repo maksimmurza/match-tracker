@@ -1,9 +1,11 @@
 import React from 'react';
 import { Tab, Placeholder, Message } from 'semantic-ui-react';
-import League from '../LeagueTab/League';
+import LeagueTab from '../LeagueTab/League';
 import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
 import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
+import PropTypes from 'prop-types';
+import League from '../../../model/League';
 
 function SelectionArea(props) {
 	let panes = [];
@@ -31,10 +33,10 @@ function SelectionArea(props) {
 				key: league?.id,
 				content: (
 					<LocalErrorBoundary>
-						<League
+						<LeagueTab
 							league={league}
 							status="checked"
-							onChangeLeague={props.onChangeLeague}></League>
+							onChangeLeague={props.onChangeLeague}></LeagueTab>
 					</LocalErrorBoundary>
 				),
 			},
@@ -62,5 +64,11 @@ function SelectionArea(props) {
 
 	return <Tab className="selection-area" panes={panes} />;
 }
+
+SelectionArea.propTypes = {
+	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+	onChangeLeague: PropTypes.func,
+	onChangeTeam: PropTypes.func,
+};
 
 export default SelectionArea;

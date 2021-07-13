@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import './TeamCheckbox.css';
+import PropTypes from 'prop-types';
 
 class TeamCheckbox extends React.Component {
 	handleChange = () => {
@@ -23,5 +24,10 @@ class TeamCheckbox extends React.Component {
 		);
 	}
 }
+
+TeamCheckbox.propTypes = {
+	team: PropTypes.object,
+	onChangeTeam: PropTypes.func,
+};
 
 export default TeamCheckbox;

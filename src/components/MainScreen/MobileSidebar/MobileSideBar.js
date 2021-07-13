@@ -1,7 +1,8 @@
 import React from 'react';
 import { Sidebar } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
-export default function MobileSidebar(props) {
+function MobileSidebar(props) {
 	return (
 		<Sidebar
 			className="mobile-sidebar"
@@ -14,3 +15,11 @@ export default function MobileSidebar(props) {
 		</Sidebar>
 	);
 }
+
+MobileSidebar.propTypes = {
+	onHide: PropTypes.func,
+	sidebarVisible: PropTypes.bool,
+	children: PropTypes.object,
+};
+
+export default MobileSidebar;

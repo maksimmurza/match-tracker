@@ -2,6 +2,8 @@ import React from 'react';
 import MatchPoster from '../MatchPoster/MatchPoster';
 import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
 import './MatchList.css';
+import PropTypes from 'prop-types';
+import League from '../../../model/League';
 
 class MatchList extends React.Component {
 	getMarkedMatches() {
@@ -80,5 +82,11 @@ class MatchList extends React.Component {
 		);
 	}
 }
+
+MatchList.propTypes = {
+	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+	quantity: PropTypes.number,
+	todayDate: PropTypes.instanceOf(Date),
+};
 
 export default MatchList;

@@ -8,6 +8,8 @@ import { Grid, Select, Button, SidebarPushable, SidebarPusher, Input } from 'sem
 import MobileSidebar from './MobileSidebar/MobileSideBar';
 import GoogleAuthButton from './GoogleAuthButton/GoogleAuthButton';
 import notificationable from '../Notification/Notification';
+import PropTypes from 'prop-types';
+import League from '../../model/League';
 
 class MainScreen extends React.Component {
 	constructor(props) {
@@ -148,4 +150,9 @@ class MainScreen extends React.Component {
 		);
 	}
 }
+
+MainScreen.propTypes = {
+	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+};
+
 export default notificationable(MainScreen);

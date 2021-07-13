@@ -1,6 +1,8 @@
 import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 import './League.css';
+import PropTypes from 'prop-types';
+import League from '../../../model/League';
 
 class LeagueTab extends React.Component {
 	handleChange = event => {
@@ -39,5 +41,11 @@ class LeagueTab extends React.Component {
 		);
 	}
 }
+
+LeagueTab.propTypes = {
+	league: PropTypes.instanceOf(League),
+	status: PropTypes.oneOf(['checked', 'unchecked', 'indeterminate']),
+	onChangeLeague: PropTypes.func,
+};
 
 export default LeagueTab;

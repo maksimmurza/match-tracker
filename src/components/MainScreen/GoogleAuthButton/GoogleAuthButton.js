@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Button, Dropdown, Icon } from 'semantic-ui-react';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../../utils/authOptions';
+import PropTypes from 'prop-types';
 
 const GoogleAuthButton = ({ size }) => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
@@ -67,6 +68,10 @@ const GoogleAuthButton = ({ size }) => {
 			</Button.Group>
 		)
 	);
+};
+
+GoogleAuthButton.propTypes = {
+	size: PropTypes.oneOf(['small', undefined]),
 };
 
 export default memo(GoogleAuthButton);
