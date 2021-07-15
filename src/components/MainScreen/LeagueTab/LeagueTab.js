@@ -7,26 +7,14 @@ import League from '../../../model/League';
 class LeagueTab extends React.Component {
 	handleChange = event => {
 		event.stopPropagation();
-		let league = this.props.league;
-		league.teams.forEach(team => {
-			if (league.status === 'unchecked') {
-				team.show = true;
-				league.teamsShowed = league.activeTeams;
-			} else {
-				team.show = false;
-				league.teamsShowed = 0;
-			}
-		});
-		if (league.status === 'unchecked') league.status = 'checked';
-		else league.status = 'unchecked';
-
-		this.props.onChangeLeague(league);
+		const newLeagueStatus = `${this.props.league.status !== 'unchecked' ? 'un' : ''}checked`;
+		this.props.onChangeLeague(this.props.league.name, newLeagueStatus);
 	};
 
 	render() {
-		return !this.props.league ? (
-			<Icon name="exclamation"></Icon>
-		) : this.props.league.status !== 'loading' ? (
+		const tabLoader = <Loader size="tiny" active></Loader>;
+		const unavailableTabIcon = <Icon name="exclamation"></Icon>;
+		const tabContent = (
 			<div className="league-tab" title={`${this.props.league.name}`}>
 				<Checkbox
 					onChange={this.handleChange}
@@ -36,15 +24,18 @@ class LeagueTab extends React.Component {
 				/>
 				<img src={this.props.league.logo} className="league-tab-logo"></img>
 			</div>
-		) : (
-			<Loader size="tiny" active></Loader>
 		);
+
+		return !this.props.league
+			? unavailableTabIcon
+			: this.props.league.status === 'loading'
+			? tabLoader
+			: tabContent;
 	}
 }
 
 LeagueTab.propTypes = {
 	league: PropTypes.instanceOf(League),
-	status: PropTypes.oneOf(['checked', 'unchecked', 'indeterminate']),
 	onChangeLeague: PropTypes.func,
 };
 

@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 class TeamCheckbox extends React.Component {
 	handleChange = () => {
-		let team = this.props.team;
-
-		if (team.show === true) this.props.onChangeTeam(team, 'unchecked');
-		else this.props.onChangeTeam(team, 'checked');
+		const changedTeamName = this.props.team.name;
+		const changedLeagueName = this.props.team.leagueName;
+		const newTeamStatus = this.props.team.show ? 'unchecked' : 'checked';
+		this.props.onChangeTeam(changedTeamName, changedLeagueName, newTeamStatus);
 	};
 
 	render() {

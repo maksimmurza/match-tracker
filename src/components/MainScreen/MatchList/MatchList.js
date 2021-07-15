@@ -6,6 +6,19 @@ import PropTypes from 'prop-types';
 import League from '../../../model/League';
 
 class MatchList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.loader = <Loader style={{ marginTop: '2em' }} active inline="centered" />;
+		this.emptyListMessage = (
+			<Message style={{ margin: '1em 2em 1em 1em' }}>
+				<Message.Header>No matches to show</Message.Header>
+				<Message.List
+					items={['All matches in leagues have been played', 'Errors while fetching informaion']}
+				/>
+			</Message>
+		);
+	}
+
 	getMarkedMatches() {
 		let markedMatches = [];
 		let qty = this.props.quantity;
@@ -58,25 +71,11 @@ class MatchList extends React.Component {
 		return (
 			<div className="block">
 				<SegmentGroup className="match-list">
-					{(this.props.leagues.length > 0 &&
-						this.props.leagues.every(l => l.status === 'loading')) ||
-					(this.props.leagues.length > 0 &&
-						this.props.leagues.some(l => l.status === 'loading') &&
-						markedMatches.length === 0) ? (
-						<Loader style={{ marginTop: '2em' }} active inline="centered" />
-					) : markedMatches.length > 0 ? (
-						markedMatches
-					) : (
-						<Message style={{ margin: '1em 2em 1em 1em' }}>
-							<Message.Header>No matches to show</Message.Header>
-							<Message.List
-								items={[
-									'All matches in leagues have been played',
-									'Errors while fetching informaion',
-								]}
-							/>
-						</Message>
-					)}
+					{this.props.leagues.every(league => league.status === 'loading')
+						? this.loader
+						: markedMatches.length > 0
+						? markedMatches
+						: this.emptyListMessage}
 				</SegmentGroup>
 			</div>
 		);

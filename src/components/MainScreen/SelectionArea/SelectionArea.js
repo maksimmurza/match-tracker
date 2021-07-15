@@ -33,10 +33,7 @@ function SelectionArea(props) {
 				key: league?.id,
 				content: (
 					<LocalErrorBoundary>
-						<LeagueTab
-							league={league}
-							status="checked"
-							onChangeLeague={props.onChangeLeague}></LeagueTab>
+						<LeagueTab league={league} onChangeLeague={props.onChangeLeague}></LeagueTab>
 					</LocalErrorBoundary>
 				),
 			},

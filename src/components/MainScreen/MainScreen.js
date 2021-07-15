@@ -15,42 +15,43 @@ class MainScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.showNotification = props.showNotification;
+		this.leagues = props.leagues;
 		this.state = {
-			leagues: props.leagues,
 			quantity: 15,
 			locale: 'ru',
 			sidebarVisible: false,
 		};
 	}
 
-	onChangeLeague = alreadyChangedLeague => {
-		this.setState(
-			state => {
-				let leagues = state.leagues.map(value => {
-					return value?.name === alreadyChangedLeague.name ? alreadyChangedLeague : value;
-				});
-				return { leagues: [...leagues] };
-			},
-			() => {
-				writeLocalLeagues(this.state.leagues);
-			}
-		);
-	};
+	onChangeLeague = (leagueName, newLeagueStatus) => {
+		const league = this.leagues.find(league => league.name === leagueName);
+		league.status = newLeagueStatus;
 
-	onChangeTeam = (changedTeam, newTeamStatus) => {
-		let leagues = this.state.leagues;
-		let changedLeague = leagues.find(league => league.name === changedTeam.leagueName);
-		changedTeam.show = newTeamStatus !== 'unchecked' && true;
-		changedLeague.teams.map(team => (team.name === changedTeam.name ? changedTeam : team));
-
-		if (newTeamStatus === 'unchecked') {
-			changedLeague.status = --changedLeague.teamsShowed === 0 ? 'unchecked' : 'indeterminate';
+		if (newLeagueStatus === 'checked') {
+			league.teamsShowed = league.teams.length;
+			league.teams.forEach(team => (team.show = true));
 		} else {
-			changedLeague.status =
-				++changedLeague.teamsShowed === changedLeague.activeTeams ? 'checked' : 'indeterminate';
+			league.teamsShowed = 0;
+			league.teams.forEach(team => (team.show = false));
 		}
 
-		this.onChangeLeague(changedLeague);
+		writeLocalLeagues(this.leagues);
+		this.forceUpdate();
+	};
+
+	onChangeTeam = (teamName, leagueName, newTeamStatus) => {
+		const league = this.leagues.find(league => league.name === leagueName);
+		const team = league.teams.find(team => team.name === teamName);
+		team.show = newTeamStatus !== 'unchecked' && true;
+
+		if (newTeamStatus === 'unchecked') {
+			league.status = --league.teamsShowed === 0 ? 'unchecked' : 'indeterminate';
+		} else {
+			league.status = ++league.teamsShowed === league.activeTeams ? 'checked' : 'indeterminate';
+		}
+
+		writeLocalLeagues(this.leagues);
+		this.forceUpdate();
 	};
 
 	sidebarToggle = () => {
@@ -67,7 +68,7 @@ class MainScreen extends React.Component {
 				<SidebarPushable>
 					<MobileSidebar sidebarVisible={this.state.sidebarVisible} onHide={this.sidebarToggle}>
 						<SelectionArea
-							leagues={this.state.leagues}
+							leagues={this.leagues}
 							onChangeLeague={this.onChangeLeague}
 							onChangeTeam={this.onChangeTeam}
 							style={{ height: '100%' }}></SelectionArea>
@@ -108,7 +109,7 @@ class MainScreen extends React.Component {
 							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
 								<LocaleContext.Provider value={this.state.locale}>
 									<MatchList
-										leagues={this.state.leagues.filter(value => value)}
+										leagues={this.leagues.filter(value => value)}
 										quantity={this.state.quantity}
 										todayDate={new Date()}
 									/>
@@ -139,7 +140,7 @@ class MainScreen extends React.Component {
 									<GoogleAuthButton></GoogleAuthButton>
 								</div>
 								<SelectionArea
-									leagues={this.state.leagues}
+									leagues={this.leagues}
 									onChangeLeague={this.onChangeLeague}
 									onChangeTeam={this.onChangeTeam}></SelectionArea>
 							</Grid.Column>

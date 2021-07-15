@@ -36,7 +36,7 @@ function getLocalLeagues() {
 	});
 }
 
-function writeLocalLeagues(leagues) {
+async function writeLocalLeagues(leagues) {
 	if (leagues.length === 4 && leagues.every(league => league && league.status !== 'loading')) {
 		let arr = [];
 		leagues.forEach(l => arr.push(l.toJSON()));

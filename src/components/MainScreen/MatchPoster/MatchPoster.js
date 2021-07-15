@@ -27,7 +27,8 @@ export class MatchPoster extends React.PureComponent {
 		}
 	};
 
-	preRender(matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel) {
+	preRender() {
+		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
 		let matchDate = new Date(this.props.time);
 		matchDateStr = matchDate.toLocaleDateString(this.context, {
 			month: 'long',
@@ -42,19 +43,18 @@ export class MatchPoster extends React.PureComponent {
 		let date = this.props.todayDate.getDate();
 		let month = this.props.todayDate.getMonth();
 
-		if (date === matchDate.getDate() && month === matchDate.getMonth()) {
-			if (this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
-				liveLabel = (
-					<Label color="red" ribbon="right" className="day-label">
-						live
-					</Label>
-				);
-			} else
-				todayLabel = (
-					<Label color="blue" ribbon="right" className="day-label">
-						today
-					</Label>
-				);
+		if (this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
+			liveLabel = (
+				<Label color="red" ribbon="right" className="day-label">
+					live
+				</Label>
+			);
+		} else if (date === matchDate.getDate() && month === matchDate.getMonth()) {
+			todayLabel = (
+				<Label color="blue" ribbon="right" className="day-label">
+					today
+				</Label>
+			);
 		} else if (month === matchDate.getMonth() && date + 1 === matchDate.getDate())
 			tomorrowLabel = (
 				<Label color="teal" ribbon="right" className="day-label">
@@ -123,14 +123,7 @@ export class MatchPoster extends React.PureComponent {
 	};
 
 	render() {
-		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
-		[matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender(
-			matchDateStr,
-			matchTimeStr,
-			todayLabel,
-			tomorrowLabel,
-			liveLabel
-		);
+		const [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender();
 
 		return (
 			<>
