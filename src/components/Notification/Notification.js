@@ -28,9 +28,9 @@ function notificationable(WrappedComponent) {
 				notification: {
 					icon,
 					show: true,
-					status: `${type}`,
-					header: `${header}`,
-					content: `${content}`,
+					status: type,
+					header: header,
+					content: content,
 				},
 			});
 			setTimeout(() => {
@@ -45,9 +45,7 @@ function notificationable(WrappedComponent) {
 		render() {
 			return (
 				<>
-					<WrappedComponent
-						{...this.props}
-						showNotification={this.showNotification}></WrappedComponent>
+					<WrappedComponent {...this.props} showNotification={this.showNotification} />
 					{this.state.notification.show &&
 						ReactDOM.createPortal(
 							<Message

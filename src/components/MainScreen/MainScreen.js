@@ -4,11 +4,11 @@ import SelectionArea from './SelectionArea/SelectionArea';
 import './MainScreen.css';
 import { LocaleContext } from '../../context/LocaleContext';
 import { writeLocalLeagues } from '../../utils/localStorage';
-import { Grid, Select, Button, SidebarPushable, SidebarPusher, Input } from 'semantic-ui-react';
-import MobileSidebar from './MobileSidebar/MobileSideBar';
-import GoogleAuthButton from './GoogleAuthButton/GoogleAuthButton';
+import { Grid } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
 import PropTypes from 'prop-types';
+import ControlsBar from './ControlsBar/ControlsBar';
+import MobileSidebar from '../MobileSidebar/MobileSidebar';
 import League from '../../model/League';
 
 class MainScreen extends React.Component {
@@ -54,99 +54,64 @@ class MainScreen extends React.Component {
 		this.forceUpdate();
 	};
 
-	sidebarToggle = () => {
-		this.setState(state => ({ sidebarVisible: !state.sidebarVisible }));
-	};
-
 	setLocale = (event, selected) => {
 		this.setState({ locale: selected.value });
 	};
 
-	render() {
-		return (
-			<div className="schedule">
-				<SidebarPushable>
-					<MobileSidebar sidebarVisible={this.state.sidebarVisible} onHide={this.sidebarToggle}>
-						<SelectionArea
-							leagues={this.leagues}
-							onChangeLeague={this.onChangeLeague}
-							onChangeTeam={this.onChangeTeam}
-							style={{ height: '100%' }}></SelectionArea>
-					</MobileSidebar>
-					<SidebarPusher dimmed={this.state.sidebarVisible}>
-						<Grid stackable centered>
-							<Grid.Column only="mobile" id="mobile-layout">
-								<div className="mobile-bar">
-									<Button
-										icon="content"
-										className="toggle-sidebar"
-										style={{ backgroundColor: 'transparent' }}
-										onClick={this.sidebarToggle}></Button>
-									<div className="settings-wrapper">
-										<Input
-											value={this.state.quantity}
-											onChange={e => this.setState({ quantity: e.target.value })}
-											type="number"
-											title="Number of upcoming matches with selected teams"
-											icon="filter"
-											iconPosition="left"
-											className="filter"
-										/>
-										<Select
-											style={{ marginRight: '10px' }}
-											className="locale-input"
-											onChange={this.setLocale}
-											value={this.state.locale}
-											options={[
-												{ key: 'en', value: 'en', text: 'en' },
-												{ key: 'ru', value: 'ru', text: 'ru' },
-											]}
-										/>
-										<GoogleAuthButton size={'small'}></GoogleAuthButton>
-									</div>
-								</div>
-							</Grid.Column>
-							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
-								<LocaleContext.Provider value={this.state.locale}>
-									<MatchList
-										leagues={this.leagues.filter(value => value)}
-										quantity={this.state.quantity}
-										todayDate={new Date()}
-									/>
-								</LocaleContext.Provider>
-							</Grid.Column>
+	setQuantity = event => {
+		this.setState({ quantity: event.target.value });
+	};
 
-							<Grid.Column className="controls" computer={5} tablet={6} only="computer tablet">
-								<div className="settings-wrapper">
-									<Input
-										value={this.state.quantity}
-										onChange={e => this.setState({ quantity: e.target.value })}
-										type="number"
-										title="Number of upcoming matches with selected teams"
-										icon="filter"
-										iconPosition="left"
-										className="filter"
-									/>
-									<Select
-										style={{ marginRight: '10px' }}
-										className="locale-input"
-										onChange={this.setLocale}
-										value={this.state.locale}
-										options={[
-											{ key: 'en', value: 'en', text: 'en' },
-											{ key: 'ru', value: 'ru', text: 'ru' },
-										]}
-									/>
-									<GoogleAuthButton></GoogleAuthButton>
-								</div>
-								<SelectionArea
-									leagues={this.leagues}
-									onChangeLeague={this.onChangeLeague}
-									onChangeTeam={this.onChangeTeam}></SelectionArea>
-							</Grid.Column>
-						</Grid>
-					</SidebarPusher>
-				</SidebarPushable>
+	sidebarToggle = () => {
+		this.setState(state => ({ sidebarVisible: !state.sidebarVisible }));
+	};
+
+	render() {
+		const matchList = (
+			<MatchList
+				leagues={this.leagues.filter(value => value)}
+				quantity={this.state.quantity}
+				todayDate={new Date()}
+			/>
+		);
+
+		const selectionArea = (
+			<SelectionArea
+				leagues={this.leagues}
+				onChangeLeague={this.onChangeLeague}
+				onChangeTeam={this.onChangeTeam}
+			/>
+		);
+
+		const controlsBar = (
+			<ControlsBar
+				values={{ quantity: this.state.quantity, locale: this.state.locale }}
+				handlers={{
+					setQuantity: this.setQuantity,
+					setLocale: this.setLocale,
+					sidebarToggle: this.sidebarToggle,
+				}}
+			/>
+		);
+
+		return (
+			<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
+				<MobileSidebar
+					sidebarContent={selectionArea}
+					sidebarVisible={this.state.sidebarVisible}
+					sidebarToggle={this.sidebarToggle}>
+					<Grid stackable centered reversed="mobile">
+						<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
+							<LocaleContext.Provider value={this.state.locale}>
+								{matchList}
+							</LocaleContext.Provider>
+						</Grid.Column>
+						<Grid.Column computer={5} tablet={6} mobile={16} id="controls">
+							{controlsBar}
+							{selectionArea}
+						</Grid.Column>
+					</Grid>
+				</MobileSidebar>
 			</div>
 		);
 	}
@@ -154,6 +119,7 @@ class MainScreen extends React.Component {
 
 MainScreen.propTypes = {
 	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+	showNotification: PropTypes.func,
 };
 
 export default notificationable(MainScreen);

@@ -1,54 +1,12 @@
-.schedule {
-	max-height: 100vh;
-	overflow: auto;
-}
-
 .message-wrapper {
 	margin-top: 2rem;
 }
 
-.controls {
+#controls {
 	margin: 1rem 0;
 	height: 100vh;
 	display: flex !important;
 	flex-direction: column;
-}
-
-.sign-out-button {
-	min-width: fit-content;
-}
-
-.settings-wrapper {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.settings-wrapper > * {
-	margin: 0 10px 1rem 0 !important;
-	max-width: 8rem;
-}
-
-.locale-input {
-	min-width: fit-content !important;
-}
-
-#mobile-layout {
-	padding: 1rem 0 0 0 !important;
-}
-
-.mobile-bar {
-	margin: 5px 0;
-	display: flex;
-}
-
-.mobile-bar-buttons {
-	flex-grow: 1;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.mobile-sidebar {
-	background-color: gainsboro;
 }
 
 #match-list-column {
@@ -56,28 +14,13 @@
 }
 
 @media (max-width: 767px) {
+	#controls {
+		height: initial;
+		padding: 5px !important;
+		margin-top: 1rem !important;
+	}
+
 	#match-list-column {
 		padding: 0 !important;
-	}
-
-	.locale-input {
-		margin: 0 10px 0 0 !important;
-	}
-
-	.mobile-sidebar {
-		max-width: 70vw;
-	}
-
-	.settings-wrapper > * {
-		margin: 0 5px 0 0 !important;
-		align-self: center;
-	}
-
-	.toggle-sidebar {
-		margin: 0 auto 0 0 !important;
-	}
-
-	.filter {
-		width: 6rem;
 	}
 }
