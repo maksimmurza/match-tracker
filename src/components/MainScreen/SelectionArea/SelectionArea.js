@@ -6,6 +6,7 @@ import './SelectionArea.css';
 import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
 import PropTypes from 'prop-types';
 import League from '../../../model/League';
+import { observer } from 'mobx-react';
 
 function SelectionArea(props) {
 	let panes = [];
@@ -23,7 +24,7 @@ function SelectionArea(props) {
 					<TeamCheckbox
 						key={team.name}
 						team={team}
-						onChangeTeam={props.onChangeTeam}></TeamCheckbox>
+						toggleTeamVisibility={league.toggleTeamVisibility}></TeamCheckbox>
 				);
 			}
 		});
@@ -33,7 +34,7 @@ function SelectionArea(props) {
 				key: league?.id,
 				content: (
 					<LocalErrorBoundary>
-						<LeagueTab league={league} onChangeLeague={props.onChangeLeague}></LeagueTab>
+						<LeagueTab league={league}></LeagueTab>
 					</LocalErrorBoundary>
 				),
 			},
@@ -41,7 +42,7 @@ function SelectionArea(props) {
 				<Tab.Pane className="tab-content">
 					{teams.length > 0 ? (
 						teams
-					) : league?.status === 'loading' ? (
+					) : league?.loading ? (
 						<Placeholder fluid>
 							{new Array(20).fill(<Placeholder.Line length="full" />)}
 						</Placeholder>
@@ -68,4 +69,4 @@ SelectionArea.propTypes = {
 	onChangeTeam: PropTypes.func,
 };
 
-export default SelectionArea;
+export default observer(SelectionArea);

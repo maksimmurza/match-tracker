@@ -3,12 +3,12 @@ import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 import './LeagueTab.css';
 import PropTypes from 'prop-types';
 import League from '../../../model/League';
+import { observer } from 'mobx-react';
 
 class LeagueTab extends React.Component {
 	handleChange = event => {
 		event.stopPropagation();
-		const newLeagueStatus = `${this.props.league.status !== 'unchecked' ? 'un' : ''}checked`;
-		this.props.onChangeLeague(this.props.league.name, newLeagueStatus);
+		this.props.league.toggleVisibility();
 	};
 
 	render() {
@@ -26,11 +26,7 @@ class LeagueTab extends React.Component {
 			</div>
 		);
 
-		return !this.props.league
-			? unavailableTabIcon
-			: this.props.league.status === 'loading'
-			? tabLoader
-			: tabContent;
+		return !this.props.league ? unavailableTabIcon : this.props.league.loading ? tabLoader : tabContent;
 	}
 }
 
@@ -39,4 +35,4 @@ LeagueTab.propTypes = {
 	onChangeLeague: PropTypes.func,
 };
 
-export default LeagueTab;
+export default observer(LeagueTab);

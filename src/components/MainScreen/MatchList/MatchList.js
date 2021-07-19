@@ -4,6 +4,7 @@ import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
 import './MatchList.css';
 import PropTypes from 'prop-types';
 import League from '../../../model/League';
+import { observer } from 'mobx-react';
 
 class MatchList extends React.Component {
 	constructor(props) {
@@ -71,7 +72,7 @@ class MatchList extends React.Component {
 		return (
 			<div className="block">
 				<SegmentGroup className="match-list">
-					{this.props.leagues.every(league => league.status === 'loading')
+					{this.props.leagues.every(league => league.loading)
 						? this.loader
 						: markedMatches.length > 0
 						? markedMatches
@@ -88,4 +89,4 @@ MatchList.propTypes = {
 	todayDate: PropTypes.instanceOf(Date),
 };
 
-export default MatchList;
+export default observer(MatchList);

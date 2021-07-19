@@ -2,13 +2,11 @@ import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import './TeamCheckbox.css';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
 class TeamCheckbox extends React.Component {
 	handleChange = () => {
-		const changedTeamName = this.props.team.name;
-		const changedLeagueName = this.props.team.leagueName;
-		const newTeamStatus = this.props.team.show ? 'unchecked' : 'checked';
-		this.props.onChangeTeam(changedTeamName, changedLeagueName, newTeamStatus);
+		this.props.toggleTeamVisibility(this.props.team.name);
 	};
 
 	render() {
@@ -30,4 +28,4 @@ TeamCheckbox.propTypes = {
 	onChangeTeam: PropTypes.func,
 };
 
-export default TeamCheckbox;
+export default observer(TeamCheckbox);

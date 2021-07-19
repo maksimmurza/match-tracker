@@ -3,56 +3,54 @@ import MatchList from './MatchList/MatchList';
 import SelectionArea from './SelectionArea/SelectionArea';
 import './MainScreen.css';
 import { LocaleContext } from '../../context/LocaleContext';
-import { writeLocalLeagues } from '../../utils/localStorage';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Message, Icon } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
 import PropTypes from 'prop-types';
 import ControlsBar from './ControlsBar/ControlsBar';
 import MobileSidebar from '../MobileSidebar/MobileSidebar';
+import req from '../../utils/requestOptions';
+import { getLocalLeagues } from '../../utils/localStorage';
 import League from '../../model/League';
+import { writeLocalLeagues } from '../../utils/localStorage';
+import { observer } from 'mobx-react';
+import store from '../../mobx/store';
 
 class MainScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.showNotification = props.showNotification;
-		this.leagues = props.leagues;
 		this.state = {
 			quantity: 15,
 			locale: 'ru',
 			sidebarVisible: false,
+			message: '',
 		};
 	}
 
-	onChangeLeague = (leagueName, newLeagueStatus) => {
-		const league = this.leagues.find(league => league.name === leagueName);
-		league.status = newLeagueStatus;
-
-		if (newLeagueStatus === 'checked') {
-			league.teamsShowed = league.teams.length;
-			league.teams.forEach(team => (team.show = true));
-		} else {
-			league.teamsShowed = 0;
-			league.teams.forEach(team => (team.show = false));
-		}
-
-		writeLocalLeagues(this.leagues);
-		this.forceUpdate();
-	};
-
-	onChangeTeam = (teamName, leagueName, newTeamStatus) => {
-		const league = this.leagues.find(league => league.name === leagueName);
-		const team = league.teams.find(team => team.name === teamName);
-		team.show = newTeamStatus !== 'unchecked' && true;
-
-		if (newTeamStatus === 'unchecked') {
-			league.status = --league.teamsShowed === 0 ? 'unchecked' : 'indeterminate';
-		} else {
-			league.status = ++league.teamsShowed === league.activeTeams ? 'checked' : 'indeterminate';
-		}
-
-		writeLocalLeagues(this.leagues);
-		this.forceUpdate();
-	};
+	componentDidMount() {
+		this.setState({ message: 'Checking local storage...' });
+		getLocalLeagues().then(({ localLeagues, outOfDate }) => {
+			if (localLeagues && !outOfDate) {
+				console.log(localLeagues);
+				store.getLeaguesFromLocal(localLeagues);
+				this.showNotification('', 'Loaded from local storage');
+			} else {
+				this.setState({
+					message: 'Local schedule is empty or out of date. Fetching data from API...',
+				});
+				store
+					.getLeaguesFromAPI(localLeagues)
+					.then(() => {
+						writeLocalLeagues(store.leagues);
+						this.showNotification('', 'Loaded from API');
+					})
+					.catch(e => {
+						console.log('Problems while fetching data from APIs after mounting component');
+						console.log(e);
+					});
+			}
+		});
+	}
 
 	setLocale = (event, selected) => {
 		this.setState({ locale: selected.value });
@@ -69,19 +67,13 @@ class MainScreen extends React.Component {
 	render() {
 		const matchList = (
 			<MatchList
-				leagues={this.leagues.filter(value => value)}
+				leagues={store.leagues.filter(value => value)}
 				quantity={this.state.quantity}
 				todayDate={new Date()}
 			/>
 		);
 
-		const selectionArea = (
-			<SelectionArea
-				leagues={this.leagues}
-				onChangeLeague={this.onChangeLeague}
-				onChangeTeam={this.onChangeTeam}
-			/>
-		);
+		const selectionArea = <SelectionArea leagues={store.leagues} />;
 
 		const controlsBar = (
 			<ControlsBar
@@ -94,26 +86,42 @@ class MainScreen extends React.Component {
 			/>
 		);
 
-		return (
-			<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
-				<MobileSidebar
-					sidebarContent={selectionArea}
-					sidebarVisible={this.state.sidebarVisible}
-					sidebarToggle={this.sidebarToggle}>
-					<Grid stackable centered reversed="mobile">
-						<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
-							<LocaleContext.Provider value={this.state.locale}>
-								{matchList}
-							</LocaleContext.Provider>
-						</Grid.Column>
-						<Grid.Column computer={5} tablet={6} mobile={16} id="controls">
-							{controlsBar}
-							{selectionArea}
-						</Grid.Column>
-					</Grid>
-				</MobileSidebar>
-			</div>
-		);
+		if (store.length < req.footballData.leaguesKeys.length && !store.some(l => l?.matches)) {
+			return (
+				<Grid centered>
+					<Grid.Column className="message-wrapper" computer={8} tablet={10} mobile={14}>
+						<Message icon>
+							<Icon name="circle notched" loading />
+							<Message.Content>
+								<Message.Header>Just one second</Message.Header>
+								<p>{this.state.message}</p>
+							</Message.Content>
+						</Message>
+					</Grid.Column>
+				</Grid>
+			);
+		} else {
+			return (
+				<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
+					<MobileSidebar
+						sidebarContent={selectionArea}
+						sidebarVisible={this.state.sidebarVisible}
+						sidebarToggle={this.sidebarToggle}>
+						<Grid stackable centered reversed="mobile">
+							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
+								<LocaleContext.Provider value={this.state.locale}>
+									{matchList}
+								</LocaleContext.Provider>
+							</Grid.Column>
+							<Grid.Column computer={5} tablet={6} mobile={16} id="controls">
+								{controlsBar}
+								{selectionArea}
+							</Grid.Column>
+						</Grid>
+					</MobileSidebar>
+				</div>
+			);
+		}
 	}
 }
 
@@ -122,4 +130,4 @@ MainScreen.propTypes = {
 	showNotification: PropTypes.func,
 };
 
-export default notificationable(MainScreen);
+export default notificationable(observer(MainScreen));
