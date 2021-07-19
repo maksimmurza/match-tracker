@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, autorun, reaction, extendObservable } from 'mobx';
+import { makeObservable, observable, action, reaction } from 'mobx';
 import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../utils/fetchData';
 import { writeLocalLeagues } from '../utils/localStorage';
 import req from '../utils/requestOptions';
@@ -23,12 +23,14 @@ class Leagues {
 			league.country = l.country;
 			league.logo = l.logo;
 			league.matches = l.matches;
+			league.matches.forEach(match => (match.leagueLogo = league.logo));
 			league.teams = l.teams;
 			league.resolveTeamsNames();
 			reaction(
 				() => league.status,
 				() => writeLocalLeagues(this.leagues)
 			);
+			league.loading = false;
 			this.leagues.push(league);
 		});
 	}
@@ -44,6 +46,10 @@ class Leagues {
 		// for all leagues that we "track"
 		for (let key of req.footballData.leaguesKeys) {
 			let league = new League(key);
+			reaction(
+				() => league.status,
+				() => writeLocalLeagues(this.leagues)
+			);
 			this.leagues.push(league);
 
 			const process = async () => {
@@ -76,6 +82,7 @@ class Leagues {
 						(l.country === league.country || l.country === 'World' || l.country === 'Europe')
 					) {
 						league.logo = l.logo;
+						league.matches.forEach(match => (match.leagueLogo = league.logo));
 
 						let teams = await getTeamsInfo(l.league_id).catch(e => {
 							throw e;
@@ -103,6 +110,8 @@ class Leagues {
 								}
 							});
 						}
+
+						league.loading = false;
 					}
 				}
 			};

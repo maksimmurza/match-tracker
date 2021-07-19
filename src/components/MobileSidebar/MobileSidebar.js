@@ -1,6 +1,7 @@
 import React from 'react';
 import { SidebarPushable, SidebarPusher, Sidebar } from 'semantic-ui-react';
 import './MobileSidebar.css';
+import PropTypes from 'prop-types';
 
 const MobileSidebar = props => {
 	return (
@@ -17,6 +18,12 @@ const MobileSidebar = props => {
 			<SidebarPusher dimmed={props.sidebarVisible}>{props.children}</SidebarPusher>
 		</SidebarPushable>
 	);
+};
+
+MobileSidebar.propTypes = {
+	sidebarToggle: PropTypes.func,
+	sidebarVisible: PropTypes.bool,
+	sidebarContent: PropTypes.node,
 };
 
 export default MobileSidebar;

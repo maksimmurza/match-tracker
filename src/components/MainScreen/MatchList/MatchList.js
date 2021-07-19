@@ -3,8 +3,7 @@ import MatchPoster from '../MatchPoster/MatchPoster';
 import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
 import './MatchList.css';
 import PropTypes from 'prop-types';
-import League from '../../../model/League';
-import { observer } from 'mobx-react';
+import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
 class MatchList extends React.Component {
 	constructor(props) {
@@ -29,7 +28,6 @@ class MatchList extends React.Component {
 
 			league.matches.forEach(match => {
 				if (match.homeTeam.show === true || match.awayTeam.show === true) {
-					match.leagueLogo = league.logo;
 					markedMatches.push(match);
 				}
 			});
@@ -84,7 +82,7 @@ class MatchList extends React.Component {
 }
 
 MatchList.propTypes = {
-	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+	leagues: MobxPropTypes.observableArrayOf(MobxPropTypes.observableObject),
 	quantity: PropTypes.number,
 	todayDate: PropTypes.instanceOf(Date),
 };

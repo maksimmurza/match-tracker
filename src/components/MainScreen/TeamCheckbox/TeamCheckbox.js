@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import './TeamCheckbox.css';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
+import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
 const TeamCheckbox = ({ toggleTeamVisibility, writeLocal, team }) => {
 	const handleChange = () => {
@@ -19,7 +19,7 @@ const TeamCheckbox = ({ toggleTeamVisibility, writeLocal, team }) => {
 };
 
 TeamCheckbox.propTypes = {
-	team: PropTypes.object,
+	team: MobxPropTypes.observableObject,
 	onChangeTeam: PropTypes.func,
 };
 

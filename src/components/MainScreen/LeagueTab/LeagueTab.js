@@ -2,8 +2,7 @@ import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 import './LeagueTab.css';
 import PropTypes from 'prop-types';
-import League from '../../../model/League';
-import { observer } from 'mobx-react';
+import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
 class LeagueTab extends React.Component {
 	handleChange = event => {
@@ -31,7 +30,7 @@ class LeagueTab extends React.Component {
 }
 
 LeagueTab.propTypes = {
-	league: PropTypes.instanceOf(League),
+	league: MobxPropTypes.observableObject,
 	onChangeLeague: PropTypes.func,
 };
 

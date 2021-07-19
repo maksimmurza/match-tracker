@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select } from 'semantic-ui-react';
 import './LocaleSelection.css';
+import { PropTypes } from 'prop-types';
 
 const LocaleSelection = ({ value, onChange }) => {
 	return (
@@ -14,6 +15,11 @@ const LocaleSelection = ({ value, onChange }) => {
 			]}
 		/>
 	);
+};
+
+LocaleSelection.propTypes = {
+	value: PropTypes.string,
+	onChange: PropTypes.func,
 };
 
 export default LocaleSelection;

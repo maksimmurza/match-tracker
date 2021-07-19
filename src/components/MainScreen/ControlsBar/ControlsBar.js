@@ -4,6 +4,7 @@ import QuantityInput from '../QuantityInput/QuantityInput';
 import LocaleSelection from '../LocaleSelection/LocaleSelection';
 import { Button } from 'semantic-ui-react';
 import './ControlsBar.css';
+import { PropTypes } from 'prop-types';
 
 const ControlsBar = ({
 	values: { quantity, locale },
@@ -40,6 +41,14 @@ const ControlsBar = ({
 			</div>
 		</div>
 	);
+};
+
+ControlsBar.propTypes = {
+	values: PropTypes.shape({
+		quantity: PropTypes.number,
+		locale: PropTypes.string,
+	}),
+	handlers: PropTypes.objectOf(PropTypes.func),
 };
 
 export default ControlsBar;

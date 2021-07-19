@@ -1,5 +1,3 @@
-import League from '../model/League';
-
 function getLocalLeagues() {
 	return new Promise(resolve => {
 		setTimeout(() => {

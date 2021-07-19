@@ -4,6 +4,7 @@ import './MatchPoster.css';
 import { LocaleContext } from '../../../context/LocaleContext';
 import Notificationable from '../../Notification/Notification';
 import PropTypes from 'prop-types';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
 
 export class MatchPoster extends React.PureComponent {
 	constructor(props) {
@@ -175,8 +176,8 @@ export class MatchPoster extends React.PureComponent {
 }
 
 MatchPoster.propTypes = {
-	homeTeam: PropTypes.object,
-	awayTeam: PropTypes.object,
+	homeTeam: MobxPropTypes.observableObject,
+	awayTeam: MobxPropTypes.observableObject,
 	time: PropTypes.string,
 	status: PropTypes.string,
 	todayDate: PropTypes.instanceOf(Date),

@@ -5,8 +5,7 @@ import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
 import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
 import { writeLocalLeagues } from '../../../utils/localStorage';
-import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
+import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
 function SelectionArea({ leagues }) {
 	let panes = [];
@@ -66,7 +65,7 @@ function SelectionArea({ leagues }) {
 }
 
 SelectionArea.propTypes = {
-	// leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
+	leagues: MobxPropTypes.observableArrayOf(MobxPropTypes.observableObject),
 };
 
 export default observer(SelectionArea);

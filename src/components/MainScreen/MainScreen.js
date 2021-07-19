@@ -5,14 +5,13 @@ import './MainScreen.css';
 import { LocaleContext } from '../../context/LocaleContext';
 import { Grid, Message, Icon } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
-import PropTypes from 'prop-types';
 import ControlsBar from './ControlsBar/ControlsBar';
 import MobileSidebar from '../MobileSidebar/MobileSidebar';
 import req from '../../utils/requestOptions';
 import { getLocalLeagues } from '../../utils/localStorage';
-import League from '../../model/League';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { observer } from 'mobx-react';
+import { PropTypes } from 'prop-types';
 import store from '../../mobx/store';
 
 class MainScreen extends React.Component {
@@ -31,7 +30,6 @@ class MainScreen extends React.Component {
 		this.setState({ message: 'Checking local storage...' });
 		getLocalLeagues().then(({ localLeagues, outOfDate }) => {
 			if (localLeagues && !outOfDate) {
-				console.log(localLeagues);
 				store.getLeaguesFromLocal(localLeagues);
 				this.showNotification('', 'Loaded from local storage');
 			} else {
@@ -66,11 +64,7 @@ class MainScreen extends React.Component {
 
 	render() {
 		const matchList = (
-			<MatchList
-				leagues={store.leagues.filter(value => value)}
-				quantity={this.state.quantity}
-				todayDate={new Date()}
-			/>
+			<MatchList leagues={store.leagues} quantity={this.state.quantity} todayDate={new Date()} />
 		);
 
 		const selectionArea = <SelectionArea leagues={store.leagues} />;
@@ -86,7 +80,10 @@ class MainScreen extends React.Component {
 			/>
 		);
 
-		if (store.length < req.footballData.leaguesKeys.length && !store.some(l => l?.matches)) {
+		if (
+			store.leagues.length < req.footballData.leaguesKeys.length &&
+			!store.leagues.some(l => l?.matches)
+		) {
 			return (
 				<Grid centered>
 					<Grid.Column className="message-wrapper" computer={8} tablet={10} mobile={14}>
@@ -126,7 +123,6 @@ class MainScreen extends React.Component {
 }
 
 MainScreen.propTypes = {
-	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
 	showNotification: PropTypes.func,
 };
 

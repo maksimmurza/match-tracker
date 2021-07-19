@@ -8,7 +8,7 @@ export default class League {
 	logo = '';
 	teams = [];
 	matches = [];
-	loading = false;
+	loading = true;
 
 	constructor(id) {
 		this.id = id;
@@ -42,7 +42,6 @@ export default class League {
 	}
 
 	get status() {
-		console.log(this.activeTeams);
 		if (this.teamsShowed === 0) {
 			return 'unchecked';
 		} else if (this.teamsShowed === this.activeTeams && this.teamsShowed !== 0) {
