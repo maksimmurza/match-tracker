@@ -56,43 +56,37 @@ export default class League {
 		this.matches.length > 0 &&
 			this.matches.forEach(match => {
 				let arr = [];
-				const separators = /United|City|FC|hampton/;
+				let separator = /United|City|FC|hampton|de|RCD/;
 				this.teams.forEach(team => {
 					arr.push(team.name);
 				});
 
-				if (match.homeTeam.name) {
-					const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
-						match.homeTeam.name,
-						arr
-					);
-					if (bestMatches[bestMatchIndex].rating > 0.75) {
-						match.homeTeam = this.teams[bestMatchIndex];
-					} else {
-						const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
-							match.homeTeam.name.split(separators).join(''),
-							arr
-						);
-						if (bestMatches[bestMatchIndex].rating > 0.38) {
-							match.homeTeam = this.teams[bestMatchIndex];
-						}
-					}
-				}
-
-				if (match.awayTeam.name) {
-					const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
-						match.awayTeam.name,
-						arr
-					);
-					if (bestMatches[bestMatchIndex].rating > 0.75) {
-						match.awayTeam = this.teams[bestMatchIndex];
-					} else {
-						const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
-							match.awayTeam.name.split(separators).join(''),
-							arr
-						);
-						if (bestMatches[bestMatchIndex].rating > 0.38) {
-							match.awayTeam = this.teams[bestMatchIndex];
+				for (let key in match) {
+					if (key.includes('Team')) {
+						if (match[key].name) {
+							if (match[key].name.includes('Alavés')) {
+								separator = /Deportivo/;
+							} else if (match[key].name.includes('Espanyol')) {
+								separator = /Barcelona/;
+							}
+							const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
+								match[key].name,
+								arr
+							);
+							if (bestMatches[bestMatchIndex].rating > 0.75) {
+								match[key] = this.teams[bestMatchIndex];
+							} else {
+								const {
+									ratings: bestMatches,
+									bestMatchIndex,
+								} = stringSimilarity.findBestMatch(
+									match[key].name.split(separator).join(''),
+									arr
+								);
+								if (bestMatches[bestMatchIndex].rating > 0.38) {
+									match[key] = this.teams[bestMatchIndex];
+								}
+							}
 						}
 					}
 				}
