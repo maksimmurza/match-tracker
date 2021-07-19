@@ -4,24 +4,19 @@ import './TeamCheckbox.css';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 
-class TeamCheckbox extends React.Component {
-	handleChange = () => {
-		this.props.toggleTeamVisibility(this.props.team.name);
+const TeamCheckbox = ({ toggleTeamVisibility, writeLocal, team }) => {
+	const handleChange = () => {
+		toggleTeamVisibility(team.name);
+		writeLocal();
 	};
 
-	render() {
-		return (
-			<div className="team-tab-content">
-				<Checkbox
-					data-testid="input"
-					onChange={this.handleChange}
-					checked={this.props.team.show === true}
-				/>
-				<label className="team-name-tab-content"> {this.props.team.name}</label>
-			</div>
-		);
-	}
-}
+	return (
+		<div className="team-tab-content">
+			<Checkbox data-testid="input" onChange={handleChange} checked={team.show === true} />
+			<label className="team-name-tab-content"> {team.name}</label>
+		</div>
+	);
+};
 
 TeamCheckbox.propTypes = {
 	team: PropTypes.object,

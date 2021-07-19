@@ -4,18 +4,17 @@ import LeagueTab from '../LeagueTab/LeagueTab';
 import TeamCheckbox from '../TeamCheckbox/TeamCheckbox';
 import './SelectionArea.css';
 import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
+import { writeLocalLeagues } from '../../../utils/localStorage';
 import PropTypes from 'prop-types';
-import League from '../../../model/League';
 import { observer } from 'mobx-react';
 
-function SelectionArea(props) {
+function SelectionArea({ leagues }) {
 	let panes = [];
 
-	props.leagues.forEach(league => {
+	leagues.forEach(league => {
 		let teams = [];
 
 		league?.teams?.forEach(team => {
-			//league.teams.length > 20 &&
 			if (
 				league.teams.length <= 20 ||
 				league.matches.some(m => m.homeTeam.name === team.name || m.awayTeam.name === team.name)
@@ -24,7 +23,10 @@ function SelectionArea(props) {
 					<TeamCheckbox
 						key={team.name}
 						team={team}
-						toggleTeamVisibility={league.toggleTeamVisibility}></TeamCheckbox>
+						toggleTeamVisibility={league.toggleTeamVisibility}
+						writeLocal={() => {
+							writeLocalLeagues(leagues);
+						}}></TeamCheckbox>
 				);
 			}
 		});
@@ -64,9 +66,7 @@ function SelectionArea(props) {
 }
 
 SelectionArea.propTypes = {
-	leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
-	onChangeLeague: PropTypes.func,
-	onChangeTeam: PropTypes.func,
+	// leagues: PropTypes.arrayOf(PropTypes.instanceOf(League)),
 };
 
 export default observer(SelectionArea);
