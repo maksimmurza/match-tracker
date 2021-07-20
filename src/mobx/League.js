@@ -44,7 +44,7 @@ export default class League {
 	get status() {
 		if (this.teamsShowed === 0) {
 			return 'unchecked';
-		} else if (this.teamsShowed === this.activeTeams && this.teamsShowed !== 0) {
+		} else if (this.teamsShowed >= this.activeTeams && this.teamsShowed !== 0) {
 			return 'checked';
 		} else {
 			return 'indeterminate';

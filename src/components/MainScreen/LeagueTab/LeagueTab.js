@@ -5,14 +5,18 @@ import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 
 class LeagueTab extends React.Component {
+	constructor(props) {
+		super(props);
+		this.tabLoader = <Loader size="tiny" active></Loader>;
+		this.unavailableTabIcon = <Icon name="exclamation"></Icon>;
+	}
+
 	handleChange = event => {
 		event.stopPropagation();
 		this.props.league.toggleVisibility();
 	};
 
 	render() {
-		const tabLoader = <Loader size="tiny" active></Loader>;
-		const unavailableTabIcon = <Icon name="exclamation"></Icon>;
 		const tabContent = (
 			<div className="league-tab" title={`${this.props.league.name}`}>
 				<Checkbox
@@ -25,7 +29,11 @@ class LeagueTab extends React.Component {
 			</div>
 		);
 
-		return !this.props.league ? unavailableTabIcon : this.props.league.loading ? tabLoader : tabContent;
+		return !this.props.league
+			? this.unavailableTabIcon
+			: this.props.league.loading
+			? this.tabLoader
+			: tabContent;
 	}
 }
 

@@ -63,23 +63,6 @@ class MainScreen extends React.Component {
 	};
 
 	render() {
-		const matchList = (
-			<MatchList leagues={store.leagues} quantity={this.state.quantity} todayDate={new Date()} />
-		);
-
-		const selectionArea = <SelectionArea leagues={store.leagues} />;
-
-		const controlsBar = (
-			<ControlsBar
-				values={{ quantity: this.state.quantity, locale: this.state.locale }}
-				handlers={{
-					setQuantity: this.setQuantity,
-					setLocale: this.setLocale,
-					sidebarToggle: this.sidebarToggle,
-				}}
-			/>
-		);
-
 		if (
 			store.leagues.length < req.footballData.leaguesKeys.length &&
 			!store.leagues.some(l => l?.matches)
@@ -101,18 +84,29 @@ class MainScreen extends React.Component {
 			return (
 				<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
 					<MobileSidebar
-						sidebarContent={selectionArea}
+						sidebarContent={<SelectionArea leagues={store.leagues} />}
 						sidebarVisible={this.state.sidebarVisible}
 						sidebarToggle={this.sidebarToggle}>
 						<Grid stackable centered reversed="mobile">
 							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
 								<LocaleContext.Provider value={this.state.locale}>
-									{matchList}
+									<MatchList
+										leagues={store.leagues}
+										quantity={this.state.quantity}
+										todayDate={new Date()}
+									/>
 								</LocaleContext.Provider>
 							</Grid.Column>
 							<Grid.Column computer={5} tablet={6} mobile={16} id="controls">
-								{controlsBar}
-								{selectionArea}
+								<ControlsBar
+									values={{ quantity: this.state.quantity, locale: this.state.locale }}
+									handlers={{
+										setQuantity: this.setQuantity,
+										setLocale: this.setLocale,
+										sidebarToggle: this.sidebarToggle,
+									}}
+								/>
+								<SelectionArea leagues={store.leagues} />
 							</Grid.Column>
 						</Grid>
 					</MobileSidebar>

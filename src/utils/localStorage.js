@@ -1,3 +1,5 @@
+import req from './requestOptions';
+
 function getLocalLeagues() {
 	return new Promise(resolve => {
 		setTimeout(() => {
@@ -19,7 +21,10 @@ function getLocalLeagues() {
 }
 
 async function writeLocalLeagues(leagues) {
-	if (leagues.length === 4 && leagues.every(league => league && !league.loading)) {
+	if (
+		leagues.length === req.footballData.leaguesKeys.length &&
+		leagues.every(league => league && !league.loading)
+	) {
 		let arr = [];
 		leagues.forEach(l => arr.push(l.toJSON()));
 		localStorage.setItem('leagues', JSON.stringify(arr));

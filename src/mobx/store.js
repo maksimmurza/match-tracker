@@ -77,8 +77,7 @@ class Leagues {
 
 				for (let l of currentLeagues) {
 					if (
-						(l.name === league.name ||
-							(league.name === 'European Championship' && l.name === 'Euro Championship')) &&
+						l.name === league.name &&
 						(l.country === league.country || l.country === 'World' || l.country === 'Europe')
 					) {
 						league.logo = l.logo;
