@@ -4,7 +4,7 @@ import { writeLocalLeagues } from '../utils/localStorage';
 import req from '../utils/requestOptions';
 import League from './League';
 
-class Leagues {
+export default class LeaguesStore {
 	leagues = [];
 
 	constructor() {
@@ -15,7 +15,7 @@ class Leagues {
 		});
 	}
 
-	getLeaguesFromLocal(localLeagues) {
+	async getLeaguesFromLocal(localLeagues) {
 		this.leagues = [];
 		localLeagues.forEach(l => {
 			let league = new League(l.id);
@@ -121,6 +121,3 @@ class Leagues {
 		await Promise.all(fetchProcesses);
 	}
 }
-
-const store = new Leagues();
-export default store;

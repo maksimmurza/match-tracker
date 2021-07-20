@@ -12,7 +12,6 @@ import { getLocalLeagues } from '../../utils/localStorage';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { observer } from 'mobx-react';
 import { PropTypes } from 'prop-types';
-import store from '../../mobx/store';
 
 class MainScreen extends React.Component {
 	constructor(props) {
@@ -30,16 +29,17 @@ class MainScreen extends React.Component {
 		this.setState({ message: 'Checking local storage...' });
 		getLocalLeagues().then(({ localLeagues, outOfDate }) => {
 			if (localLeagues && !outOfDate) {
-				store.getLeaguesFromLocal(localLeagues);
-				this.showNotification('', 'Loaded from local storage');
+				this.props.store.getLeaguesFromLocal(localLeagues).then(() => {
+					this.showNotification('', 'Loaded from local storage');
+				});
 			} else {
 				this.setState({
 					message: 'Local schedule is empty or out of date. Fetching data from API...',
 				});
-				store
+				this.props.store
 					.getLeaguesFromAPI(localLeagues)
 					.then(() => {
-						writeLocalLeagues(store.leagues);
+						writeLocalLeagues(this.props.store.leagues);
 						this.showNotification('', 'Loaded from API');
 					})
 					.catch(e => {
@@ -64,8 +64,8 @@ class MainScreen extends React.Component {
 
 	render() {
 		if (
-			store.leagues.length < req.footballData.leaguesKeys.length &&
-			!store.leagues.some(l => l?.matches)
+			this.props.store.leagues.length < req.footballData.leaguesKeys.length &&
+			!this.props.store.leagues.some(l => l?.matches)
 		) {
 			return (
 				<Grid centered>
@@ -84,14 +84,14 @@ class MainScreen extends React.Component {
 			return (
 				<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
 					<MobileSidebar
-						sidebarContent={<SelectionArea leagues={store.leagues} />}
+						sidebarContent={<SelectionArea leagues={this.props.store.leagues} />}
 						sidebarVisible={this.state.sidebarVisible}
 						sidebarToggle={this.sidebarToggle}>
 						<Grid stackable centered reversed="mobile">
 							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
 								<LocaleContext.Provider value={this.state.locale}>
 									<MatchList
-										leagues={store.leagues}
+										leagues={this.props.store.leagues}
 										quantity={this.state.quantity}
 										todayDate={new Date()}
 									/>
@@ -106,7 +106,7 @@ class MainScreen extends React.Component {
 										sidebarToggle: this.sidebarToggle,
 									}}
 								/>
-								<SelectionArea leagues={store.leagues} />
+								<SelectionArea leagues={this.props.store.leagues} />
 							</Grid.Column>
 						</Grid>
 					</MobileSidebar>
