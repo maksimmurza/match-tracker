@@ -3,6 +3,7 @@ import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../utils/fetchData
 import { writeLocalLeagues } from '../utils/localStorage';
 import req from '../utils/requestOptions';
 import League from './League';
+import Team from './Team';
 
 export default class LeaguesStore {
 	leagues = [];
@@ -12,6 +13,7 @@ export default class LeaguesStore {
 			leagues: observable,
 			getLeaguesFromLocal: action,
 			getLeaguesFromAPI: action,
+			writeLeaguesLocal: action.bound,
 		});
 	}
 
@@ -24,11 +26,20 @@ export default class LeaguesStore {
 			league.logo = l.logo;
 			league.matches = l.matches;
 			league.matches.forEach(match => (match.leagueLogo = league.logo));
-			league.teams = l.teams;
+			league.teams = l.teams.map(team => {
+				let newTeam = new Team(team.id);
+				newTeam.name = team.name;
+				newTeam.country = team.country;
+				newTeam.logo = team.logo;
+				newTeam.show = team.show;
+				newTeam.leagueName = team.leagueName;
+				newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
+				return newTeam;
+			});
 			league.resolveTeamsNames();
 			reaction(
 				() => league.status,
-				() => writeLocalLeagues(this.leagues)
+				() => this.writeLeaguesLocal()
 			);
 			league.loading = false;
 			this.leagues.push(league);
@@ -87,13 +98,17 @@ export default class LeaguesStore {
 							throw e;
 						});
 
-						teams.forEach(team => {
-							team.show = true;
-							team.leagueName = schedule.competition.name;
+						league.teams = teams.map(team => {
+							let newTeam = new Team(team.team_id);
+							newTeam.name = team.name;
+							newTeam.country = team.country;
+							newTeam.logo = team.logo;
+							newTeam.leagueName = schedule.competition.name;
+							newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
+							return newTeam;
 						});
-						league.teams = teams;
 
-						league.resolveTeamsNames(league);
+						league.resolveTeamsNames();
 
 						if (
 							localLeagues &&
@@ -119,5 +134,9 @@ export default class LeaguesStore {
 		}
 
 		await Promise.all(fetchProcesses);
+	}
+
+	writeLeaguesLocal() {
+		writeLocalLeagues(this.leagues);
 	}
 }

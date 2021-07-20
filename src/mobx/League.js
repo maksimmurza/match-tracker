@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, computed } from 'mobx';
+import { makeObservable, observable, action, computed, toJS } from 'mobx';
 import stringSimilarity from 'string-similarity';
 
 export default class League {
@@ -24,16 +24,13 @@ export default class League {
 			activeTeams: computed,
 			teamsShowed: computed,
 			resolveTeamsNames: action,
-			toggleVisibility: action,
-			toggleTeamVisibility: action,
+			toggleLeagueVisibility: action,
 		});
 	}
 
 	get activeTeams() {
 		return this.teams.filter(team => {
-			return this.matches.some(
-				match => match.homeTeam.name === team.name || match.awayTeam.name === team.name
-			);
+			return this.matches.some(match => match.homeTeam === team || match.awayTeam === team);
 		}).length;
 	}
 
@@ -74,6 +71,7 @@ export default class League {
 							);
 							if (bestMatches[bestMatchIndex].rating > 0.75) {
 								match[key] = this.teams[bestMatchIndex];
+								this.teams[bestMatchIndex].matches++;
 							} else {
 								const {
 									ratings: bestMatches,
@@ -84,6 +82,7 @@ export default class League {
 								);
 								if (bestMatches[bestMatchIndex].rating > 0.38) {
 									match[key] = this.teams[bestMatchIndex];
+									this.teams[bestMatchIndex].matches++;
 								}
 							}
 						}
@@ -92,7 +91,7 @@ export default class League {
 			});
 	}
 
-	toggleVisibility = () => {
+	toggleLeagueVisibility = () => {
 		if (this.status === 'unchecked') {
 			this.teams.forEach(team => {
 				if (
@@ -108,19 +107,14 @@ export default class League {
 		}
 	};
 
-	toggleTeamVisibility = teamName => {
-		const team = this.teams.find(team => team.name === teamName);
-		team.show = !team.show;
-	};
-
 	toJSON() {
 		return {
 			id: this.id,
 			name: this.name,
 			country: this.country,
 			logo: this.logo,
-			matches: this.matches,
-			teams: this.teams,
+			matches: toJS(this.matches),
+			teams: toJS(this.teams),
 		};
 	}
 }
