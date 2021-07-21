@@ -21,14 +21,9 @@ function SelectionArea({ leagues }) {
 	);
 
 	leagues.forEach(league => {
-		let teamsList = league?.teams?.map(team => {
-			if (
-				league.teams.length <= 20 ||
-				league.matches.some(m => m.homeTeam === team || m.awayTeam === team)
-			) {
-				return <TeamCheckbox key={team.id} team={team} />;
-			}
-		});
+		let teamList = league?.teams
+			?.filter(team => team.hasMatches)
+			.map(team => <TeamCheckbox key={team.id} team={team} />);
 
 		tabs.push({
 			menuItem: {
@@ -37,7 +32,7 @@ function SelectionArea({ leagues }) {
 			},
 			render: () => (
 				<Tab.Pane className="tab-content">
-					{teamsList.length > 0 ? teamsList : league?.loading ? teamsPlaceholder : failureMessage}
+					{teamList.length > 0 ? teamList : league?.loading ? teamsPlaceholder : failureMessage}
 				</Tab.Pane>
 			),
 		});

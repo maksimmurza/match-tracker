@@ -27,16 +27,20 @@ export default class LeaguesStore {
 			league.matches = l.matches;
 			league.matches.forEach(match => (match.leagueLogo = league.logo));
 			league.teams = l.teams.map(team => {
-				let newTeam = new Team(team.id);
-				newTeam.name = team.name;
-				newTeam.country = team.country;
-				newTeam.logo = team.logo;
-				newTeam.show = team.show;
-				newTeam.leagueName = team.leagueName;
+				let newTeam = new Team(
+					team.id,
+					team.name,
+					team.country,
+					team.logo,
+					team.leagueName,
+					team.show
+				);
 				newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
 				return newTeam;
 			});
 			league.resolveTeamsNames();
+			league.teams.forEach(team => team.resolveMatches(league.matches));
+			league.resolveActiveTeams();
 			reaction(
 				() => league.status,
 				() => this.writeLeaguesLocal()
@@ -99,16 +103,24 @@ export default class LeaguesStore {
 						});
 
 						league.teams = teams.map(team => {
-							let newTeam = new Team(team.team_id);
-							newTeam.name = team.name;
-							newTeam.country = team.country;
-							newTeam.logo = team.logo;
-							newTeam.leagueName = schedule.competition.name;
+							let newTeam = new Team(
+								team.team_id,
+								team.name,
+								team.country,
+								team.logo,
+								schedule.competition.name
+							);
 							newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
 							return newTeam;
 						});
 
 						league.resolveTeamsNames();
+						league.teams.forEach(team => team.resolveMatches(league.matches));
+						league.resolveActiveTeams();
+						reaction(
+							() => league.status,
+							() => this.writeLeaguesLocal()
+						);
 
 						if (
 							localLeagues &&

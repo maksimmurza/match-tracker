@@ -8,6 +8,7 @@ export default class League {
 	logo = '';
 	teams = [];
 	matches = [];
+	activeTeams = 0;
 	loading = true;
 
 	constructor(id) {
@@ -21,17 +22,15 @@ export default class League {
 			matches: observable.deep,
 			loading: observable,
 			status: computed,
-			activeTeams: computed,
+			resolveActiveTeams: action,
 			teamsShowed: computed,
 			resolveTeamsNames: action,
 			toggleLeagueVisibility: action,
 		});
 	}
 
-	get activeTeams() {
-		return this.teams.filter(team => {
-			return this.matches.some(match => match.homeTeam === team || match.awayTeam === team);
-		}).length;
+	resolveActiveTeams() {
+		this.activeTeams = this.teams.filter(team => team.hasMatches).length;
 	}
 
 	get teamsShowed() {
@@ -113,6 +112,7 @@ export default class League {
 			name: this.name,
 			country: this.country,
 			logo: this.logo,
+			activeTeams: this.activeTeams,
 			matches: toJS(this.matches),
 			teams: toJS(this.teams),
 		};

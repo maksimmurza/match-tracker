@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, computed } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 
 export default class Team {
 	id;
@@ -7,10 +7,17 @@ export default class Team {
 	logo = '';
 	leagueName = '';
 	show = true;
-	matches = 0;
+	hasMatches = false;
 
-	constructor(id) {
+	constructor(id, name, country, logo, leagueName, show) {
 		this.id = id;
+		this.name = name;
+		this.country = country;
+		this.logo = logo;
+		this.leagueName = leagueName;
+		if (show !== undefined) {
+			this.show = show;
+		}
 		makeObservable(this, {
 			id: observable,
 			name: observable,
@@ -18,7 +25,8 @@ export default class Team {
 			logo: observable,
 			leagueName: observable,
 			show: observable,
-			matches: observable,
+			hasMatches: observable,
+			resolveMatches: action,
 			toggleTeamVisibility: action,
 		});
 	}
@@ -26,5 +34,9 @@ export default class Team {
 	toggleTeamVisibility() {
 		this.show = !this.show;
 		this.writeLeaguesLocal();
+	}
+
+	resolveMatches(matches) {
+		this.hasMatches = matches.some(m => m.homeTeam === this || m.awayTeam === this);
 	}
 }
