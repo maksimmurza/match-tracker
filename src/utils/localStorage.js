@@ -7,14 +7,20 @@ function getLocalLeagues() {
 			if (!localLeagues || localLeagues.length === 0) {
 				resolve({ leagues: null });
 			} else {
-				let today = new Date(); //  '2021-04-03T11:30:00Z'
-				localLeagues.forEach(league => {
-					if (league.matches.some(match => new Date(match.utcDate) < today)) {
-						resolve({ localLeagues, outOfDate: true });
-					} else {
-						resolve({ localLeagues, outOfDate: false });
-					}
-				});
+				if (
+					localLeagues.some(league =>
+						league.matches.some(match => {
+							const now = new Date();
+							const matchBegins = new Date(match.utcDate);
+							const matchEnds = matchBegins.addHours(1.5);
+							return now > matchEnds;
+						})
+					)
+				) {
+					resolve({ localLeagues, outOfDate: true });
+				} else {
+					resolve({ localLeagues, outOfDate: false });
+				}
 			}
 		});
 	});
