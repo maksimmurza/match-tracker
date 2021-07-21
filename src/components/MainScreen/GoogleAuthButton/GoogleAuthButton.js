@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from 'react';
 import { Button, Dropdown, Icon } from 'semantic-ui-react';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../../utils/authOptions';
 import PropTypes from 'prop-types';
-import './GoogleAuthButton.css';
 
 const GoogleAuthButton = ({ size }) => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
@@ -48,13 +47,13 @@ const GoogleAuthButton = ({ size }) => {
 	};
 
 	return !isSignedIn ? (
-		<Button icon={size === 'small'} primary onClick={handleAuthClick} className="google-button">
+		<Button icon={size === 'small'} primary onClick={handleAuthClick} style={{ minWidth: 'fit-content' }}>
 			<Icon name="google"></Icon>
 			{size !== 'small' && 'Sign In'}
 		</Button>
 	) : (
 		user && (
-			<Button.Group color="blue" className="google-button">
+			<Button.Group color="blue" style={{ minWidth: 'fit-content' }}>
 				<Dropdown
 					button
 					pointing

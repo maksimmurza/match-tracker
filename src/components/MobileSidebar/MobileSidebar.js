@@ -1,24 +1,28 @@
 import React from 'react';
 import { SidebarPushable, SidebarPusher, Sidebar } from 'semantic-ui-react';
-import './MobileSidebar.css';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const MobileSidebar = props => {
 	return (
 		<SidebarPushable>
-			<Sidebar
-				className="mobile-sidebar"
+			<StyledSidebar
 				animation="overlay"
 				icon="labeled"
 				onHide={props.sidebarToggle}
 				visible={props.sidebarVisible}
 				width="wide">
 				{props.sidebarContent}
-			</Sidebar>
+			</StyledSidebar>
 			<SidebarPusher dimmed={props.sidebarVisible}>{props.children}</SidebarPusher>
 		</SidebarPushable>
 	);
 };
+
+const StyledSidebar = styled(Sidebar)`
+	background-color: gainsboro;
+	max-width: 70vw;
+`;
 
 MobileSidebar.propTypes = {
 	sidebarToggle: PropTypes.func,
