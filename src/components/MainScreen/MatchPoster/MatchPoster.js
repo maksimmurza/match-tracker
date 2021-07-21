@@ -1,10 +1,10 @@
 import React from 'react';
-import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
-import './MatchPoster.css';
+import { Segment, Icon, Label, Popup, Placeholder } from 'semantic-ui-react';
 import { LocaleContext } from '../../../context/LocaleContext';
 import Notificationable from '../../Notification/Notification';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import styled from 'styled-components';
 
 export class MatchPoster extends React.PureComponent {
 	constructor(props) {
@@ -46,21 +46,21 @@ export class MatchPoster extends React.PureComponent {
 
 		if (this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
 			liveLabel = (
-				<Label color="red" ribbon="right" className="day-label">
+				<DayLabel color="red" ribbon="right">
 					live
-				</Label>
+				</DayLabel>
 			);
 		} else if (date === matchDate.getDate() && month === matchDate.getMonth()) {
 			todayLabel = (
-				<Label color="blue" ribbon="right" className="day-label">
+				<DayLabel color="blue" ribbon="right">
 					today
-				</Label>
+				</DayLabel>
 			);
 		} else if (month === matchDate.getMonth() && date + 1 === matchDate.getDate())
 			tomorrowLabel = (
-				<Label color="teal" ribbon="right" className="day-label">
+				<DayLabel color="teal" ribbon="right">
 					tomorrow
-				</Label>
+				</DayLabel>
 			);
 
 		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
@@ -127,53 +127,133 @@ export class MatchPoster extends React.PureComponent {
 		const [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender();
 
 		return (
-			<>
-				<Segment className="match">
-					<div className="labels">
-						{todayLabel}
-						{tomorrowLabel}
-						{liveLabel}
+			<MatchWrapper>
+				<LabelsWrapper>
+					{todayLabel}
+					{tomorrowLabel}
+					{liveLabel}
 
-						<Popup
-							trigger={
-								<div
-									ref={this.dateLabels}
-									onMouseEnter={this.hoverDateLabels}
-									onMouseLeave={this.hoverDateLabels}
-									className="date-labels-container"
-									onClick={this.pushEventHandler}>
-									<Label>
-										<Icon name="calendar" /> {matchDateStr}
-									</Label>
-									<Label>
-										<Icon name="time" /> {matchTimeStr}
-									</Label>
-								</div>
-							}
-							mouseEnterDelay={800}
-							content="Push to the calendar"
-							position="top left"
-						/>
-					</div>
+					<Popup
+						trigger={
+							<DateLabelsWrapper
+								ref={this.dateLabels}
+								onMouseEnter={this.hoverDateLabels}
+								onMouseLeave={this.hoverDateLabels}
+								onClick={this.pushEventHandler}>
+								<Label>
+									<Icon name="calendar" /> {matchDateStr}
+								</Label>
+								<Label>
+									<Icon name="time" /> {matchTimeStr}
+								</Label>
+							</DateLabelsWrapper>
+						}
+						mouseEnterDelay={800}
+						content="Push to the calendar"
+						position="top left"
+					/>
+				</LabelsWrapper>
 
-					<div className="teams">
-						<span className="home-team">{this.props.homeTeam.name}</span>
-						<img src={this.props.homeTeam.logo} className="team-logo" alt="Team logo" />
-						<h3 className="devider">–</h3>
-						<img src={this.props.awayTeam.logo} className="team-logo" alt="Team logo" />
-						<span className="away-team">{this.props.awayTeam.name}</span>
-					</div>
+				<TeamsWrapper>
+					<HomeTeamName>{this.props.homeTeam.name}</HomeTeamName>
+					<TeamLogo src={this.props.homeTeam.logo} alt={<Placeholder.Image />} />
+					<Devider />
+					<TeamLogo src={this.props.awayTeam.logo} alt={<Placeholder.Image />} />
+					<AwayTeamName>{this.props.awayTeam.name}</AwayTeamName>
+				</TeamsWrapper>
 
-					<img
-						src={this.props.leagueLogo}
-						alt="League logo"
-						width="25"
-						className="league-logo"></img>
-				</Segment>
-			</>
+				<StyledLeagueLogo src={this.props.leagueLogo} alt="League logo" width="25"></StyledLeagueLogo>
+			</MatchWrapper>
 		);
 	}
 }
+
+const MatchWrapper = styled(Segment)`
+	width: calc(100% - 1.1em) !important;
+	max-height: calc(100% / 4);
+	@media (max-width: 767px) {
+		padding-bottom: 5px !important;
+		padding-top: 5px !important;
+	}
+`;
+
+const TeamsWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	padding-top: 5px;
+	@media (max-width: 767px) {
+		padding-bottom: 8px;
+	}
+`;
+
+const StyledLeagueLogo = styled.img`
+	position: relative;
+	left: calc(100% - 2rem);
+	@media (max-width: 767px) {
+		display: none;
+	}
+`;
+
+const DateLabelsWrapper = styled.div`
+	box-shadow: none;
+	background-color: transparent;
+	border-radius: 5px;
+	display: inline-block;
+	cursor: pointer;
+	transition: ease all 0.2s;
+`;
+
+const LabelsWrapper = styled.div`
+	& * {
+		@media (max-width: 767px) {
+			font-size: 0.7rem !important;
+		}
+	}
+`;
+
+const DayLabel = styled(Label)`
+	position: absolute !important;
+	left: calc(100% + 1.2em) !important;
+`;
+
+const TeamName = styled.span`
+	flex-grow: 2;
+	font-size: 1.3em;
+	display: inline;
+	width: 300px;
+	text-overflow: ellipsis;
+	margin: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	@media (max-width: 767px) {
+		font-size: 0.9em;
+	}
+`;
+
+const HomeTeamName = styled(TeamName)`
+	text-align: right;
+	&::after {
+		content: '';
+		padding-right: 20px;
+	}
+`;
+
+const AwayTeamName = styled(TeamName)`
+	text-align: left;
+	text-indent: 20px;
+`;
+
+const TeamLogo = styled.img`
+	width: calc(35px + 3.2vw);
+`;
+
+const Devider = styled.h3`
+	flex-grow: 1;
+	width: 80px;
+	text-align: center;
+	margin: 0;
+`;
 
 MatchPoster.propTypes = {
 	homeTeam: MobxPropTypes.observableObject,

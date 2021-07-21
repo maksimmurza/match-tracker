@@ -1,21 +1,21 @@
 import React from 'react';
 import MatchPoster from '../MatchPoster/MatchPoster';
 import { SegmentGroup, Loader, Message } from 'semantic-ui-react';
-import './MatchList.css';
 import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
+import styled from 'styled-components';
 
 class MatchList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.loader = <Loader style={{ marginTop: '2em' }} active inline="centered" />;
+		this.loader = <StyledLoader active inline="centered" />;
 		this.emptyListMessage = (
-			<Message style={{ margin: '1em 2em 1em 1em' }}>
+			<StyledMessage>
 				<Message.Header>No matches to show</Message.Header>
 				<Message.List
 					items={['All matches in leagues have been played', 'Errors while fetching informaion']}
 				/>
-			</Message>
+			</StyledMessage>
 		);
 	}
 
@@ -68,18 +68,57 @@ class MatchList extends React.Component {
 		});
 
 		return (
-			<div className="block">
-				<SegmentGroup className="match-list">
+			<MatchListWrapper>
+				<StyledSegmentGroup>
 					{this.props.leagues.every(league => league.loading)
 						? this.loader
 						: markedMatches.length > 0
 						? markedMatches
 						: this.emptyListMessage}
-				</SegmentGroup>
-			</div>
+				</StyledSegmentGroup>
+			</MatchListWrapper>
 		);
 	}
 }
+
+const StyledMessage = styled(Message)`
+	margin: 1em 2em 1em 1em;
+`;
+
+const StyledLoader = styled(Loader)`
+	margintop: 2em;
+`;
+
+const MatchListWrapper = styled.div`
+	overflow-x: visible;
+	height: calc(100vh - 2rem);
+	border-radius: 5px;
+	margin: 1rem 0;
+	box-shadow: 0 0 10px 0 rgba(0, 33, 36, 0.305);
+	@media (max-width: 767px) {
+		margin: 0;
+		height: calc(100vh - 42px);
+	}
+}
+`;
+
+const StyledSegmentGroup = styled(SegmentGroup)`
+	height: 100%;
+	border-radius: 5px;
+	overflow-y: auto;
+	overflow-x: visible;
+	border: none !important;
+	box-shadow: none !important;
+	margin-right: -1.1rem !important;
+
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+`;
 
 MatchList.propTypes = {
 	leagues: MobxPropTypes.observableArrayOf(MobxPropTypes.observableObject),

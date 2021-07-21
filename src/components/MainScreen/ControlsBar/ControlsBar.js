@@ -3,8 +3,8 @@ import GoogleAuthButton from '../GoogleAuthButton/GoogleAuthButton';
 import QuantityInput from '../QuantityInput/QuantityInput';
 import LocaleSelection from '../LocaleSelection/LocaleSelection';
 import { Button } from 'semantic-ui-react';
-import './ControlsBar.css';
 import { PropTypes } from 'prop-types';
+import styled from 'styled-components';
 
 const ControlsBar = ({
 	values: { quantity, locale },
@@ -13,7 +13,7 @@ const ControlsBar = ({
 	const [buttonSize, setButtonSize] = useState('regular');
 
 	window.onresize = () => {
-		const container = document.querySelector('.settings-wrapper');
+		const container = document.querySelector('#settings-wrapper');
 		const containerChildren = Array.from(container.children);
 		const availableSpace = containerChildren.reduce(
 			(acc, el) => acc - el.offsetWidth,
@@ -27,21 +27,47 @@ const ControlsBar = ({
 	};
 
 	return (
-		<div className="bar">
-			<Button
-				icon="content"
-				className="toggle-sidebar"
-				style={{ backgroundColor: 'transparent' }}
-				onClick={sidebarToggle}></Button>
-
-			<div className="settings-wrapper">
+		<Bar id="bar">
+			<ToggleSidebarButton icon="content" onClick={sidebarToggle}></ToggleSidebarButton>
+			<SettingsWrapper id="settings-wrapper">
 				<QuantityInput value={quantity} onChange={setQuantity} />
 				<LocaleSelection value={locale} onChange={setLocale} />
 				<GoogleAuthButton size={buttonSize}></GoogleAuthButton>
-			</div>
-		</div>
+			</SettingsWrapper>
+		</Bar>
 	);
 };
+
+const Bar = styled.div`
+	display: flex;
+`;
+
+const SettingsWrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	flex-grow: 1;
+	& > * {
+		margin: 0 10px 1rem 0 !important;
+		max-width: 8rem;
+	}
+	@media (max-width: 767px) {
+		flex-grow: 2;
+		justify-content: flex-end;
+		& > * {
+			margin: 0 5px 0 0 !important;
+			align-self: center;
+		}
+	}
+`;
+
+const ToggleSidebarButton = styled(Button)`
+	display: none !important;
+	@media (max-width: 767px) {
+		display: initial !important;
+		margin: 0 auto 0 0 !important;
+		background-color: transparent !important;
+	}
+`;
 
 ControlsBar.propTypes = {
 	values: PropTypes.shape({

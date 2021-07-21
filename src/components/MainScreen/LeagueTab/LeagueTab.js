@@ -1,8 +1,8 @@
 import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
-import './LeagueTab.css';
 import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
+import styled from 'styled-components';
 
 const LeagueTab = ({ league }) => {
 	return !league ? (
@@ -10,7 +10,7 @@ const LeagueTab = ({ league }) => {
 	) : league.loading ? (
 		<Loader size="tiny" active></Loader>
 	) : (
-		<div className="league-tab" title={league.name}>
+		<StyledLeagueTab title={league.name}>
 			<Checkbox
 				onChange={event => {
 					event.stopPropagation();
@@ -20,10 +20,22 @@ const LeagueTab = ({ league }) => {
 				indeterminate={league.status === 'indeterminate'}
 				data-testid="leagueCheckbox"
 			/>
-			<img src={league.logo} className="league-tab-logo"></img>
-		</div>
+			<StyledLeagueLogo src={league.logo}></StyledLeagueLogo>
+		</StyledLeagueTab>
 	);
 };
+
+const StyledLeagueTab = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+`;
+
+const StyledLeagueLogo = styled.img`
+	box-sizing: content-box;
+	padding-left: 1rem;
+	width: 25px;
+`;
 
 LeagueTab.propTypes = {
 	league: MobxPropTypes.observableObject,

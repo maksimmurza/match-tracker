@@ -1,7 +1,6 @@
 import React from 'react';
 import MatchList from './MatchList/MatchList';
 import SelectionArea from './SelectionArea/SelectionArea';
-import './MainScreen.css';
 import { LocaleContext } from '../../context/LocaleContext';
 import { Grid, Message, Icon } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
@@ -12,6 +11,7 @@ import { getLocalLeagues } from '../../utils/localStorage';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { observer } from 'mobx-react';
 import { PropTypes } from 'prop-types';
+import styled from 'styled-components';
 
 class MainScreen extends React.Component {
 	constructor(props) {
@@ -69,7 +69,7 @@ class MainScreen extends React.Component {
 		) {
 			return (
 				<Grid centered>
-					<Grid.Column className="message-wrapper" computer={8} tablet={10} mobile={14}>
+					<Grid.Column style={{ marginTop: '2rem' }} computer={8} tablet={10} mobile={14}>
 						<Message icon>
 							<Icon name="circle notched" loading />
 							<Message.Content>
@@ -88,7 +88,7 @@ class MainScreen extends React.Component {
 						sidebarVisible={this.state.sidebarVisible}
 						sidebarToggle={this.sidebarToggle}>
 						<Grid stackable centered reversed="mobile">
-							<Grid.Column computer={9} tablet={10} mobile={16} id="match-list-column">
+							<MatchListColumn computer={9} tablet={10} mobile={16}>
 								<LocaleContext.Provider value={this.state.locale}>
 									<MatchList
 										leagues={this.props.store.leagues}
@@ -96,8 +96,8 @@ class MainScreen extends React.Component {
 										todayDate={new Date()}
 									/>
 								</LocaleContext.Provider>
-							</Grid.Column>
-							<Grid.Column computer={5} tablet={6} mobile={16} id="controls">
+							</MatchListColumn>
+							<ControlsColumn computer={5} tablet={6} mobile={16}>
 								<ControlsBar
 									values={{ quantity: this.state.quantity, locale: this.state.locale }}
 									handlers={{
@@ -107,7 +107,7 @@ class MainScreen extends React.Component {
 									}}
 								/>
 								<SelectionArea leagues={this.props.store.leagues} />
-							</Grid.Column>
+							</ControlsColumn>
 						</Grid>
 					</MobileSidebar>
 				</div>
@@ -115,6 +115,28 @@ class MainScreen extends React.Component {
 		}
 	}
 }
+
+const MatchListColumn = styled(Grid.Column)`
+	&&&&& {
+		@media (max-width: 767px) {
+			padding: 0 !important;
+		}
+	}
+`;
+
+const ControlsColumn = styled(Grid.Column)`
+	&&&&& {
+		margin: 1rem 0 0 0 !important;
+		height: 100vh !important;
+		display: flex !important;
+		flex-direction: column;
+		@media (max-width: 767px) {
+			height: initial !important;
+			padding: 5px !important;
+			margin-top: 1rem !important;
+		}
+	}
+`;
 
 MainScreen.propTypes = {
 	showNotification: PropTypes.func,

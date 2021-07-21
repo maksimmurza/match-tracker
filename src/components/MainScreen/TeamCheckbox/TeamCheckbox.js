@@ -1,21 +1,31 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
-import './TeamCheckbox.css';
 import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
+import styled from 'styled-components';
 
 const TeamCheckbox = ({ team }) => {
 	return (
-		<div className="team-tab-content">
+		<TeamCheckboxWrapper>
 			<Checkbox
 				data-testid="input"
 				onChange={() => team.toggleTeamVisibility()}
 				checked={team.show === true}
 			/>
-			<label className="team-name-tab-content"> {team.name}</label>
-		</div>
+			<StyledTeamName> {team.name}</StyledTeamName>
+		</TeamCheckboxWrapper>
 	);
 };
+
+const TeamCheckboxWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	padding: 2px 0;
+`;
+
+const StyledTeamName = styled.label`
+	padding-left: 5px;
+`;
 
 TeamCheckbox.propTypes = {
 	team: MobxPropTypes.observableObject,
