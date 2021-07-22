@@ -82,7 +82,9 @@ class MatchList extends React.Component {
 }
 
 const StyledMessage = styled(Message)`
-	margin: 1em 2em 1em 1em;
+	&&& {
+		margin: 1em 2em 1em 1em;
+	}
 `;
 
 const StyledLoader = styled(Loader)`

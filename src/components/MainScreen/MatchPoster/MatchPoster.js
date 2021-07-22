@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Icon, Label, Popup, Placeholder } from 'semantic-ui-react';
+import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
 import { LocaleContext } from '../../../context/LocaleContext';
 import Notificationable from '../../Notification/Notification';
 import PropTypes from 'prop-types';
@@ -156,9 +156,9 @@ export class MatchPoster extends React.PureComponent {
 
 				<TeamsWrapper>
 					<HomeTeamName>{this.props.homeTeam.name}</HomeTeamName>
-					<TeamLogo src={this.props.homeTeam.logo} alt={<Placeholder.Image />} />
-					<Devider />
-					<TeamLogo src={this.props.awayTeam.logo} alt={<Placeholder.Image />} />
+					<TeamLogo src={this.props.homeTeam.logo} alt={this.props.homeTeam.name + 'logo'} />
+					<Devider> – </Devider>
+					<TeamLogo src={this.props.awayTeam.logo} alt={this.props.awayTeam.name + 'logo'} />
 					<AwayTeamName>{this.props.awayTeam.name}</AwayTeamName>
 				</TeamsWrapper>
 

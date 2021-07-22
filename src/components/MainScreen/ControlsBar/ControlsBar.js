@@ -38,7 +38,7 @@ const ControlsBar = ({
 	);
 };
 
-const Bar = styled.div`
+export const Bar = styled.div`
 	display: flex;
 `;
 

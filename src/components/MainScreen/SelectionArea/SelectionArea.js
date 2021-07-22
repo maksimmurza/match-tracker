@@ -21,9 +21,13 @@ function SelectionArea({ leagues }) {
 	);
 
 	leagues.forEach(league => {
-		let teamList = league?.teams
+		const activeTeams = league?.teams
 			?.filter(team => team.hasMatches)
 			.map(team => <TeamCheckbox key={team.id} team={team} />);
+		const inactiveTeams = league?.teams
+			?.filter(team => !team.hasMatches)
+			.map(team => <TeamCheckbox key={team.id} team={team} />);
+		const teamList = activeTeams.concat(inactiveTeams);
 
 		tabs.push({
 			menuItem: {

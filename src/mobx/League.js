@@ -70,7 +70,6 @@ export default class League {
 							);
 							if (bestMatches[bestMatchIndex].rating > 0.75) {
 								match[key] = this.teams[bestMatchIndex];
-								this.teams[bestMatchIndex].matches++;
 							} else {
 								const {
 									ratings: bestMatches,
@@ -81,7 +80,6 @@ export default class League {
 								);
 								if (bestMatches[bestMatchIndex].rating > 0.38) {
 									match[key] = this.teams[bestMatchIndex];
-									this.teams[bestMatchIndex].matches++;
 								}
 							}
 						}
@@ -93,11 +91,7 @@ export default class League {
 	toggleLeagueVisibility = () => {
 		if (this.status === 'unchecked') {
 			this.teams.forEach(team => {
-				if (
-					this.matches.some(
-						match => match.homeTeam.name === team.name || match.awayTeam.name === team.name
-					)
-				) {
+				if (this.matches.some(match => match.homeTeam === team || match.awayTeam === team)) {
 					team.show = true;
 				}
 			});

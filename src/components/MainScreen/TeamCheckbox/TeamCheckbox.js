@@ -11,8 +11,9 @@ const TeamCheckbox = ({ team }) => {
 				data-testid="input"
 				onChange={() => team.toggleTeamVisibility()}
 				checked={team.show === true}
+				disabled={!team.hasMatches}
 			/>
-			<StyledTeamName> {team.name}</StyledTeamName>
+			<StyledTeamName active={team.hasMatches}> {team.name}</StyledTeamName>
 		</TeamCheckboxWrapper>
 	);
 };
@@ -25,6 +26,10 @@ const TeamCheckboxWrapper = styled.div`
 
 const StyledTeamName = styled.label`
 	padding-left: 5px;
+	&&&,
+	&&&:hover {
+		color: ${props => (props.active ? 'black' : 'lightgray')};
+	}
 `;
 
 TeamCheckbox.propTypes = {
