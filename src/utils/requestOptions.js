@@ -1,32 +1,18 @@
-let req = {
-	footballData: {
-		leaguesBaseURL: 'https://api.football-data.org/v2/competitions/',
-		leaguesKeys: ['PL/', 'PD/', 'CL/'],
-		scheduledFilter: 'matches?status=SCHEDULED',
-		liveFilter: 'matches?status=LIVE',
-		requestOptions: {
-			headers: {
-				'X-Auth-Token': `${process.env.REACT_APP_footballDataToken}`,
-			},
-		},
-	},
-
-	rapidApi: {
-		currentSeasonLeaguesURL: 'https://api-football-v1.p.rapidapi.com/v2/leagues/current/',
-		leaguesBaseURL: 'https://api-football-v1.p.rapidapi.com/v2/teams/league/',
-		requestOptions: {
-			headers: {
-				'x-rapidapi-key': `${process.env.REACT_APP_rapidApiToken}`,
-				'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-				useQueryString: true,
-			},
-		},
+export const SCHEDULE_URL = 'https://api.football-data.org/v2/competitions/';
+export const LEAGUES_KEYS = ['PL/', 'PD/', 'CL/'];
+export const SCHEDULED_FILTER = 'matches?status=SCHEDULED';
+export const LIVE_FILTER = 'matches?status=LIVE';
+export const FOOTBALL_DATA_REQUEST_OPTIONS = {
+	headers: {
+		'X-Auth-Token': `${process.env.REACT_APP_footballDataToken}`,
 	},
 };
 
-// PL id - 2790
-// PD id - 2833
-// Cl id - 2771
-// EC id - 2018
-
-export default req;
+export const CURRENT_SEASON_LEAGUES_URL = 'https://api-football-v1.p.rapidapi.com/v2/leagues/current/';
+export const TEAMS_INFO_URL = 'https://api-football-v1.p.rapidapi.com/v2/teams/league/';
+export const RAPID_API_REQUEST_OPTIONS = {
+	headers: {
+		'x-rapidapi-key': `${process.env.REACT_APP_rapidApiToken}`,
+		'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
+	},
+};

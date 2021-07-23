@@ -88,7 +88,9 @@ const StyledMessage = styled(Message)`
 `;
 
 const StyledLoader = styled(Loader)`
-	margintop: 2em;
+	&&& {
+		margin-top: 2em;
+	}
 `;
 
 const MatchListWrapper = styled.div`
@@ -105,16 +107,18 @@ const MatchListWrapper = styled.div`
 `;
 
 const StyledSegmentGroup = styled(SegmentGroup)`
-	height: 100%;
-	border-radius: 5px;
-	overflow-y: auto;
-	overflow-x: visible;
-	border: none !important;
-	box-shadow: none !important;
-	margin-right: -1.1rem !important;
+	&&& {
+		height: 100%;
+		border-radius: 5px;
+		overflow-y: auto;
+		overflow-x: visible;
+		border: none;
+		box-shadow: none;
+		margin-right: -1.1rem;
 
-	-ms-overflow-style: none; /* for Internet Explorer, Edge */
-	scrollbar-width: none; /* for Firefox */
+		-ms-overflow-style: none; /* for Internet Explorer, Edge */
+		scrollbar-width: none; /* for Firefox */
+	}
 
 	&::-webkit-scrollbar {
 		display: none;

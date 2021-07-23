@@ -17,8 +17,10 @@ const LocaleSelection = ({ value, onChange }) => {
 };
 
 const StyledSelect = styled(Select)`
-	min-width: fit-content !important;
-	margin: 0 10px 0 0 !important;
+	&&& {
+		min-width: fit-content;
+		margin: 0 10px 0 0;
+	}
 `;
 
 LocaleSelection.propTypes = {

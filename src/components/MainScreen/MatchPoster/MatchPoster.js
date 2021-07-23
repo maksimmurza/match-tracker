@@ -10,27 +10,14 @@ export class MatchPoster extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.gapi = window.gapi;
-		this.dateLabels = React.createRef();
 		this.showNotification = props.showNotification;
 	}
 
 	static contextType = LocaleContext;
 
-	hoverDateLabels = () => {
-		let current = this.dateLabels.current.style.backgroundColor;
-
-		if (current === 'rgb(232, 232, 232)') {
-			this.dateLabels.current.style.backgroundColor = 'transparent';
-			this.dateLabels.current.style.boxShadow = 'none';
-		} else {
-			this.dateLabels.current.style.backgroundColor = 'rgb(232, 232, 232)';
-			this.dateLabels.current.style.boxShadow = '0 0 5px 0 rgba(0, 0, 0, 0.5)';
-		}
-	};
-
 	preRender() {
 		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
-		let matchDate = new Date(this.props.time);
+		const matchDate = new Date(this.props.time);
 		matchDateStr = matchDate.toLocaleDateString(this.context, {
 			month: 'long',
 			day: 'numeric',
@@ -41,8 +28,8 @@ export class MatchPoster extends React.PureComponent {
 		});
 		this.prettyDate = `${matchDateStr}, ${matchTimeStr}`;
 
-		let date = this.props.todayDate.getDate();
-		let month = this.props.todayDate.getMonth();
+		const date = this.props.todayDate.getDate();
+		const month = this.props.todayDate.getMonth();
 
 		if (this.props.status === 'IN_PLAY' || this.props.status === 'PAUSED') {
 			liveLabel = (
@@ -56,12 +43,13 @@ export class MatchPoster extends React.PureComponent {
 					today
 				</DayLabel>
 			);
-		} else if (month === matchDate.getMonth() && date + 1 === matchDate.getDate())
+		} else if (month === matchDate.getMonth() && date + 1 === matchDate.getDate()) {
 			tomorrowLabel = (
 				<DayLabel color="teal" ribbon="right">
 					tomorrow
 				</DayLabel>
 			);
+		}
 
 		return [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel];
 	}
@@ -128,6 +116,10 @@ export class MatchPoster extends React.PureComponent {
 
 		return (
 			<MatchWrapper>
+				<MobileAddEventButton
+					onClick={this.pushEventHandler}
+					corner="left"
+					icon="calendar plus outline"></MobileAddEventButton>
 				<LabelsWrapper>
 					{todayLabel}
 					{tomorrowLabel}
@@ -135,20 +127,16 @@ export class MatchPoster extends React.PureComponent {
 
 					<Popup
 						trigger={
-							<DateLabelsWrapper
-								ref={this.dateLabels}
-								onMouseEnter={this.hoverDateLabels}
-								onMouseLeave={this.hoverDateLabels}
-								onClick={this.pushEventHandler}>
+							<DateLabelsWrapper onClick={this.pushEventHandler}>
 								<Label>
-									<Icon name="calendar" /> {matchDateStr}
+									<DateLabelIcon name="calendar" /> {matchDateStr}
 								</Label>
 								<Label>
-									<Icon name="time" /> {matchTimeStr}
+									<DateLabelIcon name="time" /> {matchTimeStr}
 								</Label>
 							</DateLabelsWrapper>
 						}
-						mouseEnterDelay={800}
+						mouseEnterDelay={500}
 						content="Push to the calendar"
 						position="top left"
 					/>
@@ -156,24 +144,62 @@ export class MatchPoster extends React.PureComponent {
 
 				<TeamsWrapper>
 					<HomeTeamName>{this.props.homeTeam.name}</HomeTeamName>
-					<TeamLogo src={this.props.homeTeam.logo} alt={this.props.homeTeam.name + 'logo'} />
+					{this.props.homeTeam.logo ? (
+						<TeamLogo src={this.props.homeTeam.logo} />
+					) : (
+						<Icon size="big" name="shield" color="grey" />
+					)}
 					<Devider> – </Devider>
-					<TeamLogo src={this.props.awayTeam.logo} alt={this.props.awayTeam.name + 'logo'} />
+					{this.props.awayTeam.logo ? (
+						<TeamLogo src={this.props.awayTeam.logo} />
+					) : (
+						<Icon size="big" name="shield" color="grey" />
+					)}
 					<AwayTeamName>{this.props.awayTeam.name}</AwayTeamName>
 				</TeamsWrapper>
 
-				<StyledLeagueLogo src={this.props.leagueLogo} alt="League logo" width="25"></StyledLeagueLogo>
+				<LeagueLogo src={this.props.leagueLogo} alt="League logo" width="25"></LeagueLogo>
 			</MatchWrapper>
 		);
 	}
 }
 
 const MatchWrapper = styled(Segment)`
-	width: calc(100% - 1.1em) !important;
-	max-height: calc(100% / 4);
-	@media (max-width: 767px) {
-		padding-bottom: 5px !important;
-		padding-top: 5px !important;
+	&&& {
+		width: calc(100% - 1.1em);
+
+		@media (max-width: 1366px) {
+			min-height: calc(100% / 4);
+			max-height: fit-content;
+			@media (orientation: portrait) {
+				min-height: initial;
+				max-height: initial;
+			}
+		}
+		@media (max-width: 767px) {
+			padding-bottom: 5px;
+			padding-top: 5px;
+			min-height: initial;
+			max-height: initial;
+		}
+	}
+`;
+
+const MobileAddEventButton = styled(Label)`
+	&&& {
+		display: none;
+		@media (max-width: 767px) {
+			display: initial;
+			cursor: pointer;
+		}
+	}
+`;
+
+const DateLabelIcon = styled(Icon)`
+	&&& {
+		@media (max-width: 767px) {
+			display: none;
+		}
 	}
 `;
 
@@ -187,9 +213,17 @@ const TeamsWrapper = styled.div`
 	}
 `;
 
-const StyledLeagueLogo = styled.img`
-	position: relative;
-	left: calc(100% - 2rem);
+const LeagueLogo = styled.img`
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+
+	@media (min-width: 1367px) {
+		position: relative;
+		left: calc(100% - 2rem);
+		bottom: 0;
+	}
+
 	@media (max-width: 767px) {
 		display: none;
 	}
@@ -202,24 +236,44 @@ const DateLabelsWrapper = styled.div`
 	display: inline-block;
 	cursor: pointer;
 	transition: ease all 0.2s;
+	&:hover {
+		background-color: rgb(232, 232, 232);
+		box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+	}
+	@media (max-width: 767px) {
+		display: flex;
+		justify-content: center;
+		pointer-events: none;
+		&:hover {
+			background-color: transparent;
+			box-shadow: none;
+		}
+		&&& * {
+			color: grey;
+			background-color: transparent;
+			padding-right: 0;
+		}
+	}
 `;
 
 const LabelsWrapper = styled.div`
-	& * {
+	&&& * {
 		@media (max-width: 767px) {
-			font-size: 0.7rem !important;
+			font-size: 0.7rem;
 		}
 	}
 `;
 
 const DayLabel = styled(Label)`
-	position: absolute !important;
-	left: calc(100% + 1.2em) !important;
+	&&& {
+		position: absolute;
+		left: calc(100% + 1.2em);
+	}
 `;
 
 const TeamName = styled.span`
 	flex-grow: 2;
-	font-size: 1.3em;
+	font-size: 1.3rem;
 	display: inline;
 	width: 300px;
 	text-overflow: ellipsis;
@@ -227,7 +281,7 @@ const TeamName = styled.span`
 	overflow: hidden;
 	white-space: nowrap;
 	@media (max-width: 767px) {
-		font-size: 0.9em;
+		font-size: 1.1rem;
 	}
 `;
 

@@ -4,28 +4,24 @@ import { Grid, Message, Icon } from 'semantic-ui-react';
 class GlobalErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { error: null };
-	}
-
-	static getDerivedStateFromError(error) {
-		return { error: error };
+		this.state = { error: null, errorInfo: null };
 	}
 
 	componentDidCatch(error, errorInfo) {
-		console.log('Error in global error boundary');
-		console.log(error, errorInfo);
+		this.setState({ error, errorInfo });
 	}
 
 	render() {
-		if (this.state.hasError) {
+		if (this.state.error) {
 			return (
 				<Grid centered>
-					<Grid.Column className="message-wrapper" computer={8} tablet={10} mobile={14}>
+					<Grid.Column style={{ marginTop: '2rem' }} computer={8} tablet={10} mobile={14}>
 						<Message icon negative>
 							<Icon name="exclamation" />
 							<Message.Header>Something went wrong</Message.Header>
-							<p>{this.state.error}</p>
 						</Message>
+						<h4>{this.state.error.toString()}</h4>
+						<p style={{ whiteSpace: 'pre-wrap' }}>{this.state.errorInfo.componentStack}</p>
 					</Grid.Column>
 				</Grid>
 			);

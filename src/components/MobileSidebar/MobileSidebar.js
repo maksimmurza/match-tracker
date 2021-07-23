@@ -20,8 +20,11 @@ const MobileSidebar = props => {
 };
 
 const StyledSidebar = styled(Sidebar)`
-	background-color: gainsboro;
-	max-width: 70vw;
+	&&&& {
+		background-color: gainsboro;
+		width: fit-content;
+		max-width: 70vw;
+	}
 `;
 
 MobileSidebar.propTypes = {

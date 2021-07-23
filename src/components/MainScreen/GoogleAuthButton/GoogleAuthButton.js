@@ -1,12 +1,24 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Button, Dropdown, Icon } from 'semantic-ui-react';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../../utils/authOptions';
-import PropTypes from 'prop-types';
 
-const GoogleAuthButton = ({ size }) => {
+const GoogleAuthButton = ({ parent }) => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [user, setUser] = useState(null);
+	const [size, setSize] = useState('regular');
 	const gapi = window.gapi;
+
+	const resolveButtonSize = () => {
+		const siblings = Array.from(parent.current.children);
+		const availableSpace = siblings.reduce((acc, el) => acc - el.offsetWidth, parent.current.offsetWidth);
+		if (size === 'regular' && availableSpace < 20) {
+			setSize('small');
+		} else if (size === 'small' && availableSpace > 160) {
+			setSize('regular');
+		}
+	};
+
+	window.onresize = resolveButtonSize;
 
 	useEffect(() => {
 		gapi.load('client:auth2', async () => {
@@ -24,6 +36,10 @@ const GoogleAuthButton = ({ size }) => {
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		resolveButtonSize();
+	}, [user]);
 
 	const handleAuthClick = () => {
 		if (isSignedIn === true) {
@@ -56,7 +72,7 @@ const GoogleAuthButton = ({ size }) => {
 			<Button.Group color="blue" style={{ minWidth: 'fit-content' }}>
 				<Dropdown
 					button
-					pointing
+					pointing={size !== 'small'}
 					className="icon"
 					labeled={size !== 'small'}
 					icon="google"
@@ -68,14 +84,6 @@ const GoogleAuthButton = ({ size }) => {
 			</Button.Group>
 		)
 	);
-};
-
-GoogleAuthButton.propTypes = {
-	size: PropTypes.oneOf(['small', 'regular']),
-};
-
-GoogleAuthButton.defaultProps = {
-	size: 'regular',
 };
 
 export default memo(GoogleAuthButton);

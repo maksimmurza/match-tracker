@@ -6,7 +6,7 @@ import { Grid, Message, Icon } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
 import ControlsBar from './ControlsBar/ControlsBar';
 import MobileSidebar from '../MobileSidebar/MobileSidebar';
-import req from '../../utils/requestOptions';
+import { LEAGUES_KEYS } from '../../utils/requestOptions';
 import { getLocalLeagues } from '../../utils/localStorage';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { observer } from 'mobx-react';
@@ -64,7 +64,7 @@ class MainScreen extends React.Component {
 
 	render() {
 		if (
-			this.props.store.leagues.length < req.footballData.leaguesKeys.length &&
+			this.props.store.leagues.length < LEAGUES_KEYS.length &&
 			!this.props.store.leagues.some(l => l?.matches)
 		) {
 			return (
@@ -82,39 +82,48 @@ class MainScreen extends React.Component {
 			);
 		} else {
 			return (
-				<div style={{ maxHeight: '100vh', overflow: 'auto' }}>
-					<MobileSidebar
-						sidebarContent={<SelectionArea leagues={this.props.store.leagues} />}
-						sidebarVisible={this.state.sidebarVisible}
-						sidebarToggle={this.sidebarToggle}>
-						<Grid stackable centered reversed="mobile">
-							<MatchListColumn computer={9} tablet={10} mobile={16}>
-								<LocaleContext.Provider value={this.state.locale}>
-									<MatchList
-										leagues={this.props.store.leagues}
-										quantity={this.state.quantity}
-										todayDate={new Date()}
-									/>
-								</LocaleContext.Provider>
-							</MatchListColumn>
-							<ControlsColumn computer={5} tablet={6} mobile={16}>
-								<ControlsBar
-									values={{ quantity: this.state.quantity, locale: this.state.locale }}
-									handlers={{
-										setQuantity: this.setQuantity,
-										setLocale: this.setLocale,
-										sidebarToggle: this.sidebarToggle,
-									}}
+				<MobileSidebar
+					sidebarContent={<SelectionArea leagues={this.props.store.leagues} />}
+					sidebarVisible={this.state.sidebarVisible}
+					sidebarToggle={this.sidebarToggle}>
+					<StyledGrid stackable centered reversed="mobile">
+						<MatchListColumn computer={9} tablet={10} mobile={16}>
+							<LocaleContext.Provider value={this.state.locale}>
+								<MatchList
+									leagues={this.props.store.leagues}
+									quantity={this.state.quantity}
+									todayDate={new Date()}
 								/>
-								<SelectionArea leagues={this.props.store.leagues} />
-							</ControlsColumn>
-						</Grid>
-					</MobileSidebar>
-				</div>
+							</LocaleContext.Provider>
+						</MatchListColumn>
+						<ControlsColumn computer={5} tablet={6} mobile={16}>
+							<ControlsBar
+								values={{ quantity: this.state.quantity, locale: this.state.locale }}
+								handlers={{
+									setQuantity: this.setQuantity,
+									setLocale: this.setLocale,
+									sidebarToggle: this.sidebarToggle,
+								}}
+							/>
+							<SelectionArea leagues={this.props.store.leagues} />
+						</ControlsColumn>
+					</StyledGrid>
+				</MobileSidebar>
 			);
 		}
 	}
 }
+
+const StyledGrid = styled(Grid)`
+	&&& {
+		@media (min-width: 1600px) {
+			padding: 0 10vw 0 10vw;
+		}
+		@media (min-width: 2560px) {
+			padding: 0 15vw 0 15vw;
+		}
+	}
+`;
 
 const MatchListColumn = styled(Grid.Column)`
 	&&&&& {
@@ -126,12 +135,12 @@ const MatchListColumn = styled(Grid.Column)`
 
 const ControlsColumn = styled(Grid.Column)`
 	&&&&& {
-		margin: 1rem 0 0 0 !important;
-		height: 100vh !important;
-		display: flex !important;
+		margin: 1rem 0 0 0;
+		height: 100vh;
+		display: flex;
 		flex-direction: column;
 		@media (max-width: 767px) {
-			height: initial !important;
+			height: initial;
 			padding: 5px !important;
 			margin-top: 1rem !important;
 		}

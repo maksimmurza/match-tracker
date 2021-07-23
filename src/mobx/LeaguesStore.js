@@ -1,7 +1,7 @@
 import { makeObservable, observable, action, reaction } from 'mobx';
 import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../utils/fetchData';
 import { writeLocalLeagues } from '../utils/localStorage';
-import req from '../utils/requestOptions';
+import { LEAGUES_KEYS, SCHEDULED_FILTER, LIVE_FILTER } from '../utils/requestOptions';
 import League from './League';
 import Team from './Team';
 
@@ -59,7 +59,7 @@ export default class LeaguesStore {
 		const fetchProcesses = [];
 
 		// for all leagues that we "track"
-		for (let key of req.footballData.leaguesKeys) {
+		for (let key of LEAGUES_KEYS) {
 			let league = new League(key);
 			reaction(
 				() => league.status,
@@ -70,8 +70,8 @@ export default class LeaguesStore {
 			const process = async () => {
 				// get live and scheduled matches
 				const [live, schedule] = await Promise.all([
-					getSchedule(key, req.footballData.liveFilter),
-					getSchedule(key, req.footballData.scheduledFilter),
+					getSchedule(key, LIVE_FILTER),
+					getSchedule(key, SCHEDULED_FILTER),
 				]);
 
 				if (!live || !schedule) {

@@ -1,5 +1,5 @@
 import { makeObservable, observable, action, computed, toJS } from 'mobx';
-import stringSimilarity from 'string-similarity';
+import { findBestMatch } from 'string-similarity';
 
 export default class League {
 	id;
@@ -50,37 +50,27 @@ export default class League {
 	resolveTeamsNames() {
 		this.matches.length > 0 &&
 			this.matches.forEach(match => {
-				let arr = [];
+				const targetStrings = this.teams.map(team => team.name);
 				let separator = /United|City|FC|hampton|de|RCD/;
-				this.teams.forEach(team => {
-					arr.push(team.name);
-				});
 
 				for (let key in match) {
-					if (key.includes('Team')) {
-						if (match[key].name) {
-							if (match[key].name.includes('Alavés')) {
-								separator = /Deportivo/;
-							} else if (match[key].name.includes('Espanyol')) {
-								separator = /Barcelona/;
-							}
-							const { ratings: bestMatches, bestMatchIndex } = stringSimilarity.findBestMatch(
-								match[key].name,
-								arr
+					if (key.includes('Team') && match[key].name) {
+						const name = match[key].name;
+						if (name.includes('Alavés')) {
+							separator = /Deportivo/;
+						} else if (name.includes('Espanyol')) {
+							separator = /Barcelona/;
+						}
+						const { ratings, bestMatchIndex } = findBestMatch(name, targetStrings);
+						if (ratings[bestMatchIndex].rating > 0.75) {
+							match[key] = this.teams[bestMatchIndex];
+						} else {
+							const { ratings, bestMatchIndex } = findBestMatch(
+								name.split(separator).join(''),
+								targetStrings
 							);
-							if (bestMatches[bestMatchIndex].rating > 0.75) {
+							if (ratings[bestMatchIndex].rating > 0.38) {
 								match[key] = this.teams[bestMatchIndex];
-							} else {
-								const {
-									ratings: bestMatches,
-									bestMatchIndex,
-								} = stringSimilarity.findBestMatch(
-									match[key].name.split(separator).join(''),
-									arr
-								);
-								if (bestMatches[bestMatchIndex].rating > 0.38) {
-									match[key] = this.teams[bestMatchIndex];
-								}
 							}
 						}
 					}

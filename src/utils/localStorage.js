@@ -1,4 +1,4 @@
-import req from './requestOptions';
+import { LEAGUES_KEYS } from './requestOptions';
 
 function getLocalLeagues() {
 	return new Promise(resolve => {
@@ -26,15 +26,13 @@ function getLocalLeagues() {
 	});
 }
 
-async function writeLocalLeagues(leagues) {
-	if (
-		leagues.length === req.footballData.leaguesKeys.length &&
-		leagues.every(league => league && !league.loading)
-	) {
-		let arr = [];
-		leagues.forEach(l => arr.push(l.toJSON()));
-		localStorage.setItem('leagues', JSON.stringify(arr));
-	}
+function writeLocalLeagues(leagues) {
+	setTimeout(() => {
+		if (leagues.length === LEAGUES_KEYS.length && leagues.every(league => league && !league.loading)) {
+			const leaguesJSON = leagues.map(league => league.toJSON());
+			localStorage.setItem('leagues', JSON.stringify(leaguesJSON));
+		}
+	}, 0);
 }
 
 export { getLocalLeagues, writeLocalLeagues };

@@ -49,17 +49,17 @@ const StyledTab = styled(Tab)`
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	& > .ui.attached.tabular.menu {
-		overflow-y: auto !important;
-		border-bottom: none !important;
+	&&& > .ui.attached.tabular.menu {
+		overflow-y: auto ;
+		border-bottom: none ;
 		position: relative;
 		flex-shrink: 0;
 	}
 	& > .ui.attached.tabular.menu > a:not(.active) {
 		border-bottom: 1px solid #d4d4d5;
 	}
-	& > .ui.attached.tabular.menu::after {
-		visibility: visible !important;
+	&&& > .ui.attached.tabular.menu::after {
+		visibility: visible ;
 		content: ' ';
 		flex-grow: 2;
 		height: auto;

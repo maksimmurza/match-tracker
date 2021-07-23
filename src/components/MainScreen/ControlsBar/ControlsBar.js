@@ -1,38 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GoogleAuthButton from '../GoogleAuthButton/GoogleAuthButton';
 import QuantityInput from '../QuantityInput/QuantityInput';
 import LocaleSelection from '../LocaleSelection/LocaleSelection';
 import { Button } from 'semantic-ui-react';
 import { PropTypes } from 'prop-types';
 import styled from 'styled-components';
+import LocalErrorBoundary from '../../ErrorBoundaries/LocalErrorBoundary';
 
 const ControlsBar = ({
 	values: { quantity, locale },
 	handlers: { setQuantity, setLocale, sidebarToggle },
 }) => {
-	const [buttonSize, setButtonSize] = useState('regular');
-
-	window.onresize = () => {
-		const container = document.querySelector('#settings-wrapper');
-		const containerChildren = Array.from(container.children);
-		const availableSpace = containerChildren.reduce(
-			(acc, el) => acc - el.offsetWidth,
-			container.offsetWidth
-		);
-		if (buttonSize === 'regular' && availableSpace < 20) {
-			setButtonSize('small');
-		} else if (buttonSize === 'small' && availableSpace > 160) {
-			setButtonSize('regular');
-		}
-	};
-
+	const settingsWrapperRef = React.createRef();
 	return (
 		<Bar id="bar">
 			<ToggleSidebarButton icon="content" onClick={sidebarToggle}></ToggleSidebarButton>
-			<SettingsWrapper id="settings-wrapper">
+			<SettingsWrapper ref={settingsWrapperRef}>
 				<QuantityInput value={quantity} onChange={setQuantity} />
 				<LocaleSelection value={locale} onChange={setLocale} />
-				<GoogleAuthButton size={buttonSize}></GoogleAuthButton>
+				<LocalErrorBoundary>
+					<GoogleAuthButton parent={settingsWrapperRef}></GoogleAuthButton>
+				</LocalErrorBoundary>
 			</SettingsWrapper>
 		</Bar>
 	);
@@ -46,26 +34,28 @@ const SettingsWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	flex-grow: 1;
-	& > * {
-		margin: 0 10px 1rem 0 !important;
+	&&& > * {
+		margin: 0 10px 1rem 0;
 		max-width: 8rem;
 	}
 	@media (max-width: 767px) {
 		flex-grow: 2;
 		justify-content: flex-end;
-		& > * {
-			margin: 0 5px 0 0 !important;
+		&&& > * {
+			margin: 0 5px 0 0;
 			align-self: center;
 		}
 	}
 `;
 
 const ToggleSidebarButton = styled(Button)`
-	display: none !important;
-	@media (max-width: 767px) {
-		display: initial !important;
-		margin: 0 auto 0 0 !important;
-		background-color: transparent !important;
+	&&& {
+		display: none;
+		@media (max-width: 767px) {
+			display: initial;
+			margin: 0 auto 0 0;
+			background-color: transparent;
+		}
 	}
 `;
 
