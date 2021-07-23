@@ -11,6 +11,7 @@ import { getLocalLeagues } from '../../utils/localStorage';
 import { writeLocalLeagues } from '../../utils/localStorage';
 import { observer } from 'mobx-react';
 import { PropTypes } from 'prop-types';
+import LeaguesStore from '../../mobx/LeaguesStore';
 import styled from 'styled-components';
 
 class MainScreen extends React.Component {
@@ -148,6 +149,7 @@ const ControlsColumn = styled(Grid.Column)`
 `;
 
 MainScreen.propTypes = {
+	store: PropTypes.instanceOf(LeaguesStore),
 	showNotification: PropTypes.func,
 };
 

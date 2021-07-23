@@ -316,6 +316,7 @@ MatchPoster.propTypes = {
 	status: PropTypes.string,
 	todayDate: PropTypes.instanceOf(Date),
 	leagueLogo: PropTypes.string,
+	showNotification: PropTypes.func,
 };
 
 export default Notificationable(MatchPoster);

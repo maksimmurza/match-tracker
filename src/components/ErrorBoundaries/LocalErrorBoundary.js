@@ -1,6 +1,7 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
-class ErrorBoundary extends React.Component {
+class LocalErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { hasError: null };
@@ -24,4 +25,8 @@ class ErrorBoundary extends React.Component {
 	}
 }
 
-export default ErrorBoundary;
+LocalErrorBoundary.propTypes = {
+	children: PropTypes.element.isRequired,
+};
+
+export default LocalErrorBoundary;

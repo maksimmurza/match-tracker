@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Message, Icon } from 'semantic-ui-react';
+import { PropTypes } from 'prop-types';
 
 class GlobalErrorBoundary extends React.Component {
 	constructor(props) {
@@ -30,5 +31,9 @@ class GlobalErrorBoundary extends React.Component {
 		return this.props.children;
 	}
 }
+
+GlobalErrorBoundary.propTypes = {
+	children: PropTypes.element.isRequired,
+};
 
 export default GlobalErrorBoundary;
