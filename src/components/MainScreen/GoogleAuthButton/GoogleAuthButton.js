@@ -2,11 +2,13 @@ import React, { useState, useEffect, memo } from 'react';
 import { Button, Dropdown, Icon } from 'semantic-ui-react';
 import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPES } from '../../../utils/authOptions';
 import { PropTypes } from 'prop-types';
+import useCurrentWidth from '../../../hooks/useCurrentWidth';
 
 const GoogleAuthButton = ({ parent }) => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [user, setUser] = useState(null);
 	const [size, setSize] = useState('regular');
+	const windowWidth = useCurrentWidth();
 	const gapi = window.gapi;
 
 	const resolveButtonSize = () => {
@@ -18,8 +20,6 @@ const GoogleAuthButton = ({ parent }) => {
 			setSize('regular');
 		}
 	};
-
-	window.onresize = resolveButtonSize;
 
 	useEffect(() => {
 		gapi.load('client:auth2', async () => {
@@ -40,7 +40,7 @@ const GoogleAuthButton = ({ parent }) => {
 
 	useEffect(() => {
 		resolveButtonSize();
-	}, [user]);
+	}, [user, windowWidth]);
 
 	const handleAuthClick = () => {
 		if (isSignedIn === true) {
@@ -88,7 +88,10 @@ const GoogleAuthButton = ({ parent }) => {
 };
 
 GoogleAuthButton.propTypes = {
-	parent: PropTypes.node,
+	parent: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+	]),
 };
 
 export default memo(GoogleAuthButton);

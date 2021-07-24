@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Icon, Label, Popup } from 'semantic-ui-react';
-import { LocaleContext } from '../../../context/LocaleContext';
+import { LocaleContext } from '../../LocaleContext';
 import Notificationable from '../../Notification/Notification';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';

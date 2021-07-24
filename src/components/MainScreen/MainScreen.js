@@ -1,7 +1,7 @@
 import React from 'react';
 import MatchList from './MatchList/MatchList';
 import SelectionArea from './SelectionArea/SelectionArea';
-import { LocaleContext } from '../../context/LocaleContext';
+import { LocaleContext } from '../LocaleContext';
 import { Grid, Message, Icon } from 'semantic-ui-react';
 import notificationable from '../Notification/Notification';
 import ControlsBar from './ControlsBar/ControlsBar';

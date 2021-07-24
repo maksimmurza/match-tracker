@@ -17,7 +17,11 @@ function SelectionArea({ leagues }) {
 		</Message>
 	);
 	const teamsPlaceholder = (
-		<Placeholder fluid>{new Array(20).fill(<Placeholder.Line length="full" />)}</Placeholder>
+		<Placeholder fluid>
+			{Array.from({ length: 20 }, (item, index) => (
+				<Placeholder.Line key={index} length="full" />
+			))}
+		</Placeholder>
 	);
 
 	leagues.forEach(league => {

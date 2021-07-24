@@ -18,7 +18,7 @@ class LocalErrorBoundary extends React.Component {
 
 	render() {
 		if (this.state.hasError) {
-			return <div title="Possibly because of too much requets per minute">:(</div>;
+			return <div>:(</div>;
 		}
 
 		return this.props.children;

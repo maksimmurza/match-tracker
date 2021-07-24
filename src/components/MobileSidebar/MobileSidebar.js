@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SidebarPushable, SidebarPusher, Sidebar } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useCurrentWidth from '../../hooks/useCurrentWidth';
 
 const MobileSidebar = props => {
+	const windowWidth = useCurrentWidth();
+	const [mobile, setMobile] = useState(false);
+
+	useEffect(() => {
+		setMobile(windowWidth <= 768);
+	}, [windowWidth]);
+
 	return (
 		<SidebarPushable>
 			<StyledSidebar
 				animation="overlay"
 				icon="labeled"
 				onHide={props.sidebarToggle}
-				visible={props.sidebarVisible}
+				visible={props.sidebarVisible && mobile}
 				width="wide">
 				{props.sidebarContent}
 			</StyledSidebar>
-			<SidebarPusher dimmed={props.sidebarVisible}>{props.children}</SidebarPusher>
+			<SidebarPusher dimmed={props.sidebarVisible && mobile}>{props.children}</SidebarPusher>
 		</SidebarPushable>
 	);
 };
@@ -31,9 +39,6 @@ MobileSidebar.propTypes = {
 	sidebarToggle: PropTypes.func,
 	sidebarVisible: PropTypes.bool,
 	sidebarContent: PropTypes.node,
-};
-
-MobileSidebar.propTypes = {
 	children: PropTypes.element.isRequired,
 };
 
