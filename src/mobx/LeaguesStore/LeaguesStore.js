@@ -1,9 +1,9 @@
 import { makeObservable, observable, action, reaction } from 'mobx';
-import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../utils/fetchData';
-import { writeLocalLeagues } from '../utils/localStorage';
-import { LEAGUES_KEYS, SCHEDULED_FILTER, LIVE_FILTER } from '../utils/requestOptions';
-import League from './League';
-import Team from './Team';
+import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../../utils/fetchData';
+import { writeLocalLeagues } from '../../utils/localStorage';
+import { LEAGUES_KEYS, SCHEDULED_FILTER, LIVE_FILTER } from '../../utils/requestOptions';
+import LeagueStore from '../LeagueStore/LeagueStore';
+import TeamStore from '../TeamStore/TeamStore';
 
 export default class LeaguesStore {
 	leagues = [];
@@ -20,14 +20,14 @@ export default class LeaguesStore {
 	async getLeaguesFromLocal(localLeagues) {
 		this.leagues = [];
 		localLeagues.forEach(l => {
-			let league = new League(l.id);
+			let league = new LeagueStore(l.id);
 			league.name = l.name;
 			league.country = l.country;
 			league.logo = l.logo;
 			league.matches = l.matches;
 			league.matches.forEach(match => (match.leagueLogo = league.logo));
 			league.teams = l.teams.map(team => {
-				let newTeam = new Team(
+				let newTeam = new TeamStore(
 					team.id,
 					team.name,
 					team.country,
@@ -60,7 +60,7 @@ export default class LeaguesStore {
 
 		// for all leagues that we "track"
 		for (let key of LEAGUES_KEYS) {
-			let league = new League(key);
+			let league = new LeagueStore(key);
 			reaction(
 				() => league.status,
 				() => writeLocalLeagues(this.leagues)
@@ -103,7 +103,7 @@ export default class LeaguesStore {
 						});
 
 						league.teams = teams.map(team => {
-							let newTeam = new Team(
+							let newTeam = new TeamStore(
 								team.team_id,
 								team.name,
 								team.country,
