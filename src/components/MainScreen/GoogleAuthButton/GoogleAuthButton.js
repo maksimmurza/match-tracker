@@ -64,13 +64,18 @@ const GoogleAuthButton = ({ parent }) => {
 	};
 
 	return !isSignedIn ? (
-		<Button icon={size === 'small'} primary onClick={handleAuthClick} style={{ minWidth: 'fit-content' }}>
+		<Button
+			data-testid="google-auth-button"
+			icon={size === 'small'}
+			primary
+			onClick={handleAuthClick}
+			style={{ minWidth: 'fit-content' }}>
 			<Icon name="google"></Icon>
 			{size !== 'small' && 'Sign In'}
 		</Button>
 	) : (
 		user && (
-			<Button.Group color="blue" style={{ minWidth: 'fit-content' }}>
+			<Button.Group data-testid="google-auth-button" color="blue" style={{ minWidth: 'fit-content' }}>
 				<Dropdown
 					button
 					pointing={size !== 'small'}

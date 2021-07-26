@@ -11,10 +11,14 @@ const ControlsBar = ({
 	values: { quantity, locale },
 	handlers: { setQuantity, setLocale, sidebarToggle },
 }) => {
+	console.log(window.innerWidth);
 	const settingsWrapperRef = React.createRef();
 	return (
-		<Bar id="bar">
-			<ToggleSidebarButton icon="content" onClick={sidebarToggle}></ToggleSidebarButton>
+		<Bar id="bar" data-testid="controls-bar">
+			<ToggleSidebarButton
+				data-testid="toggle-sidebar-button"
+				icon="content"
+				onClick={sidebarToggle}></ToggleSidebarButton>
 			<SettingsWrapper ref={settingsWrapperRef}>
 				<QuantityInput value={quantity} onChange={setQuantity} />
 				<LocaleSelection value={locale} onChange={setLocale} />
@@ -52,7 +56,7 @@ const ToggleSidebarButton = styled(Button)`
 	&&& {
 		display: none;
 		@media (max-width: 767px) {
-			display: initial;
+			display: block;
 			margin: 0 auto 0 0;
 			background-color: transparent;
 		}

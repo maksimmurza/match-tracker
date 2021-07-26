@@ -67,13 +67,16 @@ export class MatchPoster extends React.PureComponent {
 				calendarId: 'primary',
 				timeMin: `${this.props.time}`,
 			})
-			.then(response => response.result.items.filter(event => event.summary === summary).length > 0)
+			.then(response => {
+				response.result.items.filter(event => event.summary === summary).length > 0;
+			})
 			.catch(error => this.showNotification('error', error));
 
 		if (eventExist) {
 			this.showNotification('warning', 'Event is already in you calendar', summary);
 			return;
 		}
+
 
 		const gameEvent = {
 			summary,
@@ -115,11 +118,12 @@ export class MatchPoster extends React.PureComponent {
 		const [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender();
 
 		return (
-			<MatchWrapper>
+			<MatchWrapper data-testid="match">
 				<MobileAddEventButton
 					onClick={this.pushEventHandler}
 					corner="left"
-					icon="calendar plus outline"></MobileAddEventButton>
+					icon="calendar plus outline"
+					data-testid="add-event-button"></MobileAddEventButton>
 				<LabelsWrapper>
 					{todayLabel}
 					{tomorrowLabel}
@@ -145,13 +149,13 @@ export class MatchPoster extends React.PureComponent {
 				<TeamsWrapper>
 					<HomeTeamName>{this.props.homeTeam.name}</HomeTeamName>
 					{this.props.homeTeam.logo ? (
-						<TeamLogo src={this.props.homeTeam.logo} />
+						<TeamLogo src={this.props.homeTeam.logo} data-testid="fake-team-logo" />
 					) : (
 						<Icon size="big" name="shield" color="grey" />
 					)}
 					<Devider> – </Devider>
 					{this.props.awayTeam.logo ? (
-						<TeamLogo src={this.props.awayTeam.logo} />
+						<TeamLogo src={this.props.awayTeam.logo} data-testid="fake-team-logo" />
 					) : (
 						<Icon size="big" name="shield" color="grey" />
 					)}

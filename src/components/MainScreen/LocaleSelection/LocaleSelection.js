@@ -12,6 +12,7 @@ const LocaleSelection = ({ value, onChange }) => {
 				{ key: 'en', value: 'en', text: 'en' },
 				{ key: 'ru', value: 'ru', text: 'ru' },
 			]}
+			data-testid="locale-selection"
 		/>
 	);
 };

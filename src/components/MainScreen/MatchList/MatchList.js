@@ -8,7 +8,7 @@ import styled from 'styled-components';
 class MatchList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.loader = <StyledLoader active inline="centered" />;
+		this.loader = <StyledLoader active inline="centered" data-testid="matchList-loader" />;
 		this.emptyListMessage = (
 			<StyledMessage>
 				<Message.Header>No matches to show</Message.Header>

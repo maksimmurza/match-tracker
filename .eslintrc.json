@@ -28,6 +28,10 @@
         "prettier/prettier": 0,
         "no-unused-vars":"warn",
         "jest/valid-title": "warn",
+        "jest/expect-expect": 0,
+        "jest/no-disabled-tests": 0,
+        "jest/no-test-prefixes": 0,
+        "jest/no-commented-out-tests": 0,
         "react/prop-types":"warn",
         "react/display-name":0
     }

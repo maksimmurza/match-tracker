@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 const LeagueTab = ({ league }) => {
 	return !league ? (
-		<Icon name="exclamation"></Icon>
+		<Icon name="exclamation" data-testid="league-tab-alert"></Icon>
 	) : league.loading ? (
-		<Loader size="tiny" active></Loader>
+		<Loader size="tiny" active data-testid="league-tab-loader"></Loader>
 	) : (
-		<StyledLeagueTab title={league.name}>
+		<StyledLeagueTab title={league.name} data-testid="league-tab">
 			<Checkbox
 				onChange={event => {
 					event.stopPropagation();
@@ -18,9 +18,9 @@ const LeagueTab = ({ league }) => {
 				}}
 				checked={league.status === 'checked'}
 				indeterminate={league.status === 'indeterminate'}
-				data-testid="leagueCheckbox"
+				data-testid="league-tab-checkbox"
 			/>
-			<StyledLeagueLogo src={league.logo}></StyledLeagueLogo>
+			<StyledLeagueLogo src={league.logo} alt={`${league.name} logo`}></StyledLeagueLogo>
 		</StyledLeagueTab>
 	);
 };
@@ -38,7 +38,7 @@ const StyledLeagueLogo = styled.img`
 `;
 
 LeagueTab.propTypes = {
-	league: MobxPropTypes.observableObject,
+	league: PropTypes.oneOfType([MobxPropTypes.observableObject, null]),
 	onChangeLeague: PropTypes.func,
 };
 

@@ -2,6 +2,7 @@
     {
         "status": "checked",
         "name": "Premier League",
+        "loading": false,
         "country": "England",
         "matches": [
             {
@@ -127,6 +128,7 @@
     {
         "status": "checked",
         "name": "Primera Division",
+        "loading": false,
         "country": "Spain",
         "matches": [
             {

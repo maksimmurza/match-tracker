@@ -12,6 +12,7 @@ const QuantityInput = ({ value, onChange }) => {
 			icon="filter"
 			iconPosition="left"
 			style={{ width: '7rem' }}
+			data-testid="quantity-input"
 		/>
 	);
 };
