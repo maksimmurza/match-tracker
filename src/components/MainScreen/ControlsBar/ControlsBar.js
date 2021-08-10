@@ -42,7 +42,7 @@ const SettingsWrapper = styled.div`
 		flex-grow: 2;
 		justify-content: flex-end;
 		&&& > * {
-			margin: 0 5px 0 0;
+			margin: 0 0 0 5px;
 			align-self: center;
 		}
 	}

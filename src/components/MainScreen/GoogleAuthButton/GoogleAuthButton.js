@@ -12,11 +12,13 @@ const GoogleAuthButton = ({ parent }) => {
 	const gapi = window.gapi;
 
 	const resolveButtonSize = () => {
-		const siblings = Array.from(parent.current.children);
+		const siblings = Array.from(parent.current.children).filter(el => el.id !== 'auth-button');
 		const availableSpace = siblings.reduce((acc, el) => acc - el.offsetWidth, parent.current.offsetWidth);
-		if (size === 'regular' && availableSpace < 20) {
+		const button = document.querySelector('#auth-button');
+		const space = availableSpace - button.offsetWidth;
+		if (size === 'regular' && space < 20) {
 			setSize('small');
-		} else if (size === 'small' && availableSpace > 160) {
+		} else if (size === 'small' && space > 160) {
 			setSize('regular');
 		}
 	};
@@ -31,16 +33,16 @@ const GoogleAuthButton = ({ parent }) => {
 			});
 
 			if (gapi.auth2.getAuthInstance().isSignedIn.get() === true) {
-				setIsSignedIn(true);
 				const profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
 				setUser(profile);
+				setIsSignedIn(true);
 			}
 		});
 	}, []);
 
 	useEffect(() => {
 		resolveButtonSize();
-	}, [user, windowWidth]);
+	}, [isSignedIn, windowWidth]);
 
 	const handleAuthClick = () => {
 		if (isSignedIn === true) {
@@ -64,13 +66,18 @@ const GoogleAuthButton = ({ parent }) => {
 	};
 
 	return !isSignedIn ? (
-		<Button icon={size === 'small'} primary onClick={handleAuthClick} style={{ minWidth: 'fit-content' }}>
+		<Button
+			id="auth-button"
+			icon={size === 'small'}
+			onClick={handleAuthClick}
+			color="blue"
+			style={{ minWidth: 'fit-content' }}>
 			<Icon name="google"></Icon>
 			{size !== 'small' && 'Sign In'}
 		</Button>
 	) : (
 		user && (
-			<Button.Group color="blue" style={{ minWidth: 'fit-content' }}>
+			<Button.Group id="auth-button" color="blue" style={{ minWidth: 'fit-content' }}>
 				<Dropdown
 					button
 					pointing={size !== 'small'}
