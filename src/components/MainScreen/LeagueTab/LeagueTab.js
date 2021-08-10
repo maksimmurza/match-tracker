@@ -5,7 +5,7 @@ import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 import styled from 'styled-components';
 
 const LeagueTab = ({ league }) => {
-	return !league ? (
+	return league.failed ? (
 		<Icon name="exclamation"></Icon>
 	) : league.loading ? (
 		<Loader size="tiny" active></Loader>
@@ -18,7 +18,6 @@ const LeagueTab = ({ league }) => {
 				}}
 				checked={league.status === 'checked'}
 				indeterminate={league.status === 'indeterminate'}
-				data-testid="leagueCheckbox"
 			/>
 			<StyledLeagueLogo src={league.logo}></StyledLeagueLogo>
 		</StyledLeagueTab>

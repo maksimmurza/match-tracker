@@ -40,7 +40,7 @@ class MainScreen extends React.Component {
 				this.props.store
 					.getLeaguesFromAPI(localLeagues)
 					.then(() => {
-						writeLocalLeagues(this.props.store.leagues);
+						writeLocalLeagues(this.props.store.leagues, new Date());
 						this.showNotification('', 'Loaded from API');
 					})
 					.catch(e => {
@@ -64,10 +64,8 @@ class MainScreen extends React.Component {
 	};
 
 	render() {
-		if (
-			this.props.store.leagues.length < LEAGUES_KEYS.length &&
-			!this.props.store.leagues.some(l => l?.matches)
-		) {
+		const leagues = this.props.store.leagues;
+		if (leagues.length < LEAGUES_KEYS.length && !leagues.some(l => l?.matches)) {
 			return (
 				<Grid centered>
 					<Grid.Column style={{ marginTop: '2rem' }} computer={8} tablet={10} mobile={14}>
@@ -84,14 +82,14 @@ class MainScreen extends React.Component {
 		} else {
 			return (
 				<MobileSidebar
-					sidebarContent={<SelectionArea leagues={this.props.store.leagues} />}
+					sidebarContent={<SelectionArea leagues={leagues} />}
 					sidebarVisible={this.state.sidebarVisible}
 					sidebarToggle={this.sidebarToggle}>
 					<StyledGrid stackable centered reversed="mobile">
 						<MatchListColumn computer={9} tablet={10} mobile={16}>
 							<LocaleContext.Provider value={this.state.locale}>
 								<MatchList
-									leagues={this.props.store.leagues}
+									leagues={leagues}
 									quantity={this.state.quantity}
 									todayDate={new Date()}
 								/>
@@ -106,7 +104,7 @@ class MainScreen extends React.Component {
 									sidebarToggle: this.sidebarToggle,
 								}}
 							/>
-							<SelectionArea leagues={this.props.store.leagues} />
+							<SelectionArea leagues={leagues} />
 						</ControlsColumn>
 					</StyledGrid>
 				</MobileSidebar>

@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, reaction } from 'mobx';
+import { makeObservable, observable, action, reaction, runInAction } from 'mobx';
 import { getCurrentLeagues, getSchedule, getTeamsInfo } from '../utils/fetchData';
 import { writeLocalLeagues } from '../utils/localStorage';
 import { LEAGUES_KEYS, SCHEDULED_FILTER, LIVE_FILTER } from '../utils/requestOptions';
@@ -61,11 +61,9 @@ export default class LeaguesStore {
 		// for all leagues that we "track"
 		for (let key of LEAGUES_KEYS) {
 			let league = new League(key);
-			reaction(
-				() => league.status,
-				() => writeLocalLeagues(this.leagues)
-			);
-			this.leagues.push(league);
+			runInAction(() => {
+				this.leagues.push(league);
+			});
 
 			const process = async () => {
 				// get live and scheduled matches
@@ -75,8 +73,9 @@ export default class LeaguesStore {
 				]);
 
 				if (!live || !schedule) {
-					this.leagues.map(value => {
-						return value?.id === league.id ? null : value;
+					runInAction(() => {
+						league.loading = false;
+						league.failed = true;
 					});
 					return;
 				}
@@ -91,27 +90,26 @@ export default class LeaguesStore {
 				league.matches = schedule.matches;
 
 				for (let l of currentLeagues) {
-					if (
-						l.name === league.name &&
-						(l.country === league.country || l.country === 'World' || l.country === 'Europe')
-					) {
+					const regex = new RegExp(`World|Europe|${league.country}`);
+					if (l.name === league.name && l.country.match(regex)) {
 						league.logo = l.logo;
 						league.matches.forEach(match => (match.leagueLogo = league.logo));
 
 						let teams = await getTeamsInfo(l.league_id).catch(e => {
 							throw e;
 						});
-
-						league.teams = teams.map(team => {
-							let newTeam = new Team(
-								team.team_id,
-								team.name,
-								team.country,
-								team.logo,
-								schedule.competition.name
-							);
-							newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
-							return newTeam;
+						runInAction(() => {
+							league.teams = teams.map(team => {
+								let newTeam = new Team(
+									team.team_id,
+									team.name,
+									team.country,
+									team.logo,
+									schedule.competition.name
+								);
+								newTeam.writeLeaguesLocal = this.writeLeaguesLocal;
+								return newTeam;
+							});
 						});
 
 						league.resolveTeamsNames();
@@ -137,7 +135,9 @@ export default class LeaguesStore {
 							});
 						}
 
-						league.loading = false;
+						runInAction(() => {
+							league.loading = false;
+						});
 					}
 				}
 			};

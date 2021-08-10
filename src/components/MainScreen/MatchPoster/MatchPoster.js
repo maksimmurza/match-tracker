@@ -15,7 +15,7 @@ export class MatchPoster extends React.PureComponent {
 
 	static contextType = LocaleContext;
 
-	preRender() {
+	resolveLabels() {
 		let matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel;
 		const matchDate = new Date(this.props.time);
 		matchDateStr = matchDate.toLocaleDateString(this.context, {
@@ -112,7 +112,7 @@ export class MatchPoster extends React.PureComponent {
 	};
 
 	render() {
-		const [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.preRender();
+		const [matchDateStr, matchTimeStr, todayLabel, tomorrowLabel, liveLabel] = this.resolveLabels();
 
 		return (
 			<MatchWrapper>
@@ -143,7 +143,7 @@ export class MatchPoster extends React.PureComponent {
 				</LabelsWrapper>
 
 				<TeamsWrapper>
-					<HomeTeamName>{this.props.homeTeam.name}</HomeTeamName>
+					<HomeTeamName>{this.props.homeTeam.name || 'Home team'}</HomeTeamName>
 					{this.props.homeTeam.logo ? (
 						<TeamLogo src={this.props.homeTeam.logo} />
 					) : (
@@ -155,7 +155,7 @@ export class MatchPoster extends React.PureComponent {
 					) : (
 						<Icon size="big" name="shield" color="grey" />
 					)}
-					<AwayTeamName>{this.props.awayTeam.name}</AwayTeamName>
+					<AwayTeamName>{this.props.awayTeam.name || 'Away team'}</AwayTeamName>
 				</TeamsWrapper>
 
 				<LeagueLogo src={this.props.leagueLogo} alt="League logo" width="25"></LeagueLogo>

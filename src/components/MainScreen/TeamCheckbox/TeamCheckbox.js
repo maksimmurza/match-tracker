@@ -8,7 +8,6 @@ const TeamCheckbox = ({ team }) => {
 	return (
 		<TeamCheckboxWrapper>
 			<Checkbox
-				data-testid="input"
 				onChange={() => team.toggleTeamVisibility()}
 				checked={team.show === true}
 				disabled={!team.hasMatches}

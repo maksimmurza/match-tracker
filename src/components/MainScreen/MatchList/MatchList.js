@@ -24,13 +24,17 @@ class MatchList extends React.Component {
 		let qty = this.props.quantity;
 
 		this.props.leagues.forEach(league => {
-			if (league.status !== 'checked' && league.status !== 'indeterminate') return;
-
-			league.matches.forEach(match => {
-				if (match.homeTeam.show === true || match.awayTeam.show === true) {
-					markedMatches.push(match);
-				}
-			});
+			if (league.status.match(/loading|unchecked/)) {
+				return;
+			} else if (league.status === 'checked') {
+				markedMatches = markedMatches.concat(league.matches);
+			} else {
+				league.matches.forEach(match => {
+					if (match.homeTeam.show === true || match.awayTeam.show === true) {
+						markedMatches.push(match);
+					}
+				});
+			}
 		});
 
 		markedMatches.sort(this.sortByTime);
