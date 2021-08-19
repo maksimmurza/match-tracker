@@ -1,17 +1,48 @@
 import React from 'react';
 import SelectionArea from './SelectionArea';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../../mock/leagues.test.json';
+import leagues from '../../../__tests__/mock/leagues.test.json';
+import cloneDeep from 'lodash/cloneDeep';
+import { observable } from 'mobx';
 
-beforeEach(() => {});
+let props;
+
+beforeEach(() => {
+	props = {
+		leagues: observable(cloneDeep(leagues)),
+	};
+});
 
 afterEach(cleanup);
 
-it('should display panes', () => {});
+it('should display tabs and pane', () => {
+	const { queryAllByTestId, queryByTestId } = render(<SelectionArea {...props} />);
+	expect(queryAllByTestId('league-tab')).toHaveLength(leagues.length);
+	expect(queryByTestId('league-pane')).toBeInTheDocument();
+});
 
-it('should make team checkbox inactive when team doesnt have matches', () => {});
+xit('should display placeholder while teams loading', () => {
+	props.leagues[0].loading = true;
+	props.leagues[0].teams = [];
+	const { queryByTestId, rerender } = render(<SelectionArea {...props} />);
+	expect(queryByTestId('teams-placeholder')).toBeInTheDocument();
+	props.leagues[0].loading = false;
+	rerender(<SelectionArea {...props} />);
+	expect(queryByTestId('teams-placeholder')).not.toBeInTheDocument();
+});
 
-it('should invoke handler when changed', () => {});
+it('should place teams that doesnt have matches after active teams', () => {
+	props.leagues[0].teams[0].hasMatches = false;
+	props.leagues[0].teams[1].hasMatches = false;
+	const { queryAllByTestId } = render(<SelectionArea {...props} />);
+	const teamsNames = queryAllByTestId('team-checkbox').map(el => el.textContent.trim());
+	expect(teamsNames.findIndex(name => name === props.leagues[0].teams[0].name)).toBeGreaterThan(1);
+	expect(teamsNames.findIndex(name => name === props.leagues[0].teams[1].name)).toBeGreaterThan(1);
+});
 
-it('should display placeholder while teams loading', () => {});
+it('should display warning inside pane when there are no teams', () => {
+	props.leagues[0].teams = [];
+	const { queryByText } = render(<SelectionArea {...props} />);
+	expect(queryByText('There are no teams to show')).toBeInTheDocument();
+});

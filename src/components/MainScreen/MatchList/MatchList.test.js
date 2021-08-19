@@ -16,7 +16,7 @@ jest.mock('../MatchPoster/MatchPoster', () => props => {
 
 beforeEach(() => {
 	props = {
-		leagues: cloneDeep(leagues).map(l => observable(l)),
+		leagues: observable(cloneDeep(leagues)),
 		quantity: 15,
 		todayDate: new Date(),
 	};

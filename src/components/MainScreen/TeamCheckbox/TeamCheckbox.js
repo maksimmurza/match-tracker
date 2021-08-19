@@ -6,9 +6,8 @@ import styled from 'styled-components';
 
 const TeamCheckbox = ({ team }) => {
 	return (
-		<TeamCheckboxWrapper>
+		<TeamCheckboxWrapper data-testid="team-checkbox">
 			<Checkbox
-				data-testid="input"
 				onChange={() => team.toggleTeamVisibility()}
 				checked={team.show === true}
 				disabled={!team.hasMatches}

@@ -68,7 +68,7 @@ it('should invoke store action on click', () => {
 	expect(props.league.toggleLeagueVisibility).toBeCalled();
 });
 
-it('should display alert icon when object is null', () => {
+xit('should display alert icon when object is null', () => {
 	props.league = null;
 	const { queryByTestId } = render(<LeagueTab {...props} />);
 	expect(queryByTestId('league-tab-loader')).toBeNull();

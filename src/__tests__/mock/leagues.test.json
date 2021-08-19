@@ -87,6 +87,7 @@
                 "is_national": false,
                 "founded": 1905,
                 "show": true,
+                "hasMatches": true,
                 "leagueName": "Premier League"
             },
             {
@@ -98,6 +99,7 @@
                 "is_national": false,
                 "founded": 1878,
                 "show": true,
+                "hasMatches": true,
                 "leagueName": "Premier League"
             },
             {
@@ -109,6 +111,7 @@
                 "is_national": false,
                 "founded": 1889,
                 "show": true,
+                "hasMatches": true,
                 "leagueName": "Premier League"
             },
             {
@@ -120,6 +123,7 @@
                 "is_national": false,
                 "founded": 1919,
                 "show": true,
+                "hasMatches": true,
                 "leagueName": "Premier League"
             }
         ],

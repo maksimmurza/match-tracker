@@ -9,7 +9,7 @@ function SelectionArea({ leagues }) {
 	let tabs = [];
 	const failureMessage = (
 		<Message warning>
-			<Message.Header>Receiving information failed</Message.Header>
+			<Message.Header>There are no teams to show</Message.Header>
 			<p>
 				There have been several attempts to fetch information from API. All them failed. Check browser
 				console.
@@ -17,7 +17,7 @@ function SelectionArea({ leagues }) {
 		</Message>
 	);
 	const teamsPlaceholder = (
-		<Placeholder fluid>
+		<Placeholder fluid data-testid="teams-placeholder">
 			{Array.from({ length: 20 }, (item, index) => (
 				<Placeholder.Line key={index} length="full" />
 			))}
@@ -39,8 +39,8 @@ function SelectionArea({ leagues }) {
 				content: <LeagueTab league={league}></LeagueTab>,
 			},
 			render: () => (
-				<StyledTabPane>
-					{teamList.length > 0 ? teamList : league?.loading ? teamsPlaceholder : failureMessage}
+				<StyledTabPane data-testid="league-pane">
+					{teamList.length > 0 ? teamList : league.loading ? teamsPlaceholder : failureMessage}
 				</StyledTabPane>
 			),
 		});
