@@ -38,7 +38,7 @@ const StyledLeagueLogo = styled.img`
 `;
 
 LeagueTab.propTypes = {
-	league: PropTypes.oneOfType([MobxPropTypes.observableObject, null]),
+	league: MobxPropTypes.observableObject,
 	onChangeLeague: PropTypes.func,
 };
 

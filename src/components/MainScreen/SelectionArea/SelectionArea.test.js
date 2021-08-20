@@ -22,12 +22,11 @@ it('should display tabs and pane', () => {
 	expect(queryByTestId('league-pane')).toBeInTheDocument();
 });
 
-xit('should display placeholder while teams loading', () => {
-	props.leagues[0].loading = true;
-	props.leagues[0].teams = [];
+it('should display placeholder while teams loading', () => {
+	props.leagues[0] = { ...props.leagues[0], teams: [], loading: true };
 	const { queryByTestId, rerender } = render(<SelectionArea {...props} />);
 	expect(queryByTestId('teams-placeholder')).toBeInTheDocument();
-	props.leagues[0].loading = false;
+	props.leagues[0] = { ...props.leagues[0], loading: false };
 	rerender(<SelectionArea {...props} />);
 	expect(queryByTestId('teams-placeholder')).not.toBeInTheDocument();
 });

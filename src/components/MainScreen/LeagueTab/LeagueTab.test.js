@@ -10,6 +10,7 @@ beforeEach(() => {
 		name: 'English Premier League',
 		logo: 'https://media.api-sports.io/football/leagues/39.png',
 		loading: false,
+		failed: false,
 		status: 'checked',
 		teams: [],
 		matches: [],
@@ -38,27 +39,21 @@ it('should display league logo', () => {
 	expect(getByAltText(`${props.league.name} logo`).src).toBe(props.league.logo);
 });
 
-describe('should display checkbox which state depends on props', () => {
-	it('checked', () => {
-		const { queryByTestId, getByTestId } = render(<LeagueTab {...props} />);
-		expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
-		expect(getByTestId('league-tab-checkbox').className).toContain('checked');
-	});
+it('should display checkbox which state depends on props', () => {
+	const { queryByTestId, getByTestId, rerender } = render(<LeagueTab {...props} />);
+	expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
+	expect(getByTestId('league-tab-checkbox').className).toContain('checked');
 
-	it('indeterminate', () => {
-		props.league.status = 'indeterminate';
-		const { queryByTestId, getByTestId } = render(<LeagueTab {...props} />);
-		expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
-		expect(getByTestId('league-tab-checkbox').className).toContain('indeterminate');
-	});
+	props.league = { ...props.league, status: 'indeterminate' };
+	rerender(<LeagueTab {...props} />);
+	expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
+	expect(getByTestId('league-tab-checkbox').className).toContain('indeterminate');
 
-	it('unchecked', () => {
-		props.league.status = 'unchecked';
-		const { queryByTestId, getByTestId } = render(<LeagueTab {...props} />);
-		expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
-		expect(getByTestId('league-tab-checkbox').className).not.toContain('indeterminate');
-		expect(getByTestId('league-tab-checkbox').className).not.toContain('checked');
-	});
+	props.league = { ...props.league, status: 'unchecked' };
+	rerender(<LeagueTab {...props} />);
+	expect(queryByTestId('league-tab-checkbox')).toBeInTheDocument();
+	expect(getByTestId('league-tab-checkbox').className).not.toContain('indeterminate');
+	expect(getByTestId('league-tab-checkbox').className).not.toContain('checked');
 });
 
 it('should invoke store action on click', () => {
@@ -68,8 +63,8 @@ it('should invoke store action on click', () => {
 	expect(props.league.toggleLeagueVisibility).toBeCalled();
 });
 
-xit('should display alert icon when object is null', () => {
-	props.league = null;
+it('should display alert icon when info receiving failed', () => {
+	props.league.failed = true;
 	const { queryByTestId } = render(<LeagueTab {...props} />);
 	expect(queryByTestId('league-tab-loader')).toBeNull();
 	expect(queryByTestId('league-tab')).toBeNull();
