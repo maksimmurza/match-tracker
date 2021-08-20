@@ -5,7 +5,7 @@ import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 import styled from 'styled-components';
 
 const LeagueTab = ({ league }) => {
-	return !league ? (
+	return league.failed ? (
 		<Icon name="exclamation" data-testid="league-tab-alert"></Icon>
 	) : league.loading ? (
 		<Loader size="tiny" active data-testid="league-tab-loader"></Loader>

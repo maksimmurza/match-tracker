@@ -1,5 +1,5 @@
 export const SCHEDULE_URL = 'https://api.football-data.org/v2/competitions/';
-export const LEAGUES_KEYS = ['PL/', 'PD/', 'CL/'];
+export const LEAGUES_KEYS = ['PL/', 'PD/', 'FL1/', 'CL/'];
 export const SCHEDULED_FILTER = 'matches?status=SCHEDULED';
 export const LIVE_FILTER = 'matches?status=LIVE';
 export const FOOTBALL_DATA_REQUEST_OPTIONS = {

@@ -29,4 +29,4 @@ yarn-error.log*
 
 .env
 
-**/__snapshots__
+__snapshots__

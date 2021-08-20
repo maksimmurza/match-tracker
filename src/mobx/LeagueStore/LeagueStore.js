@@ -10,6 +10,7 @@ export default class League {
 	matches = [];
 	activeTeams = 0;
 	loading = true;
+	failed = false;
 
 	constructor(id) {
 		this.id = id;
@@ -21,6 +22,7 @@ export default class League {
 			teams: observable.deep,
 			matches: observable.deep,
 			loading: observable,
+			failed: observable,
 			status: computed,
 			resolveActiveTeams: action,
 			teamsShowed: computed,
@@ -51,7 +53,7 @@ export default class League {
 		this.matches.length > 0 &&
 			this.matches.forEach(match => {
 				const targetStrings = this.teams.map(team => team.name);
-				let separator = /United|City|FC|hampton|de|RCD/;
+				let separator = /United|City|FC|hampton|de|Club|Stade|Olympique|RCD|\d/;
 
 				for (let key in match) {
 					if (key.includes('Team') && match[key].name) {
