@@ -11,7 +11,6 @@ const ControlsBar = ({
 	values: { quantity, locale },
 	handlers: { setQuantity, setLocale, sidebarToggle },
 }) => {
-	console.log(window.innerWidth);
 	const settingsWrapperRef = React.createRef();
 	return (
 		<Bar id="bar" data-testid="controls-bar">

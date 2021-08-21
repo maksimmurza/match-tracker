@@ -2,7 +2,7 @@ import React from 'react';
 import SelectionArea from './SelectionArea';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../../__tests__/mock/leagues.test.json';
+import leagues from '../../../__tests__/fixtures/leagues.test.json';
 import cloneDeep from 'lodash/cloneDeep';
 import { observable } from 'mobx';
 

@@ -33,3 +33,5 @@ it('should invoke handler with arguments when changed', () => {
 	expect(props.onChange).toHaveBeenCalledTimes(1);
 	expect(props.onChange.mock.results[0].value).toBe('5');
 });
+
+xit('should ignore non digit symbols', async () => {});

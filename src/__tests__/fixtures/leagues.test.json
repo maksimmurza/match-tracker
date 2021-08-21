@@ -1,5 +1,6 @@
 [
-    {
+    {   
+        "id": "PL/",
         "status": "checked",
         "name": "Premier League",
         "loading": false,
@@ -127,9 +128,10 @@
                 "leagueName": "Premier League"
             }
         ],
-        "teamsShowed": 4
+        "activeTeams": 4
     },
     {
+        "id": "PD/",
         "status": "checked",
         "name": "Primera Division",
         "loading": false,
@@ -254,6 +256,6 @@
                 "leagueName": "Primera Division"
             }
         ],
-        "teamsShowed": 4
+        "activeTeams": 4
     }
 ]

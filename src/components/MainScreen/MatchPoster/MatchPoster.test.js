@@ -2,7 +2,7 @@ import React from 'react';
 import MatchPoster from './MatchPoster';
 import { render, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../../__tests__/mock/leagues.test.json';
+import leagues from '../../../__tests__/fixtures/leagues.test.json';
 import { LocaleContext } from '../../LocaleContext';
 
 let props;

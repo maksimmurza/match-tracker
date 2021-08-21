@@ -1,6 +1,6 @@
 import React from 'react';
 import LeaguesStore from './LeaguesStore';
-import leagues from '../../mock/leagues.test.json';
+import leagues from '../../fixtures/leagues.test.json';
 
 beforeEach(() => {});
 

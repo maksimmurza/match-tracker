@@ -67,16 +67,13 @@ export class MatchPoster extends React.PureComponent {
 				calendarId: 'primary',
 				timeMin: `${this.props.time}`,
 			})
-			.then(response => {
-				response.result.items.filter(event => event.summary === summary).length > 0;
-			})
+			.then(response => response.result.items.filter(event => event.summary === summary).length > 0)
 			.catch(error => this.showNotification('error', error));
 
 		if (eventExist) {
 			this.showNotification('warning', 'Event is already in you calendar', summary);
 			return;
 		}
-
 
 		const gameEvent = {
 			summary,

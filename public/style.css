@@ -18,32 +18,3 @@ body {
 #root {
 	height: 100vh;
 }
-
-#notification-area {
-	position: fixed;
-	bottom: 5px;
-	right: 0;
-  	width: 350px;
-  	height: max-content;
-	display: flex;
-	flex-direction: column;
-}
-
-#notification-area > * {
-	right: 10px !important;
-	z-index: 500;
-	margin: 5px 0 0 0 !important;
-	opacity: 0.9;
-}
-
-@media (max-width: 767px) {
-	#notification-area {
-		bottom: 0;
-		right: 0;
-		width: 100vw;
-	}
-
-	#notification-area > * {
-		right: 0 !important;
-	}
-}
