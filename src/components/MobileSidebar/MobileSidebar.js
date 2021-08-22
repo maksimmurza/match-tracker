@@ -13,17 +13,23 @@ const MobileSidebar = props => {
 	}, [windowWidth]);
 
 	return (
-		<SidebarPushable>
-			<StyledSidebar
-				animation="overlay"
-				icon="labeled"
-				onHide={props.sidebarToggle}
-				visible={props.sidebarVisible && mobile}
-				width="wide">
-				{props.sidebarContent}
-			</StyledSidebar>
-			<SidebarPusher dimmed={props.sidebarVisible && mobile}>{props.children}</SidebarPusher>
-		</SidebarPushable>
+		<>
+			{mobile ? (
+				<SidebarPushable>
+					<StyledSidebar
+						animation="overlay"
+						icon="labeled"
+						onHide={props.sidebarToggle}
+						visible={props.sidebarVisible}
+						width="wide">
+						{props.sidebarContent}
+					</StyledSidebar>
+					<SidebarPusher dimmed={props.sidebarVisible}>{props.children}</SidebarPusher>
+				</SidebarPushable>
+			) : (
+				props.children
+			)}
+		</>
 	);
 };
 

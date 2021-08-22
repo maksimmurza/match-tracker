@@ -6,11 +6,9 @@ import '@testing-library/jest-dom/extend-expect';
 import leagues from './fixtures/leagues.test.json';
 import cloneDeep from 'lodash/cloneDeep';
 
-const mockReceivingLeagues = jest.fn(async function () {
-	this.leagues = cloneDeep(leagues);
+LeaguesStore.prototype.getLeaguesFromAPI = jest.fn(async function () {
+	await this.getLeaguesFromLocal(cloneDeep(leagues));
 });
-LeaguesStore.prototype.getLeaguesFromAPI = mockReceivingLeagues;
-LeaguesStore.prototype.getLeaguesFromLocal = mockReceivingLeagues;
 
 beforeEach(() => {
 	window.gapi = {
@@ -64,8 +62,82 @@ test('match poster should display date and time in format set by user', async ()
 	});
 });
 
-test('league checkbox should react on state of teams checkboxes', async () => {});
+test('team checkbox should react on click to league checkbox', async () => {
+	const { queryAllByTestId, findByTestId } = render(<App />);
+	await findByTestId('controls-bar');
+	const leagueCheckbox = queryAllByTestId('league-tab-checkbox')[0];
+	const teams = queryAllByTestId('team-checkbox');
 
-test('team checkbox should react on click to league checkbox', async () => {});
+	teams.forEach(team => {
+		expect(within(team).queryByRole('checkbox').checked).toBeTruthy();
+	});
+	expect(leagueCheckbox.className).toContain('checked');
 
-test('match-list should display matches which marked in checkboxes', async () => {});
+	fireEvent.click(within(leagueCheckbox).queryByRole('checkbox'));
+	teams.forEach(team => {
+		expect(within(team).queryByRole('checkbox').checked).toBeFalsy();
+	});
+
+	fireEvent.click(within(teams[0]).queryByRole('checkbox'));
+	fireEvent.click(within(teams[1]).queryByRole('checkbox'));
+
+	fireEvent.click(within(leagueCheckbox).queryByRole('checkbox'));
+	teams.forEach(team => {
+		expect(within(team).queryByRole('checkbox').checked).toBeFalsy();
+	});
+
+	fireEvent.click(within(leagueCheckbox).queryByRole('checkbox'));
+	teams.forEach(team => {
+		expect(within(team).queryByRole('checkbox').checked).toBeTruthy();
+	});
+});
+
+test('league checkbox should react on state of teams checkboxes', async () => {
+	const { queryAllByTestId, findByTestId } = render(<App />);
+	await findByTestId('controls-bar');
+	const leagueCheckbox = queryAllByTestId('league-tab-checkbox')[0];
+	const teams = queryAllByTestId('team-checkbox');
+
+	teams.forEach(team => {
+		expect(within(team).queryByRole('checkbox').checked).toBeTruthy();
+	});
+	expect(leagueCheckbox.className).toContain('checked');
+
+	for (let i = 0; i <= teams.length - 2; i++) {
+		fireEvent.click(within(teams[i]).queryByRole('checkbox'));
+		expect(leagueCheckbox.className).toContain('indeterminate');
+	}
+
+	fireEvent.click(within(teams[teams.length - 1]).queryByRole('checkbox'));
+	expect(leagueCheckbox.className).not.toContain('indeterminate');
+	expect(leagueCheckbox.className).not.toContain('checked');
+
+	for (let i = 0; i <= teams.length - 2; i++) {
+		fireEvent.click(within(teams[i]).queryByRole('checkbox'));
+		expect(leagueCheckbox.className).toContain('indeterminate');
+	}
+	fireEvent.click(within(teams[teams.length - 1]).queryByRole('checkbox'));
+	expect(leagueCheckbox.className).toContain('checked');
+});
+
+test('match-list should display matches which marked in checkboxes', async () => {
+	const { queryAllByTestId, findByTestId } = render(<App />);
+	await findByTestId('controls-bar');
+	const leaguesTabs = queryAllByTestId('league-tab');
+	const leaguesCheckboxes = queryAllByTestId('league-tab-checkbox');
+	const teams = queryAllByTestId('team-checkbox');
+	expect(queryAllByTestId('match')).toHaveLength(4);
+	fireEvent.click(leaguesTabs[1]);
+	fireEvent.click(within(leaguesCheckboxes[1]).queryByRole('checkbox'));
+	expect(queryAllByTestId('match')).toHaveLength(2);
+	fireEvent.click(leaguesTabs[0]);
+	fireEvent.click(within(teams[0]).queryByRole('checkbox'));
+	fireEvent.click(within(teams[1]).queryByRole('checkbox'));
+	expect(queryAllByTestId('match')).toHaveLength(1);
+	fireEvent.click(within(teams[2]).queryByRole('checkbox'));
+	fireEvent.click(within(teams[3]).queryByRole('checkbox'));
+	expect(queryAllByTestId('match')).toHaveLength(0);
+	fireEvent.click(within(leaguesCheckboxes[0]).queryByRole('checkbox'));
+	fireEvent.click(within(leaguesCheckboxes[1]).queryByRole('checkbox'));
+	expect(queryAllByTestId('match')).toHaveLength(4);
+});
