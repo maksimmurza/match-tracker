@@ -1,15 +1,30 @@
 import React from 'react';
-import Notification from './Notification';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import notificationable from './Notification';
+import { render, cleanup, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../fixtures/leagues.test.json';
 
-beforeEach(() => {});
+jest.setTimeout(15000);
+
+const header = 'New Notification';
+const content = 'Some text';
+const NotificationableComponent = notificationable(props => (
+	<button onClick={() => props.showNotification('', header, content)}>Show</button>
+));
+const Environment = () => (
+	<>
+		<NotificationableComponent />
+		<div id="notification-area"></div>
+	</>
+);
 
 afterEach(cleanup);
 
-it('should return component that able to produce a notification', () => {});
-
-it('should display notification with text', () => {});
-
-it('should hide notification after delay', () => {});
+it('should display notification with some header and text and hide it after 10s delay', async () => {
+	const { queryByText } = render(<Environment />);
+	fireEvent.click(queryByText('Show'));
+	expect(queryByText(header)).toBeInTheDocument();
+	expect(queryByText(content)).toBeInTheDocument();
+	await new Promise(r => setTimeout(r, 10000));
+	expect(queryByText(header)).not.toBeInTheDocument();
+	expect(queryByText(content)).not.toBeInTheDocument();
+});
