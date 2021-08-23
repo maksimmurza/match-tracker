@@ -46,7 +46,7 @@ function SelectionArea({ leagues }) {
 		});
 	});
 
-	return <StyledTab panes={tabs} />;
+	return <StyledTab panes={tabs} data-testid="selection-area" />;
 }
 
 const StyledTab = styled(Tab)`

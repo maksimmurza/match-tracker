@@ -14,7 +14,7 @@ import { PropTypes } from 'prop-types';
 import LeaguesStore from '../../mobx/LeaguesStore/LeaguesStore';
 import styled from 'styled-components';
 
-class MainScreen extends React.Component {
+export class MainScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.showNotification = props.showNotification;
@@ -85,7 +85,7 @@ class MainScreen extends React.Component {
 					sidebarContent={<SelectionArea leagues={leagues} />}
 					sidebarVisible={this.state.sidebarVisible}
 					sidebarToggle={this.sidebarToggle}>
-					<StyledGrid stackable centered reversed="mobile">
+					<StyledGrid data-testid="main-grid" stackable centered reversed="mobile">
 						<MatchListColumn computer={9} tablet={10} mobile={16}>
 							<LocaleContext.Provider value={this.state.locale}>
 								<MatchList

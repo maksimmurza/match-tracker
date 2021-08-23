@@ -72,7 +72,7 @@ class MatchList extends React.Component {
 		});
 
 		return (
-			<MatchListWrapper>
+			<MatchListWrapper data-testid="match-list">
 				<StyledSegmentGroup>
 					{this.props.leagues.every(league => league.loading)
 						? this.loader
