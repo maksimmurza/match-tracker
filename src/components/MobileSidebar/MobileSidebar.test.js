@@ -1,15 +1,31 @@
 import React from 'react';
 import MobileSidebar from './MobileSidebar';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import leagues from '../../fixtures/leagues.test.json';
 
 beforeEach(() => {});
 
 afterEach(cleanup);
 
-it('should display selection area on button click', () => {});
+const Environment = () => (
+	<MobileSidebar
+		sidebarContent={<div data-testid="sidebar-content" />}
+		sidebarVisible={false}
+		sidebarToggle={() => {}}>
+		<div data-testid="main-content" />
+	</MobileSidebar>
+);
 
-it('should hide selection area on second button click', () => {});
+it('should contain sidebar in the dom in mobile mode', () => {
+	window.innerWidth = 500;
+	const { queryByTestId } = render(<Environment />);
+	expect(queryByTestId('main-content')).toBeInTheDocument();
+	expect(queryByTestId('sidebar-content')).toBeInTheDocument();
+});
 
-it('should hide on exit from mobile mode', () => {});
+it('should not contain sidebar in the dom out of mobile mode', () => {
+	window.innerWidth = 1024;
+	const { queryByTestId } = render(<Environment />);
+	expect(queryByTestId('main-content')).toBeInTheDocument();
+	expect(queryByTestId('sidebar-content')).not.toBeInTheDocument();
+});
