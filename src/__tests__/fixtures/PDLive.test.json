@@ -1,0 +1,18 @@
+{
+	"count": 0,
+	"filters": {
+		"status": ["IN_PLAY", "PAUSED"]
+	},
+	"competition": {
+		"id": 2014,
+		"area": {
+			"id": 2224,
+			"name": "Spain"
+		},
+		"name": "Primera Division",
+		"code": "PD",
+		"plan": "TIER_ONE",
+		"lastUpdated": "2021-04-17T00:00:28Z"
+	},
+	"matches": []
+}

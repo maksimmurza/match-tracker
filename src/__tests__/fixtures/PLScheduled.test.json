@@ -1,0 +1,207 @@
+{
+	"count": 360,
+	"filters": {
+		"status": ["SCHEDULED"]
+	},
+	"competition": {
+		"id": 2021,
+		"area": {
+			"id": 2072,
+			"name": "England"
+		},
+		"name": "Premier League",
+		"code": "PL",
+		"plan": "TIER_ONE",
+		"lastUpdated": "2021-04-17T02:20:14Z"
+	},
+	"matches": [
+		{
+			"id": 327338,
+			"season": {
+				"id": 733,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-23",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T11:30:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-06-24T16:20:21Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 65,
+				"name": "Manchester City FC"
+			},
+			"awayTeam": {
+				"id": 57,
+				"name": "Arsenal FC"
+			},
+			"referees": []
+		},
+		{
+			"id": 327334,
+			"season": {
+				"id": 733,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-23",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T14:00:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-06-24T16:20:21Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 563,
+				"name": "West Ham United FC"
+			},
+			"awayTeam": {
+				"id": 354,
+				"name": "Crystal Palace FC"
+			},
+			"referees": []
+		},
+		{
+			"id": 327336,
+			"season": {
+				"id": 733,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-23",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T14:00:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-06-24T16:20:21Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 68,
+				"name": "Norwich City FC"
+			},
+			"awayTeam": {
+				"id": 338,
+				"name": "Leicester City FC"
+			},
+			"referees": []
+		},
+		{
+			"id": 327337,
+			"season": {
+				"id": 733,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-23",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T14:00:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-06-24T16:20:21Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 67,
+				"name": "Newcastle United FC"
+			},
+			"awayTeam": {
+				"id": 340,
+				"name": "Southampton FC"
+			},
+			"referees": []
+		}
+	]
+}

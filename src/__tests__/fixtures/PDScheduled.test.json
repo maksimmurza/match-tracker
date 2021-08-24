@@ -1,0 +1,207 @@
+{
+	"count": 360,
+	"filters": {
+		"status": ["SCHEDULED"]
+	},
+	"competition": {
+		"id": 2014,
+		"area": {
+			"id": 2224,
+			"name": "Spain"
+		},
+		"name": "Primera Division",
+		"code": "PD",
+		"plan": "TIER_ONE",
+		"lastUpdated": "2021-04-17T00:00:28Z"
+	},
+	"matches": [
+		{
+			"id": 331338,
+			"season": {
+				"id": 380,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-22",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-27T18:00:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-07-25T16:20:06Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 89,
+				"name": "RCD Mallorca"
+			},
+			"awayTeam": {
+				"id": 80,
+				"name": "RCD Espanyol de Barcelona"
+			},
+			"referees": []
+		},
+		{
+			"id": 331335,
+			"season": {
+				"id": 380,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-22",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-27T20:15:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-07-25T16:20:06Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 95,
+				"name": "Valencia CF"
+			},
+			"awayTeam": {
+				"id": 263,
+				"name": "Deportivo Alavés"
+			},
+			"referees": []
+		},
+		{
+			"id": 331339,
+			"season": {
+				"id": 380,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-22",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T15:00:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-07-25T16:20:06Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 558,
+				"name": "RC Celta de Vigo"
+			},
+			"awayTeam": {
+				"id": 77,
+				"name": "Athletic Club"
+			},
+			"referees": []
+		},
+		{
+			"id": 331333,
+			"season": {
+				"id": 380,
+				"startDate": "2021-08-13",
+				"endDate": "2022-05-22",
+				"currentMatchday": 2
+			},
+			"utcDate": "2021-08-28T17:30:00Z",
+			"status": "SCHEDULED",
+			"matchday": 3,
+			"stage": "REGULAR_SEASON",
+			"group": null,
+			"lastUpdated": "2021-07-25T16:20:06Z",
+			"odds": {
+				"msg": "Activate Odds-Package in User-Panel to retrieve odds."
+			},
+			"score": {
+				"winner": null,
+				"duration": "REGULAR",
+				"fullTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"halfTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"extraTime": {
+					"homeTeam": null,
+					"awayTeam": null
+				},
+				"penalties": {
+					"homeTeam": null,
+					"awayTeam": null
+				}
+			},
+			"homeTeam": {
+				"id": 285,
+				"name": "Elche CF"
+			},
+			"awayTeam": {
+				"id": 559,
+				"name": "Sevilla FC"
+			},
+			"referees": []
+		}
+	]
+}

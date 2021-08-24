@@ -1,0 +1,88 @@
+{
+	"api": {
+		"results": 864,
+		"leagues": [
+			{
+				"league_id": 3456,
+				"name": "Premier League",
+				"type": "League",
+				"country": "England",
+				"country_code": "GB",
+				"season": 2021,
+				"season_start": "2021-08-13",
+				"season_end": "2022-05-22",
+				"logo": "https://media.api-sports.io/football/leagues/39.png",
+				"flag": "https://media.api-sports.io/flags/gb.svg",
+				"standings": 1,
+				"is_current": 1,
+				"coverage": {
+					"standings": true,
+					"fixtures": {
+						"events": true,
+						"lineups": true,
+						"statistics": true,
+						"players_statistics": true
+					},
+					"players": true,
+					"topScorers": true,
+					"predictions": true,
+					"odds": true
+				}
+			},
+			{
+				"league_id": 3513,
+				"name": "Primera Division",
+				"type": "League",
+				"country": "Spain",
+				"country_code": "ES",
+				"season": 2021,
+				"season_start": "2021-08-13",
+				"season_end": "2022-05-22",
+				"logo": "https://media.api-sports.io/football/leagues/140.png",
+				"flag": "https://media.api-sports.io/flags/es.svg",
+				"standings": 1,
+				"is_current": 1,
+				"coverage": {
+					"standings": true,
+					"fixtures": {
+						"events": true,
+						"lineups": true,
+						"statistics": true,
+						"players_statistics": true
+					},
+					"players": true,
+					"topScorers": true,
+					"predictions": true,
+					"odds": true
+				}
+			},
+			{
+				"league_id": 3506,
+				"name": "Ligue 1",
+				"type": "League",
+				"country": "France",
+				"country_code": "FR",
+				"season": 2021,
+				"season_start": "2021-08-06",
+				"season_end": "2022-05-21",
+				"logo": "https://media.api-sports.io/football/leagues/61.png",
+				"flag": "https://media.api-sports.io/flags/fr.svg",
+				"standings": 1,
+				"is_current": 1,
+				"coverage": {
+					"standings": true,
+					"fixtures": {
+						"events": true,
+						"lineups": true,
+						"statistics": true,
+						"players_statistics": true
+					},
+					"players": true,
+					"topScorers": true,
+					"predictions": true,
+					"odds": true
+				}
+			}
+		]
+	}
+}
