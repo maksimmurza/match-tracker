@@ -17,6 +17,7 @@ const MobileSidebar = props => {
 			{mobile ? (
 				<SidebarPushable>
 					<StyledSidebar
+						data-testid="sidebar"
 						animation="overlay"
 						icon="labeled"
 						onHide={props.sidebarToggle}

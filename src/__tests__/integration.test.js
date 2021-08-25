@@ -141,3 +141,17 @@ test('match-list should display matches which marked in checkboxes', async () =>
 	fireEvent.click(within(leaguesCheckboxes[1]).queryByRole('checkbox'));
 	expect(queryAllByTestId('match')).toHaveLength(4);
 });
+
+test('sidebar should open on button click and close on dimmed area click', async () => {
+	window.innerWidth = 500;
+	const { queryByTestId, findByTestId } = render(<App />);
+	await findByTestId('controls-bar');
+	const toggleButton = queryByTestId('toggle-sidebar-button');
+	const sidebar = queryByTestId('sidebar');
+	expect(sidebar).toBeInTheDocument();
+	expect(sidebar.className).not.toContain('visible');
+	fireEvent.click(toggleButton);
+	expect(sidebar.className).toContain('visible');
+	fireEvent.click(document.querySelector('.dimmed'));
+	expect(sidebar.className).not.toContain('visible');
+});
