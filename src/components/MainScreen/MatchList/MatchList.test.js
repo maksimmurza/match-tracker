@@ -11,7 +11,7 @@ let props;
 const mockMatchPoster = jest.fn();
 jest.mock('../MatchPoster/MatchPoster', () => props => {
 	mockMatchPoster(props);
-	return <mockMatchPoster {...props} data-testid="match" />;
+	return <div data-testid="match" />;
 });
 
 beforeEach(() => {
@@ -31,7 +31,7 @@ it('should display loader while loading', () => {
 	props.leagues.forEach(league => (league.loading = true));
 	const { queryByTestId, rerender } = render(<MatchList {...props} />);
 	expect(queryByTestId('matchList-loader')).not.toBeNull();
-	props.leagues.forEach(league => (league.loading = false));
+	props = { ...props, leagues: observable(props.leagues.map(l => ({ ...l, loading: false }))) };
 	rerender(<MatchList {...props} />);
 	expect(queryByTestId('matchList-loader')).toBeNull();
 });
@@ -65,7 +65,7 @@ it('should display matches in right order depends on date', () => {
 it('should display message when nothing to show', () => {
 	const { queryByText, rerender } = render(<MatchList {...props} />);
 	expect(queryByText('No matches to show')).not.toBeInTheDocument();
-	props.leagues.forEach(league => (league.status = 'unchecked'));
+	props = { ...props, leagues: observable(props.leagues.map(l => ({ ...l, status: 'unchecked' }))) };
 	rerender(<MatchList {...props} />);
 	expect(queryByText('No matches to show')).toBeInTheDocument();
 });

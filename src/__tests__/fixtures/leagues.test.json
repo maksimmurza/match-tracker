@@ -17,7 +17,7 @@
                 "utcDate": "2021-04-03T11:30:00Z",
                 "status": "SCHEDULED",
                 "homeTeam": {
-                    "team_id": 49,
+                    "id": 49,
                     "name": "Chelsea",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/49.png",
@@ -28,7 +28,7 @@
                     "leagueName": "Premier League"
                 },
                 "awayTeam": {
-                    "team_id": 60,
+                    "id": 60,
                     "name": "West Brom",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/60.png",
@@ -52,7 +52,7 @@
                 "utcDate": "2021-04-03T14:00:00Z",
                 "status": "SCHEDULED",
                 "homeTeam": {
-                    "team_id": 63,
+                    "id": 63,
                     "name": "Leeds",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/63.png",
@@ -63,7 +63,7 @@
                     "leagueName": "Premier League"
                 },
                 "awayTeam": {
-                    "team_id": 62,
+                    "id": 62,
                     "name": "Sheffield Utd",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/62.png",
@@ -80,7 +80,7 @@
         "logo": "https://media.api-sports.io/football/leagues/39.png",
         "teams": [
             {
-                "team_id": 49,
+                "id": 49,
                 "name": "Chelsea",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/49.png",
@@ -92,7 +92,7 @@
                 "leagueName": "Premier League"
             },
             {
-                "team_id": 60,
+                "id": 60,
                 "name": "West Brom",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/60.png",
@@ -104,7 +104,7 @@
                 "leagueName": "Premier League"
             },
             {
-                "team_id": 62,
+                "id": 62,
                 "name": "Sheffield Utd",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/62.png",
@@ -116,7 +116,7 @@
                 "leagueName": "Premier League"
             },
             {
-                "team_id": 63,
+                "id": 63,
                 "name": "Leeds",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/63.png",
@@ -149,7 +149,7 @@
                 "status": "SCHEDULED",
                 
                 "homeTeam": {
-                    "team_id": 539,
+                    "id": 539,
                     "name": "Levante",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/539.png",
@@ -160,7 +160,7 @@
                     "leagueName": "Primera Division"
                 },
                 "awayTeam": {
-                    "team_id": 726,
+                    "id": 726,
                     "name": "Huesca",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/726.png",
@@ -184,7 +184,7 @@
                 "utcDate": "2021-04-03T12:00:00Z",
                 "status": "SCHEDULED",
                 "homeTeam": {
-                    "team_id": 715,
+                    "id": 715,
                     "name": "Granada CF",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/715.png",
@@ -195,7 +195,7 @@
                     "leagueName": "Primera Division"
                 },
                 "awayTeam": {
-                    "team_id": 533,
+                    "id": 533,
                     "name": "Villarreal",
                     "code": null,
                     "logo": "https://media.api-sports.io/football/teams/533.png",
@@ -212,7 +212,7 @@
         "logo": "https://media.api-sports.io/football/leagues/140.png",
         "teams": [
             {
-                "team_id": 533,
+                "id": 533,
                 "name": "Villarreal",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/533.png",
@@ -223,7 +223,7 @@
                 "leagueName": "Primera Division"
             },
             {
-                "team_id": 539,
+                "id": 539,
                 "name": "Levante",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/539.png",
@@ -234,7 +234,7 @@
                 "leagueName": "Primera Division"
             },
             {
-                "team_id": 715,
+                "id": 715,
                 "name": "Granada CF",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/715.png",
@@ -245,7 +245,7 @@
                 "leagueName": "Primera Division"
             },
             {
-                "team_id": 726,
+                "id": 726,
                 "name": "Huesca",
                 "code": null,
                 "logo": "https://media.api-sports.io/football/teams/726.png",

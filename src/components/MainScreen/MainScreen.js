@@ -55,8 +55,8 @@ export class MainScreen extends React.Component {
 		this.setState({ locale: selected.value });
 	};
 
-	setQuantity = event => {
-		this.setState({ quantity: event.target.value });
+	setQuantity = value => {
+		this.setState({ quantity: value });
 	};
 
 	sidebarToggle = () => {

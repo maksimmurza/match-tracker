@@ -6,7 +6,9 @@ const QuantityInput = ({ value, onChange }) => {
 	return (
 		<Input
 			value={value}
-			onChange={onChange}
+			onChange={e => {
+				onChange(parseInt(e.target.value));
+			}}
 			type="number"
 			title="Number of upcoming matches with selected teams"
 			icon="filter"

@@ -130,7 +130,9 @@ export default class LeaguesStore {
 									t => t.id === team.id && t.name === team.name
 								);
 								if (localTeam) {
-									team.show = localTeam.show;
+									runInAction(() => {
+										team.show = localTeam.show;
+									});
 								}
 							});
 						}

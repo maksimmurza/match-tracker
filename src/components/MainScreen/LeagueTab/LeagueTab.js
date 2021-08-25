@@ -1,6 +1,5 @@
 import React from 'react';
 import { Checkbox, Icon, Loader } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 import styled from 'styled-components';
 
@@ -39,7 +38,6 @@ const StyledLeagueLogo = styled.img`
 
 LeagueTab.propTypes = {
 	league: MobxPropTypes.observableObject,
-	onChangeLeague: PropTypes.func,
 };
 
 export default observer(LeagueTab);

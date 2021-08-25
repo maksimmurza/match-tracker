@@ -23,10 +23,16 @@ it('should display tabs and pane', () => {
 });
 
 it('should display placeholder while teams loading', () => {
-	props.leagues[0] = { ...props.leagues[0], teams: [], loading: true };
+	props = {
+		...props,
+		leagues: observable([{ ...props.leagues[0], teams: [], loading: true }, ...props.leagues.slice(1)]),
+	};
 	const { queryByTestId, rerender } = render(<SelectionArea {...props} />);
 	expect(queryByTestId('teams-placeholder')).toBeInTheDocument();
-	props.leagues[0] = { ...props.leagues[0], loading: false };
+	props = {
+		...props,
+		leagues: observable([{ ...props.leagues[0], loading: false }, ...props.leagues.slice(1)]),
+	};
 	rerender(<SelectionArea {...props} />);
 	expect(queryByTestId('teams-placeholder')).not.toBeInTheDocument();
 });

@@ -1,11 +1,12 @@
 import React from 'react';
-import MatchPoster from './MatchPoster';
+import { MatchPoster } from './MatchPoster';
 import { render, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import leagues from '../../../__tests__/fixtures/leagues.test.json';
 import { LocaleContext } from '../../LocaleContext';
+import { observable } from 'mobx';
 
-let props;
+let props, mockShowNotification;
 const mockInsertEvent = jest.fn(() => ({
 	execute: cb => {
 		cb({ status: 'confirmed' });
@@ -25,7 +26,8 @@ Date.prototype.addHours = function (hours) {
 };
 
 beforeEach(() => {
-	props = {
+	mockShowNotification = jest.fn();
+	props = observable({
 		key: '01',
 		homeTeam: leagues[0].teams[0],
 		awayTeam: leagues[0].teams[1],
@@ -33,8 +35,8 @@ beforeEach(() => {
 		status: 'SCHEDULED',
 		todayDate: new Date(),
 		leagueLogo: leagues[0].logo,
-		showNotification: jest.fn(),
-	};
+		showNotification: mockShowNotification,
+	});
 
 	window.gapi = {
 		client: {

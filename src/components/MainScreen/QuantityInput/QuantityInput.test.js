@@ -8,10 +8,7 @@ let props;
 beforeEach(() => {
 	props = {
 		value: 15,
-		onChange: jest.fn(event => {
-			event.persist();
-			return event.target.value;
-		}),
+		onChange: jest.fn(value => value),
 	};
 });
 
@@ -31,5 +28,5 @@ it('should invoke handler with arguments when changed', () => {
 	expect(props.onChange).not.toHaveBeenCalled();
 	fireEvent.change(input, { target: { value: '5' } });
 	expect(props.onChange).toHaveBeenCalledTimes(1);
-	expect(props.onChange.mock.results[0].value).toBe('5');
+	expect(props.onChange.mock.calls[0][0]).toBe(5);
 });

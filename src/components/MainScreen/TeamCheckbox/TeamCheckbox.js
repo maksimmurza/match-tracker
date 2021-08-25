@@ -1,6 +1,5 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 import { observer, PropTypes as MobxPropTypes } from 'mobx-react';
 import styled from 'styled-components';
 
@@ -33,7 +32,6 @@ const StyledTeamName = styled.label`
 
 TeamCheckbox.propTypes = {
 	team: MobxPropTypes.observableObject,
-	onChangeTeam: PropTypes.func,
 };
 
 export default observer(TeamCheckbox);
