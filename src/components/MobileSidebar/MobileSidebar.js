@@ -9,7 +9,7 @@ const MobileSidebar = props => {
 	const [mobile, setMobile] = useState(false);
 
 	useEffect(() => {
-		setMobile(windowWidth <= 768);
+		setMobile(windowWidth < 768);
 	}, [windowWidth]);
 
 	return (
