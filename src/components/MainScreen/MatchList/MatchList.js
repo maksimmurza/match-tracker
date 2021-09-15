@@ -9,6 +9,8 @@ class MatchList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.loader = <StyledLoader active inline="centered" data-testid="matchList-loader" />;
+		this.visibleMatches = [];
+		this.lazy = false;
 		this.emptyListMessage = (
 			<StyledMessage>
 				<Message.Header>No matches to show</Message.Header>
@@ -19,11 +21,23 @@ class MatchList extends React.Component {
 		);
 	}
 
-	getMarkedMatches() {
+	getMarkedMatches(leagues, quantity) {
 		let markedMatches = [];
-		let qty = this.props.quantity;
+		const sortByTime = (a, b) => {
+			let aDate = new Date(a.utcDate);
+			let bDate = new Date(b.utcDate);
+			if (aDate.getFullYear() - bDate.getFullYear() !== 0) {
+				return aDate.getFullYear() - bDate.getFullYear();
+			} else if (aDate.getMonth() - bDate.getMonth() !== 0) {
+				return aDate.getMonth() - bDate.getMonth();
+			} else if (aDate.getDate() - bDate.getDate() !== 0) {
+				return aDate.getDate() - bDate.getDate();
+			} else {
+				return aDate.getTime() - bDate.getTime();
+			}
+		};
 
-		this.props.leagues.forEach(league => {
+		leagues.forEach(league => {
 			if (league.status.match(/loading|unchecked/)) {
 				return;
 			} else if (league.status === 'checked') {
@@ -37,27 +51,13 @@ class MatchList extends React.Component {
 			}
 		});
 
-		markedMatches.sort(this.sortByTime);
-		qty = qty <= markedMatches.length ? qty : markedMatches.length;
-		return markedMatches.slice(0, qty);
+		markedMatches.sort(sortByTime);
+		quantity = quantity <= markedMatches.length ? quantity : markedMatches.length;
+		return markedMatches.slice(0, quantity);
 	}
 
-	sortByTime = (a, b) => {
-		let aDate = new Date(a.utcDate);
-		let bDate = new Date(b.utcDate);
-		if (aDate.getFullYear() - bDate.getFullYear() !== 0) {
-			return aDate.getFullYear() - bDate.getFullYear();
-		} else if (aDate.getMonth() - bDate.getMonth() !== 0) {
-			return aDate.getMonth() - bDate.getMonth();
-		} else if (aDate.getDate() - bDate.getDate() !== 0) {
-			return aDate.getDate() - bDate.getDate();
-		} else {
-			return aDate.getTime() - bDate.getTime();
-		}
-	};
-
-	render() {
-		let markedMatches = this.getMarkedMatches().map(match => {
+	getLayout(matches) {
+		return matches.map(match => {
 			return (
 				<MatchPoster
 					key={match.id}
@@ -70,14 +70,60 @@ class MatchList extends React.Component {
 				/>
 			);
 		});
+	}
+
+	componentDidUpdate() {
+		this.lazy = false;
+	}
+
+	*lazyLoading(markedMatches) {
+		// console.log(markedMatches);
+		const step = 15;
+
+		if (markedMatches.length <= step) {
+			return this.getLayout(markedMatches);
+		} else {
+			const rest = markedMatches.length % step;
+			const times = (markedMatches.length - rest) / step;
+
+			for (let i = 1; i <= times; i++) {
+				yield this.getLayout(markedMatches.slice(step * (i - 1), step * i));
+			}
+
+			if (rest > 0) {
+				console.log(markedMatches.slice(-rest));
+				return this.getLayout(markedMatches.slice(-rest));
+			}
+		}
+	}
+
+	handleScroll = e => {
+		const el = e.target;
+		const progress = (el.scrollTop / el.scrollHeight + el.clientHeight / el.scrollHeight) * 100;
+		if (progress > 90) {
+			const iteration = this.lazyLoad.next();
+			if (iteration.value) {
+				this.lazy = true;
+				this.visibleMatches = this.visibleMatches.concat(iteration.value);
+				this.forceUpdate();
+			}
+		}
+	};
+
+	render() {
+		if (!this.lazy) {
+			// update iterator when props are new
+			this.lazyLoad = this.lazyLoading(this.getMarkedMatches(this.props.leagues, this.props.quantity));
+			this.visibleMatches = this.lazyLoad.next().value;
+		}
 
 		return (
-			<MatchListWrapper data-testid="match-list">
+			<MatchListWrapper data-testid="match-list" onScroll={this.handleScroll}>
 				<StyledSegmentGroup>
 					{this.props.leagues.every(league => league.loading)
 						? this.loader
-						: markedMatches.length > 0
-						? markedMatches
+						: this.visibleMatches.length > 0
+						? this.visibleMatches
 						: this.emptyListMessage}
 				</StyledSegmentGroup>
 			</MatchListWrapper>
