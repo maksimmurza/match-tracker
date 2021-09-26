@@ -8,9 +8,7 @@ Responsive wep application for tracking football (soccer) games.
 + MobX
 + Semantic UI
 + Styled components
-+ Jest (+ RTL, Enzyme)
-
-#### Tools and libs:
++ Jest, RTL
 + [string-similarity](https://github.com/aceakash/string-similarity)
 
 #### API used:

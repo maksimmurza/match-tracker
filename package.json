@@ -28,6 +28,12 @@
 		"eject": "react-scripts eject"
 	},
 	"jest": {
+		"collectCoverage": true,
+		"collectCoverageFrom": [
+			"**/*.{js,jsx}",
+			"!**/node_modules/**"
+		],
+		"coverageReporters": ["text", "text-summary"],
 		"transform": {
 			"^.+\\.[t|j]sx?$": "babel-jest"
 		},

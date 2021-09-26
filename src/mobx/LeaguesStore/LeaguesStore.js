@@ -85,7 +85,7 @@ export default class LeaguesStore {
 					schedule.matches.unshift(liveMatch);
 				});
 
-				league.name = schedule.competition.name;
+				league.name = schedule.competition.name === 'Primera Division' ? 'La Liga' : schedule.competition.name;
 				league.country = schedule.competition.area.name;
 				league.matches = schedule.matches;
 
