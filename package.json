@@ -3,6 +3,10 @@
 	"version": "0.1.0",
 	"private": true,
 	"homepage": "./",
+  "engines" : { 
+    "node" : "14.19.0",
+    "npm" : "6.14.16"
+  },
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.11.9",
 		"@testing-library/react": "^11.2.5",
@@ -33,7 +37,10 @@
 			"**/*.{js,jsx}",
 			"!**/node_modules/**"
 		],
-		"coverageReporters": ["text", "text-summary"],
+		"coverageReporters": [
+			"text",
+			"text-summary"
+		],
 		"transform": {
 			"^.+\\.[t|j]sx?$": "babel-jest"
 		},
